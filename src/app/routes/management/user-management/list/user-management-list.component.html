@@ -1,0 +1,45 @@
+<div class="container">
+
+  <mat-table [dataSource]="userList" #table class="mat-elevation-z8">
+    <!-- User Name Column-->
+    <ng-container matColumnDef="fullName">
+      <mat-header-cell mat-header-cell *matHeaderCellDef> Full Name </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <a href="javascript://" [routerLink]="['profile',element.id]">
+          {{element.fullName}}
+        </a>
+      </mat-cell>
+    </ng-container>
+    <!-- Email Column-->
+    <ng-container matColumnDef="email">
+      <mat-header-cell mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.email}} </mat-cell>
+    </ng-container>
+    <!-- initialPasswordSet Column-->
+    <ng-container matColumnDef="initialPasswordSet">
+      <mat-header-cell mat-header-cell *matHeaderCellDef> Initial Password Set </mat-header-cell>
+      <mat-cell *matCellDef="let element">{{element.initialPasswordSet |yesNo}} </mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="editCell">
+      <mat-header-cell mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <!-- <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button> -->
+      </mat-cell>
+    </ng-container>
+
+
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let element; columns: columnsToDisplay"></mat-row>
+  </mat-table>
+
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item>Edit</button>
+    <button mat-menu-item>Item 2</button>
+  </mat-menu>
+
+
+
+
+</div>

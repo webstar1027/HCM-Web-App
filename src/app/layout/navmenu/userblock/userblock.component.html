@@ -1,0 +1,22 @@
+<div class="item user-block" *ngIf="!userBlockIsVisible()">
+  <a href="javascript://" class="btn btn-sm btn-primary" (click)="login()">
+    <i class="fa fa-key"></i>
+    Login
+  </a>
+</div>
+
+<div class="item user-block" *ngIf="userBlockIsVisible()">
+  <!-- User picture-->
+  <div class="user-block-picture">
+    <div class="user-block-status">
+      <img class="img-thumbnail rounded-circle" [src]="'../../../../../../assets/images/user.png'" alt="Avatar" />
+      <div class="circle bg-success circle-lg"></div>
+    </div>
+  </div>
+  <!-- Name and Job-->
+  <div class="user-block-info">
+    <span class="user-block-name">WELCOME User</span>
+    <span class="user-block-role">Programmer</span>
+    <a href="javascript://" (click)="logout()">Log Off</a>
+  </div>
+</div>

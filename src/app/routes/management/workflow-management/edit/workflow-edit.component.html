@@ -1,0 +1,140 @@
+﻿
+<div class="content-heading">
+    <div>
+        Edit workflow
+    </div>
+    <br />
+    <small>
+        <a class="btn btn-default" routerLink="/management/workflowlist">
+            <i class="fa fa-list"></i>
+            Template List
+        </a>
+    </small>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-sm-12">
+        <div class="card card-default">
+            <div class="card-header">Workflow Details</div>
+            <div class="card-body" *ngIf="workflowDetails">
+                <div class="col-lg-2 d-flex align-items-center mt-2 float-right">
+                    <div class="text-success" *ngIf="templateIsActive() ==false">Activate Workflow</div>
+                    <div class="text-danger" *ngIf="templateIsActive()">Deactivate Workflow</div>
+                    <div class="ml-auto">
+                        <i class="fa fa-spin fa-spinner fa-2x" *ngIf="changingStatus"></i>
+                        <label class="switch switch-lg m-0" *ngIf="!changingStatus">
+                            <input type="checkbox" checked="checked" (click)="activateDeactivateWorkflow()" [checked]="templateIsActive()" />
+                            <span></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="d-flex">
+                    <div class="col-md-4">
+                        <label>Template Name</label>
+                        <input class="form-control mb-3" name="workflowName" [(ngModel)]="workflowDetails.workflowName" />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Template Type</label>
+                        <select class="custom-select custom-select-md mb-3" name="workflowTemplateType" [(ngModel)]="workflowDetails.workflowTypeId" *ngIf="(workflowTypes && workflowTypes.length >1)">
+                            <option *ngFor="let option of workflowTypes" [(ngValue)]="option.key">{{option.value}}</option>
+                        </select>
+                        <input type="text" readonly="readonly" class="form-control mb-3" name="workflowTemplateType" *ngIf="(workflowTypes && workflowTypes.length <=1)" [value]="workflowTypes[0].value" />
+                    </div>
+                </div>
+                <hr class="d-print-none" />
+                <h3 class="card-title"><small>Workflow Steps & Actions</small></h3>
+                <div class="d-flex">
+
+                    <div class="col-lg-4 col-sm-12">
+                        <div class="card b">
+                            <div class="card-header">
+                                <p class="card-header bg-gray-lighter text-bold">Steps</p>
+                                <p class="small text text-bold text-info">Click on a step to view it's actions</p>
+                            </div>
+                            <div class="card-body">
+                                <div class="list-group">
+                                    <scrollable height="180">
+                                        <div class="list-group-item d-flex align-items-center selected"
+                                             *ngFor="let workflowStep of workflowDetails.workflowTemplateSteps"
+                                             [ngClass]="{'active' : isSelectedStep(workflowStep)  }"
+                                             (click)="selectTemplateStep(workflowStep)">
+                                            <p class="text-bold mb-0">{{workflowStep.stepName}} id ({{workflowStep.workflowTemplateStepId}})</p>
+                                            <div class="ml-auto">
+                                                <div class="btn-group">
+                                                    <button class="btn btn-sm  btn-success"><i class="fa fa-edit"></i></button>
+                                                    <button class="btn btn-sm  btn-danger" (click)="removeStep(workflowStep)"><i class="fa fa-trash"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </scrollable>
+
+                                </div>
+                            </div>
+                            <div class="card-footer clearfix">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-sm" (keyup.enter)="addStep()" [(ngModel)]="newStepName" name="newStep" placeholder="Enter new step name" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-secondary btn-sm" type="submit" (click)="addStep()">
+                                            <i class="fa fa-plus-circle"></i>
+                                            &nbsp;Add Step
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-sm-12">
+                        <div class="card b">
+                            <div class="card-header">
+                                <div class="d-flex">
+                                    <div class="card-title">
+                                        Actions
+                                        <p class="small text-info text text-bold">You can change the Sequence by dragging to the correct position</p>
+                                    </div>
+                                    <div class="ml-auto">
+                                        <div class="btn-toolbar">
+                                            <div class="btn-group mr-2">
+                                                <button class="btn btn-sm" (click)="movePositionUp()" [disabled]="!canMoveActionStepUp()">
+                                                    <em class="fa fa-angle-up fa-lg"></em>
+                                                </button>
+                                                <button class="btn btn-sm" (click)="movePositionDown()" [disabled]="!canMoveActionStepDown()">
+                                                    <em class="fa fa-angle-down fa-lg"></em>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-body">
+                                <scrollable>
+                                    <ul *ngIf="hasSelectedWorkflowStep()" class="list-group">
+                                        <li *ngFor="let workflowStepAction of selectedWorkflowTemplate.workflowTemplateStepActions;let i = index"
+                                            [ngClass]="{'active' :selectedStepActionIndex == i  }"
+                                            class="list-group-item"
+                                            (click)="selectStepAction(i)">
+                                            <td>Action: <b>{{workflowStepAction.actionTypeId}}</b>&nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;Sequence: <b>{{workflowStepAction.sequence}}</b>&nbsp;&nbsp;</td>
+                                            <td>&nbsp;&nbsp;<b>Index</b>:&nbsp;&nbsp;{{i+1}}</td>
+                                        </li>
+
+                                    </ul>
+                                </scrollable>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="card-footer">
+                <div class="d-flex">
+                    <button class="mb-1 btn btn-success" (click)="saveWorkflow()">
+                        <i class="fa fa-spin fa-spinner fa-2x" *ngIf="savingData"></i>
+                        <i class="fa fa-save" *ngIf="!savingData"></i> Save
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

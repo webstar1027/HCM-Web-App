@@ -1,0 +1,70 @@
+<div class="d-flex justify-content-end">
+  <button type="button" class=" btn btn-secondary" (click)="cancel()">Cancel</button>
+</div>
+<aw-wizard navBarLayout="large-empty-symbols">
+  <aw-wizard-step [canExit]="validateAboutContactForm.bind(this)" stepTitle="About" [navigationSymbol]="{ symbol: '&#xf2bb;', fontFamily: 'FontAwesome' }">
+    <div class="container">
+      <div class="row">
+        <app-new-referral-about-contact [newReferral]="newReferral" class="col-12" style="overflow:auto"></app-new-referral-about-contact>
+      </div>
+      <div class="row">
+        <div class="d-flex col-12 justify-content-end">
+          <button  type="button" class="btn btn-primary" awNextStep>Next Step</button>
+        </div>
+      </div>
+    </div>
+  </aw-wizard-step>
+  <aw-wizard-step stepTitle="Medicaid - Intake" [navigationSymbol]="{ symbol: '&#xf0fa;', fontFamily: 'FontAwesome' }">
+    <div class="container">
+      <div class="row">
+        <referral-medicaid-intake [newReferral]="newReferral" class="col-12" style="overflow-x:hidden; overflow-y:auto"></referral-medicaid-intake>
+      </div>
+      <div class="row">
+        <div class="d-flex col-12 justify-content-end ">
+          <button type="button" class=" btn  btn-info mr-1" awPreviousStep>Go to previous step</button>
+          <button type="button" class=" btn btn-primary" awNextStep>Go to next step</button>
+        </div>
+      </div>
+    </div>
+  </aw-wizard-step>
+  <aw-wizard-step stepTitle="Clinical - Coordination" [navigationSymbol]="{ symbol: '&#xf0f9;', fontFamily: 'FontAwesome' }">
+    <div class="container">
+      <div class="row">
+        <app-new-referral-clinical-coordination [newReferral]="newReferral" class="col-12" style="overflow-x:hidden; overflow-y:auto"></app-new-referral-clinical-coordination>
+      </div>
+      <div class="row">
+        <div class="d-flex col-12 justify-content-end">
+          <button type="button" class=" btn  btn-info mr-1" awPreviousStep>Go to previous step</button>
+          <button type="button" class=" btn btn-primary" awNextStep>Go to next step</button>
+        </div>
+      </div>
+    </div>
+  </aw-wizard-step>
+  <aw-wizard-step stepTitle="Emergency Contacts" [navigationSymbol]="{ symbol: '&#xf2b9;', fontFamily: 'FontAwesome' }">
+    <div class="container">
+      <div class="row">
+        <app-new-referral-emergency-contacts [emergencyContacts]="newReferral.emergencyContact" class="col-12" style="overflow:auto"></app-new-referral-emergency-contacts>
+      </div>
+        <div class="row">
+          <div class="d-flex col-12 justify-content-end">
+            <button type="button" class=" btn  btn-info mr-1" awPreviousStep>Go to previous step</button>
+            <button type="button" class=" btn btn-success" (click)="finishFunction()">Finish</button>
+          </div>
+        </div>
+      </div>
+  </aw-wizard-step>
+</aw-wizard>
+
+
+
+
+
+
+<!-- 
+          <button type="button" class="btn btn-primary" (click)="saveChartContactInfo()" [disabled]="isCurrentlySavingChartContacts">
+            <em class="fa fa-save" *ngIf="isCurrentlySavingChartContacts ===false"></em>
+            <em class="fa fa-spinner fa-spin" *ngIf="isCurrentlySavingChartContacts"></em>
+            <span *ngIf="isCurrentlySavingChartContacts ===false">Save</span>
+            <span *ngIf="isCurrentlySavingChartContacts">Saving</span>
+          </button>
+ -->

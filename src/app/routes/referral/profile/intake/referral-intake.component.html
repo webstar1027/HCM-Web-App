@@ -1,0 +1,228 @@
+﻿<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="pull-right">
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="editIntakeInfo()">
+          <span class="fa fa-edit"></span>
+        </button>
+      </div>
+      <p>General Intake Info</p>
+    </div>
+  </div>
+  <hr />
+  <div class="card-body row">
+    <div class="col-lg-6 col-sm-12 ">
+      <table class="table borderless">
+        <tbody>
+          <tr>
+            <td>Nursing Home Discharge</td>
+            <td>{{referralDemographics.nursingHomeDischarge | yesNo}}</td>
+          </tr>
+
+          <tr>
+            <td>Transfer Case</td>
+            <td>{{referralDemographics.transferCase | yesNo}}</td>
+          </tr>
+
+          <tr>
+            <td>Referral Status</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'ReferralStatusLookupService'" [fieldValue]='referralDemographics.referralStatusId'></app-convert-lookup-from-server>
+
+          </tr>
+
+          <tr>
+            <td>Patient Status</td>
+            <td>{{referralDemographics.patientStatus}}</td>
+          </tr>
+          <tr>
+            <td>Referral Denial Reason</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'ReferredByLookup'" [fieldValue]='referralDemographics.referralDenialReasonId'></app-convert-lookup-from-server>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <table class="table borderless">
+        <tbody>
+          <tr>
+            <td>Referred By</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'ReferredByLookupService'" [fieldValue]='referralDemographics.referredById'></app-convert-lookup-from-server>
+            </td>
+          </tr>
+          <tr>
+            <td>Referred By Organization</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'ReferralSourceLookupService'" [fieldValue]='referralDemographics.referralSourceId'></app-convert-lookup-from-server>
+            </td>
+
+          </tr>
+          <tr>
+            <td>Referral Reason</td>
+            <td>{{referralDemographics.referralReason}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+<div class="row">
+  <div class="col-xl-7">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="pull-right">
+            <button href="javascript://" class="btn btn-success" (click)="createEnrollment()">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+          <em class="fa fa-rss"></em>&nbsp; Enrollments
+          <b>&nbsp;({{referralEnrollments?.length}})</b>
+        </div>
+      </div>
+      <div class="card-body">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>
+                Insurance Name
+              </th>
+              <th>Type</th>
+              <th>Status</th>
+              <th>
+                Referral Date
+              </th>
+              <th>Start Date</th>
+              <th class="text text-center">
+                <i class="fa fa-gear"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let enrollment of referralEnrollments">
+              <td>{{enrollment.insurance.insuranceName}}</td>
+              <td></td>
+              <td>{{enrollment.enrollmentStatus?.statusName}}</td>
+              <td>{{enrollment.enrollmentDate | date}}</td>
+              <td>{{enrollment.approveStartDate | date}}</td>
+              <td class="text text-center">
+                <button type="button" class="btn btn-outline-info btn-sm" (click)="editEnrollment(enrollment)">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-5">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <button [disabled]="referralEnrollments?.length==0" class="btn btn-success  m-b-md pull-right" (click)="createAssessment()">
+            <i class="fa fa-plus"></i></button>
+          <em class="fa fa-calendar-o"></em>
+          Assessments
+          <b>&nbsp;({{referralDemographics.referralAssessments?.length}})</b>
+
+        </div>
+      </div>
+      <div class="card-body">
+
+        <table class="table table-condensed table-bordered">
+          <thead>
+            <tr>
+              <th>Assessment Date</th>
+              <th>Status</th>
+              <th>Nurse</th>
+              <th class="text text-center">
+                <i class="fa fa-gear"></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let assessment of referralDemographics.referralAssessments">
+              <td>{{assessment.assessmentDate | date :'medium'}}</td>
+              <td>{{assessment?.assessmentStatus?.statusName}}</td>
+              <td>{{assessment.nurseName}}</td>
+              <td>
+                <div class="btn-toolbar">
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-sm btn-outline-primary" (click)="editAssessment(assessment)">
+                      <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-danger">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-xl-7">
+    <div class="card">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="pull-right">
+            <button [disabled]="referralEnrollments?.length==0" type="button" class="btn btn-outline-success" (click)="openAuthModal()">
+                <i class="fa fa-plus"></i>
+            </button>
+          </div>
+          <i class="fa fa-clipboard"></i>&nbsp; Authorizations
+          <b>&nbsp;({{authorizationList.length}})</b>
+        </div>
+      </div>
+      <div class="card-body">
+          <table class="table table-bordered">
+              <!-- <thead>
+                  <tr>
+                       <th>Insurance</th>
+                <th>Service Code</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Frequency</th>
+                <th><i class="fa fa-gear"></i></th>
+                  </tr>
+              </thead> -->
+              <tbody *ngIf="authorizationList">
+                  <mat-accordion>
+                      <mat-expansion-panel *ngFor="let auth of authorizationList">
+                          <mat-expansion-panel-header>
+                              <mat-panel-title>
+                                  {{auth.authorizationNumber}}
+                              </mat-panel-title>
+                              <mat-panel-description>
+                                  Open for Details
+                              </mat-panel-description>
+                              <button class="btn btn-outline-primary mr-2" (click)="openAuthModal(auth)">
+                                  <span class="fa fa-edit"></span>
+                              </button>
+                          </mat-expansion-panel-header>
+                          <div class="row">
+                              <div class="col">
+                                  Auth Details
+                              </div>
+                              <div class="col">
+                                  
+                              </div>
+                          </div>
+                      </mat-expansion-panel>
+                  </mat-accordion>
+              </tbody>
+          </table>
+      </div>
+    </div>
+  </div>
+</div>

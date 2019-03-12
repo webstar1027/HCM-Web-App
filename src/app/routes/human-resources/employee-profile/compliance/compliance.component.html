@@ -1,0 +1,394 @@
+<!-- <div class="home-container" *ngIf="!compliance">
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-lg-4 col-xl-3">
+        <span class="fa fa-frown-o fa-4x"></span>
+      </div>
+      <div class="col-xl-9 col-lg-8 text text-danger">
+        <h1 class="home-text-big">Compliance not loaded</h1>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div *ngIf="compliance">
+  <div class="row">
+    <div class="col-7">
+      <div class="b card h-100">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="float-right">
+              <button type="button" class="btn btn-sm btn-secondary" (click)="editAuthorizationInfo()">
+                <em class="fa fa-edit text-muted"></em>
+              </button>
+            </div>
+            <p>Employemnt Authorization</p>
+          </div>
+        </div>
+        <hr/>
+        <div class="card-body">
+          <div class="row" [ngClass]="getClassName(authorization.i9Document1Expiration)">
+            <div class="col-4">
+              <b>I9 Document:</b>
+            </div>
+            <div class="col-8">
+              {{authorization.i9Document1Expiration | expired: authorization.i9Document1Name}}
+              <em class="fa fa-paperclip"></em>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <b>Received Receipt:</b>
+            </div>
+            <div class="col-8">
+                {{authorization.i9Document1ReceiptReceived | yesNo}}
+            </div>
+          </div>
+
+          <div class="row" [ngClass]="getClassName(authorization.i9Document2Expiration)">
+            <div class="col-4">
+              <b>I9 Additional Document:</b>
+            </div>
+            <div class="col-8">
+                {{authorization.i9Document2Expiration | expired: authorization.i9Document2Name}}
+              <em class="fa fa-paperclip"></em>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <b>Received Receipt:</b>
+            </div>
+            <div class="col-8">
+                {{authorization.i9Document2ReceiptReceived | yesNo}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <b>Verified:</b>
+            </div>
+            <div class="col-8">
+              {{authorization.verified | yesNo}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <b>Reference:</b>
+            </div>
+            <div class="col-8">
+              {{authorization.reference}}
+              <em class="fa fa-paperclip"></em>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <b>Reference 2:</b>
+            </div>
+            <div class="col-8">
+                {{authorization.additionalReference}}
+              <em class="fa fa-paperclip"></em>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <b>Last Employment Agency:</b>
+            </div>
+            <div class="col-8">
+              {{authorization.lastEmploymentAgency}} {{authorization.lastEmploymentFrom | date: 'MM/dd/yyyy'}} - {{authorization.lastEmploymentTo | date: 'MM/dd/yyyy'}}
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-4">
+              <b>Exclusion List Checked On:</b>
+            </div>
+            <div class="col-8">
+              {{authorization.exclusionListCheckedOn | date: 'MM/dd/yyyy'}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-5">
+      <div class="b card h-100">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="float-right">
+              <button type="button" class="btn btn-sm btn-secondary" (click)="editSkillInfo()">
+                <em class="fa fa-edit text-muted"></em>
+              </button>
+            </div>
+            <p>Skill Compliance</p>
+          </div>
+        </div>
+        <hr />
+        <div class="card-body">
+          <div class="row" *ngFor="let skill of skills" [ngClass]="getClassName(skill.expirationDate)">
+            <div class="col-6">
+              <b>{{skill.generalComplianceItemName}}:</b>
+            </div>
+            <div class="col-6" *ngIf="skill.employeeGeneralComplianceItemId == 1">
+              {{skill.value | yesNo}} - <span *ngIf="skill.employeeGeneralComplianceItemId">{{skill.expirationDate | expired: ''}}</span>
+            </div>
+            <div class="col-6" *ngIf="skill.employeeGeneralComplianceItemId != 1">
+              {{skill.value }} - <span *ngIf="skill.employeeGeneralComplianceItemId">{{skill.expirationDate | expired: ''}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="row mt-2">
+      <div class="col-12">
+          <div class="b card h-100">
+              <div class="card-header">
+                  <div class="card-title">
+                      <div class="float-right">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openMedicalEditModal({})">
+                              <em class="fa fa-plus"></em>
+                          </button>
+                      </div>
+                      <div class="d-flex">
+                          <p>Medicals</p>&nbsp; &nbsp;
+                          <div class="mt-1 mr-4">
+                              <small> View Latest</small>&nbsp; &nbsp;
+                              <mat-slide-toggle name="view_type" [(ngModel)]="viewMedical" (change)="toggleMedicals()"></mat-slide-toggle>
+                              &nbsp; &nbsp;<small>View All </small>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <hr/>
+
+              <div class="card-body">
+                  <table class="table table-bordered table-striped table-hover">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Received On</th>
+                              <th>Expiration</th>
+                              <th>Result</th>
+                              <th class="text text-center">
+                              <span class="fa fa-gear text-center"></span>
+                            </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr [ngClass]="getClassName(medical.expiration)" *ngFor="let medical of employeeMedicals">
+                              <td>{{medical.medicalName}}</td>
+                              <td>{{medical.dateReceived | date: 'MM/dd/yyyy'}}</td>
+                              <td>{{medical.expirationDate || 'None' | date: 'MM/dd/yyyy'}}</td>
+                              <td><app-convert-lookup-from-server [lookupTypeArgs]="'MedicalResultLookupService'" [filterValue]="medical.medicalResultSetId" [fieldValue]="medical.medicalResultId">
+                              </app-convert-lookup-from-server></td>
+                              <td>
+                                  <div class="btn-toolbar mx-auto">
+                                      <div class="btn-group btn-group-xs">
+                                          <button class="btn btn-xs btn-outline-primary" (click)="openMedicalEditModal(medical)">
+                                              <i class="fa fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-xs btn-outline-danger"
+                                            (click)="deleteMedical(medical)">
+                                              <i class="fa fa-trash"></i>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row mt-2">
+      <div class="col-12">
+          <div class="b card h-100">
+              <div class="card-header">
+                  <div class="card-title">
+                      <div class="float-right">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openBackgroundEditModal({})">
+                            <em class="fa fa-plus"></em>
+                          </button>
+                      </div>
+                      <div class="d-flex">
+                          <p>Criminal Background Check</p>&nbsp; &nbsp;
+                          <div class="mt-1 mr-4">
+                              <small> View Latest</small>&nbsp; &nbsp;
+                              <mat-slide-toggle name="view_type" [(ngModel)]="viewCriminal" (change)="toggleCriminals()"></mat-slide-toggle>
+                              &nbsp; &nbsp;<small>View All </small>
+                          </div>
+                      </div>
+
+                  </div>
+              </div>
+              <hr/>
+
+              <div class="card-body">
+                  <table class="table table-bordered table-striped table-hover">
+                      <thead>
+                          <tr>
+                              <th>Sent On</th>
+                              <th>Received On</th>
+                              <th>Result</th>
+                              <th class="text text-center">
+                                  <span class="fa fa-gear text-center"></span>
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let check of employeeCriminalChecks">
+                              <td>{{check.sentOutDate|date:'MM/dd/yyyy'}}</td>
+                              <td>{{check.responseReceivedDate |date:'MM/dd/yyyy'}}</td>
+                              <td>{{check.status.status}}
+                                  <em class="fa fa-paperclip"></em>
+                              </td>
+                              <td>
+                                  <div class="btn-toolbar mx-auto">
+                                      <div class="btn-group btn-group-xs">
+                                          <button class="btn btn-xs btn-outline-primary" (click)="openBackgroundEditModal(check)">
+                                              <i class="fa fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-xs btn-outline-danger"
+                                            (click)="deleteCheck(check)">
+                                            <i class="fa fa-trash"></i>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row mt-2">
+      <div class="col-12">
+          <div class="b card h-100">
+              <div class="card-header">
+                  <div class="card-title">
+                      <div class="float-right">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openTraningSchoolEditModal({})">
+                            <em class="fa fa-plus"></em>
+                          </button>
+                      </div>
+                      <p>Training Schools</p>
+                  </div>
+              </div>
+              <hr/>
+
+              <div class="card-body">
+                  <table class="table table-bordered table-striped table-hover">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Certification Date</th>
+                              <th>Verified</th>
+                              <th class="text text-center">
+                                  <span class="fa fa-gear text-center"></span>
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let school of trainingSchools">
+                              <td>{{school.trainingSchool.trainingSchoolName}}</td>
+                              <td>{{school.certificationDate | date:'MM/dd/yyyy'}}</td>
+                              <td>{{school.verified | yesNo}}</td>
+                              <td>
+                                  <div class="btn-toolbar mx-auto">
+                                      <div class="btn-group btn-group-xs">
+                                          <button class="btn btn-xs btn-outline-primary" (click)="openTraningSchoolEditModal(school)">
+                                              <i class="fa fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-xs btn-outline-danger"
+                                            (click)="deleteSchool(school)">
+                                              <i class="fa fa-trash"></i>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+
+  <div class="row mt-2">
+      <div class="col-12">
+          <div class="b card h-100">
+              <div class="card-header">
+                  <div class="card-title">
+                      <div class="float-right">
+                          <button type="button" class="btn btn-sm btn-outline-primary" (click)="openEvaluationEditModal({})">
+                              <em class="fa fa-plus"></em>
+                          </button>
+                      </div>
+
+                      <div class="d-flex">
+                        <p>Evaluations &mdash; Other</p>&nbsp;&nbsp;&nbsp;
+                        <div class="mt-1 mr-4">
+                            <small> View Latest</small>&nbsp; &nbsp;
+                            <mat-slide-toggle name="view_type" [(ngModel)]="viewEval" (change)="toggleEvaluation()"></mat-slide-toggle>
+                            &nbsp; &nbsp;<small>View All </small>
+                        </div>
+                    </div>
+
+                  </div>
+              </div>
+              <hr />
+
+              <div class="card-body">
+                  <table class="table table-bordered table-striped table-hover">
+                      <thead>
+                          <tr>
+                              <th>Name</th>
+                              <th>Completed On</th>
+                              <th>Expiration On</th>
+                              <th>Status</th>
+                              <th class="text text-center">
+                                <span class="fa fa-gear text-center"></span>
+                              </th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr [ngClass]="getClassName(evaluation.expirationOn)" *ngFor="let evaluation of employeeEvaluations">
+                              <td>{{evaluation.evaluationName}}</td>
+                              <td>{{evaluation.completionDate|date:"MM/dd/yyyy"}}</td>
+                              <td>{{evaluation.expirationDate|date:'MM/dd/yyyy' || 'None'}}</td>
+                              <td>{{evaluation.status}}
+                                  <em class="fa fa-paperclip"></em>
+                              </td>
+                              <td>
+                                  <div class="btn-toolbar mx-auto">
+                                      <div class="btn-group btn-group-xs">
+                                          <button class="btn btn-xs btn-outline-primary" (click)="openEvaluationEditModal(evaluation)">
+                                              <i class="fa fa-edit"></i>
+                                          </button>
+                                          <button class="btn btn-xs btn-outline-danger"
+                                            (click)="deleteEvaluation(evaluation)">
+                                              <i class="fa fa-trash"></i>
+                                          </button>
+                                      </div>
+                                  </div>
+                              </td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </div>
+
+</div>

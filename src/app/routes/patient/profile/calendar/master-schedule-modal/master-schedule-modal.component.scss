@@ -1,0 +1,9 @@
+#weekDaysFormTab /deep/.mat-tab-label, #weekDaysFormTab /deep/.mat-tab-label-active{
+  min-width: 55px!important;
+  padding: 3px!important;
+  margin: 3px!important;
+ }
+
+ #weekDaysFormTab /deep/.mat-tab-body, #weekDaysFormTab /deep/.mat-tab-body-content,{
+   overflow: hidden!important;
+ }

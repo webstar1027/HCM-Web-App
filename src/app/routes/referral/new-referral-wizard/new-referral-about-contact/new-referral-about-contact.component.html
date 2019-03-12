@@ -1,0 +1,233 @@
+<div class="d-flex justify-content-center mt-3 mb-5">
+  <h3>
+    <u><em class="fa fa-address-card"></em>&nbsp;About</u>
+  </h3>
+</div>
+<div class="row">
+  <div class="col-3"></div>
+  <div class="col align-self-center">
+  <form #referralContactForm="ngForm" autocomplete="never-ever-hcm">
+    <div class="container">
+      <!-- <div class="row"> -->
+      <!-- <div class="col-12 col-md-6"> -->
+        <div class="form-row mb-1">
+          <div class="d-inline-block mb-0 col-6 col-md-3">
+            <div class="form-group  mb-0" [class.has-error]="firstName.invalid &&(firstName.touched || firstName.dirty)">
+              <label class="control-label mb-0">First Name</label>
+              <input autocomplete="never-ever-hcm" required type="text" name="firstName" class="form-control form-control-sm"
+                placeholder="First Name" [(ngModel)]="newReferral.firstName" #firstName="ngModel" />
+            </div>
+          </div>
+          <div class="d-sm-inline-block mb-0 col-4 col-md-2">
+            <div class="form-group  mb-0">
+              <label class="control-label  mb-0 optional">MI</label>
+              <input autocomplete="never-ever-hcm" type="text" name="middleInitial" class="form-control form-control-sm"
+                placeholder="MI" [(ngModel)]="newReferral.middleInitial" #middleInitial="ngModel" style="width:50%;"/>
+            </div>
+          </div>
+        <!-- </div> -->
+        <!-- <div class="form-row mb-1"> -->
+          <div class="d-sm-inline-block  mb-0 col-6 col-md-4">
+            <div class="form-group  mb-0" [class.has-error]="lastName.invalid &&(lastName.touched || lastName.dirty)">
+              <label class="control-label mb-0">Last Name</label>
+              <input autocomplete="never-ever-hcm" required type="text" name="lastName" class="form-control form-control-sm"
+                [(ngModel)]="newReferral.lastName" placeholder="Last Name" #lastName="ngModel" />
+            </div>
+          </div>
+        </div>
+        <div class="form-row mb-2 mt-2">
+          <div class="col-6 col-md-3">
+            <span class="text-info" (click)="toggleNickname()"><a>Nick Name</a></span>
+          </div>
+          <div class="mb-0 col-6 col-md-2" *ngIf="showNickname">
+            <div class="form-group  mb-0">
+              <label class="control-label mb-0 optional">Nick Name</label>
+              <input autocomplete="never-ever-hcm" name="nickName" type="text" class="form-control form-control-sm"
+                [(ngModel)]="newReferral.nickName" placeholder="Nick Name" #nickName="ngModel" />
+            </div>
+          </div>
+        </div>
+        <div class="form-row mb-1">
+        <!-- </div> -->
+          <div class="mb-0 col-4 col-md-3">
+            <div class="form-group" [class.has-error]="gender.invalid &&(gender.touched || gender.dirty)">
+              <label class="control-label mb-0">Gender</label>
+              <select required type="text" name="gender" id="" class="form-control form-control-sm" #gender="ngModel" [(ngModel)]="newReferral.gender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-0 col-4 col-md-3">
+            <div class="form-group" [class.has-error]="dob.invalid &&(dob.touched || dob.dirty)">
+              <label class="control-label mb-0">Date of Birth</label>
+              <input required [minDate]="aLongTimeAgo" [maxDate]="today" bsDatepicker type="text" placeholder="__/__/____"  name="dob" id=""
+                class="form-control form-control-sm" #dob="ngModel" [(ngModel)]="newReferral.dateOfBirth">
+            </div>
+          </div>
+          <div class="mb-0 col-4 col-md-3">
+            <div class="form-group" [class.has-error]="socialSecurity.invalid &&(socialSecurity.touched || socialSecurity.dirty)">
+              <label class="control-label mb-0">Social Security</label>
+              <input type="text" name="socialSecurity" placeholder="___-__-____" [textMask]="{mask: socialSecurityMask}"
+                required class="form-control form-control-sm" [(ngModel)]="newReferral.socialSecurity" #socialSecurity="ngModel">
+            </div>
+          </div>
+        </div>
+        <div class="container mb-4">
+        <div class="form-row mb-1">
+          <h6 class="text-bold col-12">Service Address</h6>
+          <div class="form-group col-12 col-md-9 mb-2" [class.has-error]="addressLine1.invalid &&(addressLine1.touched || addressLine1.dirty)">
+            <label class="control-label mb-0">
+              Address Line 1
+            </label>
+            <input autocomplete="never-ever-hcm" required class="form-control form-control-sm" name="addressLine1" type="text"
+              placeholder="Address Line 1" [(ngModel)]="newReferral.serviceAddress.addressLine1" #addressLine1="ngModel" />
+          </div>
+          <div class="form-group col-12 col-md-9 mb-2">
+            <label class="control-label optional mb-0">
+              Address Line 2
+            </label>
+            <input autocomplete="never-ever-hcm" name="addressLine2" class="form-control form-control-sm" type="text"
+              placeholder="Address Line 2" [(ngModel)]="newReferral.serviceAddress.addressLine2" #addressLine2="ngModel" />
+          </div>
+        </div>
+        <div class="form-row">
+
+          <div class="form-group col-4 col-lg-3" [class.has-error]="zipCode.invalid &&(zipCode.touched || zipCode.dirty)">
+            <label class="control-label">
+              Zip Code
+            </label>
+            <input autocomplete="never-ever-hcm" required name="zip" class="form-control form-control-sm" type="text"
+              placeholder="Zip Code" [(ngModel)]="newReferral.serviceAddress.zip" (keypress)="restrictNumeric($event)"
+              (ngModelChange)="lookupZipCode($event, true)" #zipCode="ngModel" />
+          </div>
+          <div class="form-group col-5 col-md-3 ml-lg-3">
+            <label class="control-label">
+              City
+            </label>
+            <span *ngIf="!invalidZipCode" class="form-control-plaintext">{{newReferral.serviceAddress.city}}</span>
+            <span *ngIf="invalidZipCode" class="text text-danger form-control-plaintext">{{invalidZipCode}}</span>
+          </div>
+          <div class="form-group col-2">
+            <label class="control-label">
+              State
+            </label>
+            <span class="form-control-plaintext">{{newReferral.serviceAddress.state}}</span>
+          </div>
+        </div>
+        <div class="form-row">
+          <label for="differentMailingAddress" class="label-control mr-2">Use Different Mailing Address</label>
+          <input class="mt-1" type="checkbox" name="differentMailingAddress" id="" (click)="openMailingAddress()">
+        </div>
+        <div class="container" *ngIf="differentMailingAddress">
+            <div class="form-row">
+              <h6 class="text-bold col-12">Mailing Address</h6>
+              <div class="form-group col-12 col-md-9 mb-2" [class.has-error]="mailLine1.invalid &&(mailLine1.touched || mailLine1.dirty)">
+                <label class="control-label mb-0">
+                  Address Line 1
+                </label>
+                <input autocomplete="never-ever-hcm" class="form-control form-control-sm" name="mailLine1" type="text"
+                  placeholder="Address Line 1" [(ngModel)]="newReferral.mailingAddress.addressLine1" #mailLine1="ngModel" />
+              </div>
+              <div class="form-group col-12 col-md-9 mb-2">
+                <label class="control-label mb-0 optional">
+                  Address Line 2
+                </label>
+                <input autocomplete="never-ever-hcm" name="addressLine2" class="form-control form-control-sm" type="text"
+                  placeholder="Address Line 2" [(ngModel)]="newReferral.mailingAddress.addressLine2" #mailLine2="ngModel" />
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-4 col-lg-3" [class.has-error]="mailZipCode.invalid &&(mailZipCode.touched || mailZipCode.dirty)">
+                <label class="control-label">
+                  Zip Code
+                </label>
+                <input autocomplete="never-ever-hcm" name="mailZip" class="form-control form-control-sm" type="text"
+                  placeholder="Zip Code" [(ngModel)]="newReferral.mailingAddress.zip" (keypress)="restrictNumeric($event)"
+                  (ngModelChange)="lookupZipCode($event, false)" #mailZipCode="ngModel" />
+              </div>
+              <div class="form-group col-5 col-md-3 ml-lg-3">
+                <label class="control-label">
+                  City
+                </label>
+                <span *ngIf="!invalidZipCode" class="form-control-plaintext">{{newReferral.mailingAddress.city}}</span>
+                <span *ngIf="invalidZipCode" class="text text-danger form-control-plaintext">{{invalidMailZipCode}}</span>
+              </div>
+              <div class="form-group col-2">
+                <label class="control-label">
+                  State
+                </label>
+                <span class="form-control-plaintext">{{newReferral.mailingAddress.state}}</span>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <!-- <div class="col-12 col-md-6 border-left"> -->
+        <h6 class="inline text-bold">Contact Method</h6>&nbsp;&nbsp;<span class="muted small text-danger"><em>One phone number is required</em></span>
+        <div class="container">
+        <div class="row mb-3">
+          <div class="col-10 col-md-4">
+            <div class="form-group mb-0" [class.has-error]="homePhone.invalid &&(homePhone.value || homePhone.touched || homePhone.dirty)">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <span class="fa fa-home"></span>
+                  </span>
+                </div>
+                <input [requiredIf]="!cellPhone.value" autocomplete="never-ever-hcm" name="homePhone" type="tel" class="form-control form-control-sm"
+                  [(ngModel)]="newReferral.homePhone.contactValue" appPhoneValidator [textMask]="{mask: phoneNumberMask}" (focus)="showSetHomePrimary=true" (blur)="showSetHomePrimary=false"
+                  placeholder="Home Phone" #homePhone="ngModel" />
+                  <span class="btn btn-primary btn-xs" *ngIf="newReferral.homePhone?.isDefault"><span class="fa fa-check-circle"></span></span>
+                    <button type="button" class="btn btn-outline-success btn-xs" *ngIf="!newReferral.homePhone?.isDefault && showSetHomePrimary" (mousedown)="setPrimary(newReferral.homePhone)"
+                      title="Set Primary Contact">Set Primary</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-1"></div>
+          <div class="col-10 col-md-4">
+            <div class="form-group mb-0" [class.has-error]="cellPhone.invalid &&(cellPhone.touched || cellPhone.dirty)">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <span class="fa fa-mobile-phone"></span>
+                  </span>
+                </div>
+                <input [requiredIf]="!homePhone.value" autocomplete="never-ever-hcm" name="cellPhone" type="tel" class="form-control form-control-sm"
+                  [(ngModel)]="newReferral.cellPhone.contactValue" appPhoneValidator [textMask]="{mask: phoneNumberMask}" (focus)="showSetCellPrimary=true" (blur)="showSetCellPrimary=false"
+                  placeholder="Mobile Phone" #cellPhone="ngModel" />
+                  <span class="btn btn-primary btn-xs" *ngIf="newReferral.cellPhone?.isDefault"><span class="fa fa-check-circle"></span></span>
+                  <button type="button" class="btn btn-outline-success btn-xs" *ngIf="!newReferral.cellPhone?.isDefault && showSetCellPrimary" (mousedown)="setPrimary(newReferral.cellPhone)"
+                      title="Set Primary Contact">Set Primary</button>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="col-2">
+           
+          </div> -->
+        </div>
+        <div class="row mb-3">
+          <div class="col-10 col-md-4">
+            <div class="form-group mb-0" [class.has-error]="emailAddress.invalid &&(emailAddress.touched || emailAddress.dirty)">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text">
+                    <span class="fa fa-envelope"></span>
+                  </span>
+                </div>
+                <input appEmailValidator autocomplete="never-ever-hcm" name="emailAddress" type="email" class="form-control form-control-sm" (focus)="showSetEmailPrimary=true" (blur)="showSetEmailPrimary=false"
+                  [(ngModel)]="newReferral.email.contactValue" placeholder="Email Address" #emailAddress="ngModel" />
+                    <span class="btn btn-primary btn-xs" *ngIf="newReferral.email?.isDefault"><span class="fa fa-check-circle"></span></span>
+                    <button type="button" class="btn btn-outline-success btn-xs text-small" *ngIf="!newReferral.email?.isDefault && showSetEmailPrimary" (mousedown)="setPrimary(newReferral.email)"
+                      title="Set Primary Contact">Set Primary</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- </div> -->
+    </div>
+  </form>
+</div>
+<div class="col-1"></div>
+</div>

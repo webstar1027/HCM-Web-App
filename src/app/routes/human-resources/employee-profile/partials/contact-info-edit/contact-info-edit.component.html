@@ -1,0 +1,232 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Edit Contact Information</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #contactInfoEditForm="ngForm" (ngSubmit)="saveContactInfo()" autocomplete="never-ever-hcm">
+      <tabset class="bg-white p-0">
+        <tab>
+          <ng-template tabHeading>
+            <em class="fa fa-phone"></em>&nbsp;Contacts
+          </ng-template>
+          <div class="container pt-2">
+            <div class="form">
+              <div class="form-group row">
+                <div class="col-4">
+                  <div class="row">
+                    <label for="phone" class="col-3 col-form-label">Phone</label>
+                    <div class="col-8">
+                      <input id="phone"
+                        type="tel"
+                        name="phone"
+                        class="form-control"
+                        #phoneControl="ngModel"
+                        appPhoneValidator
+                        [textMask]="{mask: phoneNumberMask}"
+                        [ngClass]="{
+                          'border-danger': phoneControl.invalid && (phoneControl.dirty || phoneControl.touched),
+                          'border-success': phoneControl.valid && (phoneControl.dirty || phoneControl.touched)
+                        }"
+                        [required]="demographicsCopy.isActiveEmployeeType"
+                        [(ngModel)]="demographicsCopy.homePhone.contactValue" />
+                      <div *ngIf="phoneControl.invalid && (phoneControl.dirty || phoneControl.touched)" class="validation-block">
+                        <span *ngIf="phoneControl.errors.required">Phone is required.</span>
+                        <span *ngIf="phoneControl.errors.phoneFormat">Enter valid phone number.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <span class="badge badge-primary" *ngIf="demographicsCopy.homePhone?.isDefault">Primary</span>
+                  <button type="button" class="btn btn-success btn-xs" *ngIf="!demographicsCopy.homePhone?.isDefault" (click)="setPrimary(demographicsCopy.homePhone)"
+                    title="Set Primary Contact">
+                    <span class="fa fa-check-circle"></span>
+                  </button>
+                </div>
+                <div class="col-4">
+                  <div class="row">
+                    <label for="cell" class="col-4 col-form-label">Cell</label>
+                    <div class="col-8">
+                      <input id="cell"
+                        type="tel"
+                        name="cell"
+                        class="form-control"
+                        #cellPhoneControl="ngModel"
+                        appPhoneValidator
+                        [textMask]="{mask: phoneNumberMask}"
+                        [ngClass]="{
+                          'border-danger': cellPhoneControl.invalid && (cellPhoneControl.dirty || cellPhoneControl.touched),
+                          'border-success': cellPhoneControl.valid && (cellPhoneControl.dirty || cellPhoneControl.touched)
+                        }"
+                        [required]="demographicsCopy.isActiveEmployeeType"
+                        [(ngModel)]="demographicsCopy.cellPhone.contactValue" />
+                      <div *ngIf="cellPhoneControl.invalid && (cellPhoneControl.dirty || cellPhoneControl.touched)" class="validation-block">
+                        <span *ngIf="cellPhoneControl.errors.required">Cell is required.</span>
+                        <span *ngIf="cellPhoneControl.errors.pattern">Enter valid phone number.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <span class="badge badge-primary" *ngIf="demographicsCopy.cellPhone?.isDefault">Primary</span>
+                  <button type="button" class="btn btn-success btn-xs" *ngIf="!demographicsCopy.cellPhone?.isDefault" (click)="setPrimary(demographicsCopy.cellPhone)"
+                    title="Set Primary Contact">
+                    <span class="fa fa-check-circle"></span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <div class="col-4">
+                  <div class="row">
+                    <label for="email" class="col-3 col-form-label">Email</label>
+                    <div class="col-8">
+                      <input id="email"
+                        type="email"
+                        name="email"
+                        class="form-control"
+                        #emailControl="ngModel"
+                        appEmailValidator
+                        [ngClass]="{
+                          'border-danger': emailControl.invalid && (emailControl.dirty || emailControl.touched),
+                          'border-success': emailControl.valid && (emailControl.dirty || emailControl.touched)
+                        }"
+                        [required]="demographicsCopy.isActiveEmployeeType"
+                        [(ngModel)]="demographicsCopy.emailAddress.contactValue" />
+                      <div *ngIf="emailControl.invalid && (emailControl.dirty || emailControl.touched)" class="validation-block">
+                        <span *ngIf="emailControl.errors.required">Email is required.</span>
+                        <span *ngIf="emailControl.errors.email">Enter valid email.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <span class="badge badge-primary" *ngIf="demographicsCopy.emailAddress?.isDefault">Primary</span>
+                  <button type="button" class="btn btn-success btn-xs" *ngIf="!demographicsCopy.emailAddress?.isDefault" (click)="setPrimary(demographicsCopy.emailAddress)"
+                    title="Set Primary Contact">
+                    <span class="fa fa-check-circle"></span>
+                  </button>
+                </div>
+
+                <div class="col-4">
+                  <div class="row">
+                    <label for="work-email" class="col-4 col-form-label">Work Email</label>
+                    <div class="col-8">
+                      <input id="work-email"
+                        type="email"
+                        name="workEmail"
+                        class="form-control"
+                        #workEmailControl="ngModel"
+                        appEmailValidator
+                        [ngClass]="{
+                          'border-danger': workEmailControl.invalid && (workEmailControl.dirty || workEmailControl.touched),
+                          'border-success': workEmailControl.valid && (workEmailControl.dirty || workEmailControl.touched)
+                        }"
+                        [required]="demographicsCopy.isActiveEmployeeType"
+                        [(ngModel)]="demographicsCopy.workEmail.contactValue" />
+                      <div *ngIf="workEmailControl.invalid && (workEmailControl.dirty || workEmailControl.touched)" class="validation-block">
+                        <span *ngIf="workEmailControl.errors.required">Work Email is required.</span>
+                        <span *ngIf="workEmailControl.errors.email">Enter valid email.</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-2">
+                  <span class="badge badge-primary" *ngIf="demographicsCopy.workEmail?.isDefault">Primary</span>
+                  <button type="button" class="btn btn-success btn-xs" *ngIf="!demographicsCopy.workEmail?.isDefault" (click)="setPrimary(demographicsCopy.workEmail)"
+                    title="Set Primary Contact">
+                    <span class="fa fa-check-circle"></span>
+                  </button>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <label for="preferred-contact-method" class="col-3 col-form-label">Preferred Contact Method</label>
+                <div class="col-9">
+                  <!-- <input id="preferred-contact-method" type="text" name="preferredContactMethod" class="form-control" [(ngModel)]="demographicsCopy.preferredCommunicationMethod"
+                      /> -->
+                  <app-convert-lookup-from-server [lookupTypeArgs]="'ContactTypeEnum'" [fieldValue]='demographicsCopy.defaultCommunicationType'></app-convert-lookup-from-server>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tab>
+
+        <tab>
+          <ng-template tabHeading>
+            <em class="fa fa-home"></em>&nbsp;Address
+          </ng-template>
+          <div class="container pt-2">
+            <div class="form">
+              <div class="form-group row">
+                <label for="address1" class="col-3 col-form-label">Address</label>
+                <div class="col-9">
+                  <input id="address1"
+                    type="text"
+                    name="address1"
+                    class="form-control"
+                    #address1Control="ngModel"
+                    [ngClass]="{
+                      'border-danger': address1Control.invalid && (address1Control.dirty || address1Control.touched),
+                      'border-success': address1Control.valid && (address1Control.dirty || address1Control.touched)
+                    }"
+                    [required]="demographicsCopy.isActiveEmployeeType"
+                    [(ngModel)]="demographicsCopy.address.addressLine1" />
+                  <div *ngIf="address1Control.invalid && (address1Control.dirty || address1Control.touched)" class="text-danger">Address is required.</div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="address2" class="col-3 col-form-label">Address 2</label>
+                <div class="col-9">
+                  <input id="address2" type="text" name="address2" class="form-control" [(ngModel)]="demographicsCopy.address.addressLine2"
+                  />
+                </div>
+              </div>
+              <div class="form-group row">
+                <label for="county" class="col-3 col-form-label">County</label>
+                <div class="col-9">
+                  <input id="county"
+                    type="text"
+                    name="county"
+                    class="form-control"
+                    #countyControl="ngModel"
+                    [ngClass]="{
+                      'border-danger': countyControl.invalid && (countyControl.dirty || countyControl.touched),
+                      'border-success': countyControl.valid && (countyControl.dirty || countyControl.touched)
+                    }"
+                    [required]="demographicsCopy.isActiveEmployeeType"
+                    [(ngModel)]="demographicsCopy.address.county" />
+                  <div *ngIf="countyControl.invalid && (countyControl.dirty || countyControl.touched)" class="text-danger">County is required.</div>
+                </div>
+              </div>
+
+              <div class="form-group row">
+                <app-zip name="zip" [required]="demographicsCopy.isActiveEmployeeType" [(zipInfo)]="demographicsCopy.address" ngModel>
+                </app-zip>
+              </div>
+            </div>
+          </div>
+        </tab>
+      </tabset>
+    </form>
+  </div>
+
+  <div class="modal-footer">
+    <div class="container">
+      <div class="offset-md-4 col-md-4">
+        <button type="button" class="btn btn-primary" (click)="saveContactInfo()" [disabled]="contactInfoEditForm.invalid">
+          <em class="fa fa-save"></em>
+          Save
+        </button>
+        <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+          <em class="fa fa-undo"></em>
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>

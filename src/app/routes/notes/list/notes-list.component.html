@@ -1,0 +1,43 @@
+﻿
+
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            <div class="pull-right">
+                <a [routerLink]="['./new']" class="btn btn-success">
+                    <span class="fa fa-plus"></span>
+                </a>
+                <a class="btn btn-primary" (click)="loadNotes()" href="javascript://">
+                    <span class="fa fa-refresh" *ngIf="!isLoadingData"></span>
+                    <span class="fa fa-spin fa-spinner" *ngIf="isLoadingData"></span>
+                </a>
+            </div>
+            <p>Notes List</p>
+        </div>
+    </div>
+    <div class="card-body">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Note Subject</th>
+                    <th>Date Created</th>
+                    <th>Date Modified</th>
+                </tr>
+            </thead>
+            <tbody *ngIf="notesList">
+                <tr *ngFor="let note of notesList">
+                    <td>
+                        <a [routerLink]="['./', note.noteId]" class="btn btn-primary">
+                            <span class="fa fa-edit"></span>
+                        </a>
+
+
+                    <td>{{note.subject}}</td>
+                    <td>{{note.dateCreated | date : "short"}}</td>
+                    <td>{{note.dateModified | date : "short"}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

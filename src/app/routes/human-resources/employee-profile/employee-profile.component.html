@@ -1,0 +1,72 @@
+
+
+<div *ngIf="employee">
+  <div class="content-heading">
+    <div class="media-body">
+      <div class="d-flex">
+        <div class="col-lg-3">
+          <strong>
+            {{employee.fullName}}
+          </strong>
+        </div>
+
+        <div class="col-lg-2">
+          <p>
+            <b class="upper">
+              <app-convert-lookup-from-server [lookupTypeArgs]="'EmployeeTypesLookupService'" [fieldValue]='employee.employeeTypeId'></app-convert-lookup-from-server>
+            </b>
+          </p>
+        </div>
+
+        <div class="col-lg-2">
+          <p>
+            <b class="upper">
+                <app-convert-lookup-from-server [lookupTypeArgs]="'EmploymentTypesLookupService'" [fieldValue]='employee.employmentTypeId'></app-convert-lookup-from-server>
+            </b>
+          </p>
+        </div>
+
+        <div class="col-lg-2">
+            <p>
+              <b class="upper">{{employee.applicationDate | date: 'shortDate'}}</b>
+            </p>
+          </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="body-content">
+    <div class="d-flex">
+      <div class="col-lg-2 col-sm-12">
+        <div class="card b">
+          <div class="card-header">
+            <p class="card-title text-bold">Profile</p>
+          </div>
+          <div class="card-body">
+            <div class="list-group">
+              <a class="list-group-item" routerLink="demographics" routerLinkActive="active">Demographics</a>
+              <a class="list-group-item" routerLink="compliance" routerLinkActive="active">Compliance</a>
+              <a class="list-group-item" routerLink="documents" routerLinkActive="active">Documents</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-10 col-sm-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="home-container" *ngIf="!employee">
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-lg-4 col-xl-3">
+        <span class="fa fa-frown-o fa-4x"></span>
+      </div>
+      <div class="col-xl-9 col-lg-8 text text-danger">
+        <h1 class="home-text-big">Profile not loaded</h1>
+      </div>
+    </div>
+  </div>
+</div>

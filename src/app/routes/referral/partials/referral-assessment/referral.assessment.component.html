@@ -1,0 +1,54 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title">
+      Assessment
+    </div>
+  </div>
+  <div class="modal-body">
+
+    <form #referralAssessmentEditForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm">
+      <div class="form-row">
+        <div class="col-lg-12">
+            <div class="form-group-sm">
+                <label class="control-label">Insurance</label>
+                <select name="insuranceId" class="form-control form-control-sm" [(ngModel)]="referralAssessment.insuranceId">
+                    <option *ngFor="let insurance of insuranceLookupList" [ngValue]="ConvertString(insurance.key)">{{insurance.name}}</option>
+                  </select>
+              </div>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-lg-6 col-sm-12">
+          <div class="form-group-sm">
+            <label class="control-label">Assessment Date</label>
+            <input type="text" name="assessmentDate" required="required" [(ngModel)]="referralAssessment.assessmentDate" class="form-control form-control-sm"
+              bsDatepicker />
+          </div>
+        </div>
+
+        <div class="col-lg-6 col-sm-12">
+          <div class="form-group-sm">
+            <label class="control-label">Assessment Status</label>
+            <select type="text" name="assessmentStatus" required="required" [(ngModel)]="referralAssessment.assessmentStatusId" class="form-control form-control-sm">
+              <option *ngFor="let assessmentStatus of assessmentStatuses" [ngValue]="ConvertString(assessmentStatus.key)">{{assessmentStatus.name}}</option>
+            </select>
+
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+
+      <button class="btn btn-primary" (click)="save()" [disabled]="!referralAssessmentEditForm.valid || savingInfo">
+          <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+          {{savingInfo ? 'Saving' : 'Save'}}
+      </button>
+      <button class="btn btn-outline-primary" (click)="cancel()">
+        <i class="fa fa-undo"></i> Cancel
+      </button>
+
+    </div>
+  </div>
+</div>

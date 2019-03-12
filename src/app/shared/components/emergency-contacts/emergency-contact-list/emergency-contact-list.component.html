@@ -1,0 +1,67 @@
+<div class="b card h-100" *ngIf="contacts">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="float-right">
+        <button type="button" class="btn btn-sm btn-outline-primary" title="Add new Emergency Contact" (click)="openEditModal(null)">
+          <em class="fa fa-plus"></em>
+        </button>
+      </div>
+      <p>Emergency Contacts</p>
+    </div>
+  </div>
+  <hr/>
+  <div class="card-body">
+    <div class="content-wrapper b0 pt-0">
+      <div class="row">
+        <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Home Phone</th>
+                  <th>Cell Phone</th>
+                  <th>Relationship</th>
+                  <th class="text text-center">
+                    <span class="fa fa-gear text-center"></span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let contact of contacts">
+                  <td>
+                    {{contact.lastName}}, {{contact.firstName}} {{contact.middleInitial}}
+                    <span *ngIf="contact.nickName">({{contact.nickName}})</span>
+                  </td>
+                  <td>{{contact?.homePhone?.contactValue | phone}}</td>
+                  <td>{{contact?.cellPhone?.contactValue | phone}}</td>
+                  <td>
+                    <app-convert-lookup-from-server [lookupTypeArgs]="'RelationshipLookup'" [fieldValue]='contact.relationshipId'></app-convert-lookup-from-server>
+                  </td>
+                  <td>
+                    <div class="btn-toolbar">
+                      <div class="btn-group btn-group-xs">
+                        <button class="btn btn-xs btn-outline-primary" (click)="openEditModal(contact)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-xs btn-outline-danger"
+                          (click)="deleteContact(contact.emergencyContactId)"
+                          *ngIf="!deletingEmergencyContact && deletingEmergencyContactId !== contact.emergencyContactId"
+                        >
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <span class="btn btn-xs btn-outline-info"
+                          *ngIf="deletingEmergencyContact && deletingEmergencyContactId === contact.emergencyContactId"
+                        >
+                          <i class="fa fa-spinner fa-spin"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,228 @@
+﻿<div class="card">
+    <div class="card-body">
+      <div class="d-flex">
+          <div class="col-lg-2">
+              <ul class="list-group">
+                  <li class="list-group-item border-0"
+                      [ngClass]="{'active': selectedItem == docType}"
+                      *ngFor="let docType of documentTypes"
+                      (click)="changeDocType(docType)">
+                      {{docType.name}}
+                  </li>
+              </ul>
+          </div>
+
+          <div class="col-lg-10 border-left">
+              <div class="d-flex mb-2">
+                  <input type="text" placeholder="search" class="col-lg-2 form-control rounded-0 mr-1" />
+                  <button class="btn btn-primary" (click)="openModal(uploadDocumentsQueue)">
+                      <i class="material-icons">add_box</i> &nbsp; &nbsp; Add
+                  </button>
+              </div>
+
+              <mat-table [dataSource]="documentList" class="mat-elevation-z8">
+
+                  <ng-container matColumnDef="typeColumn">
+                      <mat-header-cell *matHeaderCellDef>Type</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.typeColumn}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="docNameColumn">
+                      <mat-header-cell *matHeaderCellDef>Dcoument Name</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.docNameColumn}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="insuNameColumn">
+                      <mat-header-cell *matHeaderCellDef>Insurance Name</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.insuNameColumn}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="startDateColumn">
+                      <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.startDateColumn}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="endDateColumn">
+                      <mat-header-cell *matHeaderCellDef>End Date</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.endDateColumn}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="dateCreatedColumn">
+                      <mat-header-cell *matHeaderCellDef>Date Created</mat-header-cell>
+                      <mat-cell *matCellDef="let element">{{element.dateCreatedColumn}}</mat-cell>
+                  </ng-container>
+
+                  <ng-container matColumnDef="editColumn">
+                      <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
+                      <mat-cell *matCellDef="">
+                          <button mat-button class="mat-icon-button" [matMenuTriggerFor]="menu">
+                            <i class="material-icons">more_vert</i>
+                          </button>
+                      </mat-cell>
+                  </ng-container>
+
+                  <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns:columnsToDisplay"></mat-row>
+              </mat-table>
+              <mat-menu #menu="matMenu" [overlapTrigger]="false" class="editMenuView">
+                <button  mat-menu-item>
+                  <i class="material-icons">description</i>  &nbsp;<span> View</span>
+                </button>
+
+                <button  mat-menu-item>
+                  <i class="material-icons">edit</i>  &nbsp;<span> Edit</span>
+                </button>
+
+                <button  mat-menu-item>
+                  <i class="material-icons">delete</i>  &nbsp;<span> Delete</span>
+                </button>
+              </mat-menu>
+              <mat-paginator [pageIndex]="pageIndex" [length]="totalInSearchResult" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+                (page)="onPaginateChange($event)">
+              </mat-paginator>
+
+          </div>
+      </div>
+    </div>
+</div>
+
+
+<ng-template #uploadDocumentsQueue>
+
+    <div class="modal-header">
+        <h4 class="modal-title">Create Documents</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="d-flex">
+            <div class="col-lg-6 mr-3">
+                <div class="form-group row">
+                    <button class="btn btn-success" [ngClass]="{'file-over': hasBaseDropZoneOver}" ng2FileDrop [uploader]="uploader"
+                    (click)="fileInput.click()" (onFileDrop)="onFileDrop($event)">
+                        <p class="">Upload</p>
+                        <input type="file" #fileInput ng2FileSelect [uploader]="uploader" style="display: none" multiple (change)="onFileDrop($event)"/>
+                    </button>
+                </div>
+
+                <div class="form-group row">
+                    <label for="patientName">Patient</label>
+                    <select
+                          autocomplete="never-ever-hcm"
+                          required
+                          class="form-control"
+                          #relationship="ngModel"
+                          [(ngModel)]="document.chartId"
+                          (change)="onChangeChart($event.target.value)">
+                        <option *ngFor="let patient of patientList" [value]="patient.chartId">{{patient.fullName}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label for="contract">Contract</label>
+                    <select
+                        class="form-control"
+                        name="contract"
+                        [(ngModel)]="document.chartContractId"
+                    >
+                        <option *ngFor="let contract of contractList; let i = index" [value]="contract.chartContractId">{{contract.insurance.insuranceName}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label for="contract">Document Type</label>
+                    <select
+                        class="form-control"
+                        name="docType"
+                        [(ngModel)]="document.documentTypeDetailId"
+                    >
+                        <option *ngFor="let documentTypeDetail of documentTypeDetailList; let i = index" [value]="i">{{documentTypeDetail.name}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label for="documentName"> Document Name</label>
+                    <input type="text" class="form-control" name="documentName" [(ngModel)]="document.documentName"/>
+                </div>
+
+                <div class="form-group row">
+                    <label for="employee">Employee</label>
+                    <select
+                        class="form-control"
+                        name="employee"
+                        [(ngModel)]="document.employeeId"
+                    >
+                        <option *ngFor="let employee of employeeList; let i = index" [value]="employee.employeeId">{{employee.fullName}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group row">
+                    <label for="startDate" class="col-form-label">Start Date </label>
+                    <input
+                        type="text"
+                        name="startDate"
+                        class="form-control"
+                        bsDatepicker
+                        [(ngModel)]="document.startDate" />
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </div>
+
+                <div class="form-group row">
+                    <label for="endDate" class="col-form-label">End Date</label>
+                    <input
+                        type="text"
+                        name="endDate"
+                        class="form-control"
+                        bsDatepicker
+                        [(ngModel)]="document.endDate"
+                    />
+                </div>
+            </div>
+            <div class="col-lg-6 border-left">
+                <p> Preview </p>
+                <div class="card b m-0">
+                    <div class="card-header">Upload Queue</div>
+                    <div class="align-self-center text-center text-muted" *ngIf="uploader.queue.length === 0">
+                      No Files Selected</div>
+                    <ul class="list-group list-group-flush">
+                        <scrollable height="275">
+                            <li class="media list-group-item" *ngFor="let item of uploader.queue">
+                                <div class="media-body d-flex">
+                                    <span class="fa fa-lg" fileExt [ext]="item?.file?.name"></span>
+                                    <div class="col-lg-7">
+                                        <p class="mt-0 mb-1 text-truncate">{{item?.file?.name}}</p>
+                                        <div class="progress" style="margin-bottom: 0; height: 5px;">
+                                            <div class="progress-bar" role="progressbar" [ngStyle]="{ 'width': item.progress + '%' }"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-3">
+                                        <p class="mt-0 mb-1" *ngIf="uploader.options.isHTML5" nowrap>{{ item?.file?.size/1024/1024 | number:'.2' }} MB</p>
+                                    </div>
+                                    <div class="col-lg-1 col-lg-pull-1">
+                                        <button type="button" class="btn btn-link" (click)="item.remove()" [disabled]="item.isUploaded">
+                                            <span class="fa fa-remove" *ngIf="!item.isUploaded" title="remove"></span>
+                                            <span class="fa fa-check" *ngIf="item.isUploaded" title="uploaded"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </li>
+                        </scrollable>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="pull-right">
+            <button type="button" class="btn btn-primary" (click)="saveDocument()">
+                <em class="fa fa-save"></em> Save
+            </button>
+            <button type="button" class="btn btn-default" (click)="closeModal()">
+                <em class="fa fa-close"></em>
+                Close
+            </button>
+        </div>
+    </div>
+</ng-template>

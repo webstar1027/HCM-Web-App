@@ -1,0 +1,131 @@
+﻿<div class="card">
+  <div class="card-header">
+    <div class="card-title">
+      <div class="pull-right">
+        <button class="btn btn-outline-primary" (click)="editGeneralIntakeInfo()">
+          <i class="fa fa-edit"></i>
+        </button>
+      </div>
+      <strong>General</strong>
+    </div>
+  </div>
+  <hr />
+  <div class="card-body row">
+    <div class="col-lg-6 col-sm-12">
+      <table class="table borderless">
+        <tbody>
+          <tr>
+            <td>Intake Coordinator</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'CoordinatorLookupService'" [fieldValue]="referralDemographics.intakeCoordinatorId">
+              </app-convert-lookup-from-server>
+            </td>
+          </tr>
+          <tr>
+            <td>Patient Coordinator</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'CoordinatorLookupService'" [fieldValue]="referralDemographics.patientCoordinatorId">
+              </app-convert-lookup-from-server>
+            </td>
+
+          </tr>
+          <tr>
+            <td>Primary Language</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'LanguageLookupService'" [fieldValue]="referralDemographics.primaryLanguageId">
+              </app-convert-lookup-from-server>
+            </td>
+          </tr>
+          <tr>
+            <td>Sabbath Observant</td>
+            <td>{{referralDemographics.sabbathObservant | yesNo}}</td>
+          </tr>
+          <tr>
+            <td>Comments</td>
+            <td>{{referralDemographics.coordinationComments}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <table class="table borderless">
+        <tbody>
+          <tr>
+            <td>Caregiver preferred Gender</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'GenderPreferenceLookupService'" [fieldValue]="referralDemographics.genderPreferenceId">
+              </app-convert-lookup-from-server>
+            </td>
+
+          </tr>
+          <tr>
+            <td>Accepts Other Gender</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'OtherGenderAcceptanceLookupService'" [fieldValue]="referralDemographics.otherGenderAcceptanceId">
+              </app-convert-lookup-from-server>
+            </td>
+          </tr>
+
+          <tr>
+            <td>Social Day Care</td>
+            <td>
+              <app-convert-lookup-from-server [lookupTypeArgs]="'DayCareLookupService'" [fieldValue]="referralDemographics.dayCareId">
+              </app-convert-lookup-from-server>
+            </td>
+          </tr>
+          <tr>
+            <td>CDPAS</td>
+            <td>{{referralDemographics.isCDPAS | yesNo}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="referralDemographics.isCDPAS" class="card">
+  <div class="card-header">
+    <div class="card-title">
+      <strong>CDPAS Aide</strong>
+    </div>
+  </div>
+  <div class="col-lg-12" *ngIf="!cdpasInfo">
+    <i class="fa fa-spinner fa-spin fa-4x"></i>
+  </div>
+  <div class="card-body d-flex" *ngIf="cdpasInfo">
+    <div class="col-lg-6 col-sm-12">
+      <table class="table borderless">
+        <tbody >
+          <tr>
+            <td>Name</td>
+            <td>{{cdpasInfo.name}}</td>
+          </tr>
+          <tr>
+            <td>Number</td>
+            <td>{{cdpasInfo.phoneNumber}}</td>
+          </tr>
+          <tr>
+            <td>Relationship</td>
+            <td>{{cdpasInfo.relationship.relationshipName}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <table class="table borderless">
+        <tbody>
+          <tr>
+            <td>Rate Request</td>
+            <td>{{cdpasInfo.rateRequest | currency}}</td>
+          </tr>
+          <tr>
+            <td>Status</td>
+            <td>{{cdpasInfo.status}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

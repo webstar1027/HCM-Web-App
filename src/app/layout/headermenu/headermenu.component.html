@@ -1,0 +1,41 @@
+﻿<!-- START Top Navbar-->
+<mat-toolbar color="primary">
+  <button mat-icon-button id="menu" (click)="toggleMobileMenu()" class="d-block d-md-none d-lg-none">
+     <mat-icon class="mat-18" id="toggleButton">menu</mat-icon>
+  </button>
+  <!-- This fills the remaining space of the current row -->
+  <span class="menu-fill-remaining-space"></span>
+  <button  mat-icon-button class="d-none d-md-block d-lg-block">
+    <i class="material-icons">search</i>  &nbsp;
+  </button>
+  <button  mat-icon-button class="d-none d-md-block d-lg-block">
+    <i class="material-icons">notifications_none</i>&nbsp;
+  </button>
+  <button  mat-icon-button class="d-none d-md-block d-lg-block">
+    <i class="material-icons">help_outline</i> &nbsp;
+  </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu" id="rightSideMenu" style="margin-right:170px;" class="d-none d-md-block d-lg-block">
+      <img src="/assets/images/user.png" class="rounded" style="height: 35px" />
+      <span>{{getUserName()}}</span>
+  </button>
+</mat-toolbar>
+<mat-menu #menu="matMenu" [overlapTrigger]="false" class="topNavMenu">
+  <button  mat-menu-item class="d-block d-md-none d-lg-none">
+    <i class="material-icons">search</i>  &nbsp;<span> Search</span>
+  </button>
+  <button  mat-menu-item class="d-block d-md-none d-lg-none">
+    <i class="material-icons">notifications_none</i>&nbsp; <span>Notifications</span>
+  </button>
+  <button  mat-menu-item class="d-block d-md-none d-lg-none">
+    <i class="material-icons">help_outline</i> &nbsp; <span>Help</span>
+  </button>
+  <hr class="d-block d-md-none d-lg-none"/>
+  <button  mat-menu-item *ngFor="let linkedCompany of linkedCompanies">
+    <i class="material-icons">person</i>&nbsp;
+    <span>{{linkedCompany.companyName}}</span>
+  </button>
+  <button mat-menu-item (click)="logout()">
+    <i class="material-icons">lock</i> &nbsp;
+    <span>Log Off</span>
+  </button>
+</mat-menu>

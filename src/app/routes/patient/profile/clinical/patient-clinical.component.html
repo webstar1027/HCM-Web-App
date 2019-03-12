@@ -1,0 +1,138 @@
+<!--component html goes here -->
+<div class="d-flex">
+
+
+    <div class="col-lg-6 col-sm-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="float-right">
+              <button type="button" class="btn btn-outline-primary" (click)="editClinical()">
+                <i class="fa fa-edit"></i>
+              </button>
+            </div>
+            Clinical Info
+          </div>
+        </div>
+        <hr>
+        <div class="card-body">
+          <div class="col-lg-6 col-sm-12">
+            <table class="table table-borderless">
+
+              <tbody>
+                <tr>
+                  <td>PDN</td>
+                  <td>{{referralDemographics.isPDN | yesNo}}</td>
+                </tr>
+                <tr>
+                  <td>Transportation Level</td>
+                  <td>
+                    <app-convert-lookup-from-server [lookupTypeArgs]="'TransportationLevelLookupService'" [fieldValue]="referralDemographics.transportationLevelId">
+                    </app-convert-lookup-from-server>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Evacuation Zone</td>
+                  <td>
+                    <app-convert-lookup-from-server [lookupTypeArgs]="'EvacuationZoneLookupService'" [fieldValue]="referralDemographics.evacuationZoneId">
+                    </app-convert-lookup-from-server>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Evacuation Location</td>
+                  <app-convert-lookup-from-server [lookupTypeArgs]="'EvacuationLocationLookupService'" [fieldValue]="referralDemographics.evacuationLocationId">
+                  </app-convert-lookup-from-server>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <div class="float-right">
+              <button type="button" class="btn btn-outline-primary" (click)="addPhysician()">
+                <i class="fa fa-plus"></i>
+              </button>
+            </div>
+            Physicians
+          </div>
+        </div>
+        <hr>
+        <div class="card-body">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th>
+                  Name
+                </th>
+                <th>
+                  Contacts
+                </th>
+                <th>
+                  Address
+                </th>
+
+                <th class="text-center">
+                  <i class="fa fa-gear"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let chartPhysician of referralDemographics?.chartPhysicians">
+                <td *ngIf="chartPhysician.physician">
+                  {{chartPhysician.physician?.lastName}}, {{chartPhysician.physician?.firstName}}
+                </td>
+                <td *ngIf="!chartPhysician.physician">
+                  <span class="text text-danger">Physician Info not loaded</span>
+                </td>
+                <td class="p-2">
+                  <div class="col-lg-12 p-0" *ngIf="chartPhysician.physician">
+                    <div *ngIf="chartPhysician.physician.contacts && chartPhysician.physician.contacts.length>0" class="d-flex">
+                      <p *ngFor="let contact of chartPhysician.physician.contacts" class="m-0 col-lg-6 col-sm-6 p-0">
+                        <i class="fa fa-phone text font-size-1"></i>
+                        <span>{{contact.contactValue}}</span>
+                      </p>
+                    </div>
+                  </div>
+
+                </td>
+                <td class="p-2">
+                  <div *ngIf="chartPhysician.physician">
+                    <div *ngIf="chartPhysician.physician.addresses && chartPhysician.physician.addresses.length>0">
+                      <p *ngFor="let address of chartPhysician.physician.addresses" class="m-0">
+                        <span>{{address.addressLine1}}</span>
+                        <br>
+                        <small>
+                          {{address.city}}, {{address.state}} {{address.zip}}
+                        </small>
+                      </p>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  <div class="btn-group btn-group-sm">
+                    <button class="btn btn-sm btn-danger" (click)="deletePhysician(chartPhysician)">
+                      <i class="fa fa-trash"></i>
+                    </button>
+                    <button class="btn btn-sm btn-outline-secondary" (click)="setAsPrimaryPhysician(chartPhysician)" *ngIf="!chartPhysician.isPrimary">
+                      <i class="fa fa-check-circle"></i>
+                    </button>
+                  </div>
+                  <span class="badge badge-info" *ngIf="chartPhysician.isPrimary">
+                    <span class="font-size-1">Primary</span>
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+

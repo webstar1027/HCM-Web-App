@@ -1,0 +1,101 @@
+<div class="row">
+	<div class="col-lg-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">
+					<div class="float-right">
+						<button type="button" class="btn btn-outline-success" (click)="openContractModal()">
+							<i class="fa fa-plus"></i>
+						</button>
+					</div>
+					Contracts
+				</div>
+			</div>
+			<hr>
+			<div class="card-body">
+				<table class="table table-bordered">
+					<div class="" *ngIf="loadingContractList">
+						<i class="fa fa-spinner fa-spin fa-4x"></i>
+					</div>
+					<thead>
+						<tr>
+							<th>Start Date</th>
+							<th>End Date</th>
+							<th>Member ID</th>
+							<th>Insurance</th>
+							<th>Status</th>
+							<th><i class="fa fa-gear"></i></th>
+						</tr>
+					</thead>
+					
+					<tbody *ngIf="contractList">
+						<tr *ngFor="let contract of contractList">
+							<!--Start Date, End Date, Member Id, Status, Insurance Name-->
+							<td [class.text-success]="contract.status == 'Active'">{{contract.effectiveDate | date}}</td>
+							<td [class.text-success]="contract.status == 'Active'">{{contract.endDate | date}}</td>
+							<td [class.text-success]="contract.status == 'Active'">{{contract.memberId}}</td>
+							<td *ngIf="contract.insurance" [class.text-success]="contract.status == 'Active'">{{contract.insurance.insuranceName}}</td>
+							<td *ngIf="contract.insurance == null" [class.text-success]="contract.status == 'Active'"><app-convert-lookup-from-server [lookupTypeArgs]="'InsuranceLookupService'" [fieldValue]='contract.insuranceId'></app-convert-lookup-from-server></td>
+							<td [class.text-success]="contract.status == 'Active'" >{{contract.status}}</td>
+							<td>
+								<button class="btn btn-outline-primary" (click)="openContractModal(contract)">
+									<span class="fa fa-edit"></span>
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-6">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">
+					<div class="float-right">
+						<button  type="button" class="btn btn-outline-success" (click)="openAuthModal()">
+							<i class="fa fa-plus"></i>
+						</button>
+					</div>
+					Authorizations
+				</div>
+			</div>
+			<hr>
+			<div class="card-body">
+				<table class="table table-bordered">
+					<div class="" *ngIf="loadingAuthList">
+						<i class="fa fa-spinner fa-spin fa-4x"></i>
+					</div>
+					<tbody *ngIf="authorizationList">
+						<mat-accordion>
+							<mat-expansion-panel *ngFor="let auth of authorizationList">
+								<mat-expansion-panel-header>
+									<mat-panel-title>
+										{{auth.authorizationNumber}}
+									</mat-panel-title>
+									<mat-panel-description>
+										Open for Details
+									</mat-panel-description>
+									<button class="btn btn-outline-primary mr-2" (click)="openAuthModal(auth)">
+										<span class="fa fa-edit"></span>
+									</button>
+								</mat-expansion-panel-header>
+								<div class="row" *ngFor="let authDetails of auth.authorizationDetails">
+									<div class="col">
+										{{authDetails.insuranceServiceCode?.procedureCode}}
+									</div>
+									<div class="col">
+										Start Date: {{authDetails.startDate | date}}
+									</div>
+									<div class="col">
+										End Date: {{authDetails.endDate | date}}
+									</div>
+								</div>
+							</mat-expansion-panel>
+						</mat-accordion>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>

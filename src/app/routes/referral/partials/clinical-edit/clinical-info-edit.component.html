@@ -1,0 +1,56 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Clinical Info</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #clinicalInfoEditForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm" class="">
+      <div class="form-group">
+        <label class="control-label">Is PDN</label>
+        <label class="switch switch-lg m-0">
+            <input class="form-control" name="isPDN" type="checkbox" [(ngModel)]="referralDemographics.isPDN" />
+            <span></span>
+          </label>
+      </div>
+      <div class="form-group">
+        <label class="control-label">
+          Transportation Level
+        </label>
+        <select [(ngModel)]="referralDemographics.transportationLevelId" name="transportationlevelId" #transportationlevelId="ngModel" class="form-control">
+          <option *ngFor="let level of transportationLevelLookup" [ngValue]="ConvertString(level.key)">{{level.name}}</option>
+        </select>
+      </div>
+      <div class="form-group">
+          <label class="control-label">
+            Evacuation Zone
+          </label>
+          <select [(ngModel)]="referralDemographics.evacuationZoneId" name="evacuationZoneId" #transportationlevelId="ngModel" class="form-control">
+            <option *ngFor="let level of evacuationZoneLookup" [ngValue]="ConvertString(level.key)">{{level.name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">
+              Evacuation Location
+            </label>
+            <select [(ngModel)]="referralDemographics.evacuationLocationId" name="evacuationLocationId" #transportationlevelId="ngModel" class="form-control">
+              <option *ngFor="let level of evacuationLocationLookup" [ngValue]="ConvertString(level.key)">{{level.name}}</option>
+            </select>
+          </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+
+      <button class="btn btn-primary" (click)="save()" [disabled]="!clinicalInfoEditForm.valid || savingInfo">
+          <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+          {{savingInfo ? 'Saving' : 'Save'}}
+      </button>
+      <button class="btn btn-outline-primary" (click)="cancel()">
+        <i class="fa fa-undo"></i> Cancel
+      </button>
+
+    </div>
+  </div>
+</div>

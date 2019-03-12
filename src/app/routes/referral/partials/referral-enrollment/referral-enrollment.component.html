@@ -1,0 +1,60 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title">
+      Referral Enrollment
+    </div>
+  </div>
+  <div class="modal-body">
+    <form #enrollmentEditForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm">
+      <div class="form-row">
+        <div class="form-group-sm col-lg-12">
+          <label>
+            Insurance Name
+          </label>
+          <select class="form-control form-control-sm" name="insuraceId" [(ngModel)]="referralEnrollment.insuranceId" required="required">
+            <option *ngFor="let insurance of insuranceList" [ngValue]="insurance.key">{{insurance.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group-sm col-lg-12">
+          <label>Enrollment Date</label>
+          <input type="text" name="enrollmentDate" [(ngModel)]="referralEnrollment.enrollmentDate" placeholder="__/__/____" required="required"
+            [bsValue]="referralEnrollment.enrollmentDate" class="form-control form-control-sm" bsDatepicker>
+        </div>
+      </div>
+      <hr/>
+      <div class="form-row">
+        <div class="form-group-sm col-lg-12">
+          <label>Status</label>
+          <select type="text" name="enrollmentStatus" [(ngModel)]="referralEnrollment.statusId" placeholder="Status" required="required"
+            class="form-control form-control-sm">
+            <option *ngFor="let enrollmentStatus of enrollmentStatuses" [ngValue]="enrollmentStatus.key">
+              {{enrollmentStatus.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group-sm col-lg-12">
+          <label>Approval Start Date</label>
+          <input type="text" name="approveStartDate" [(ngModel)]="referralEnrollment.approveStartDate" placeholder="__/__/____"
+            [bsValue]="referralEnrollment.approveStartDate" class="form-control form-control-sm" bsDatepicker>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+
+      <button class="btn btn-primary" (click)="save()" [disabled]="!enrollmentEditForm.valid || savingInfo">
+        <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+        {{savingInfo ? 'Saving' : 'Save'}}
+      </button>
+      <button class="btn btn-outline-primary" (click)="cancel()">
+        <i class="fa fa-undo"></i> Cancel
+      </button>
+
+    </div>
+  </div>
+</div>

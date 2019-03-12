@@ -1,0 +1,144 @@
+<div class="content-heading">
+  <div>
+    Patient List
+    <small>View Create/Edit Patients</small>
+  </div>
+
+  <div class="ml-auto">
+    <button class="btn btn-primary" (click)="refreshPatientList()">
+      <em class="fa fa-refresh"></em>Refresh List
+    </button>
+
+    <button class="btn btn-success">
+      <em class="fa fa-plus"></em>
+      <a class="link-unstyled" href="javascript://" [routerLink]="['../newPatientWizard']">New Patient Wizard</a>
+    </button>
+  </div>
+</div>
+
+<div class="col-lg-12 col-sm-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title">
+        <div class="pull-right">
+          <button class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed">
+            <i class="icon-arrow-up" *ngIf="isCollapsed"></i>
+            <i class="icon-arrow-down" *ngIf="!isCollapsed"></i>
+          </button>
+        </div>
+        <p>
+          <i class="fa fa-filters"></i>
+          Filters
+        </p>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-4 col-sm-6">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Search" />
+            <div class="input-group-append">
+              <button class="btn btn-outline-primary"><span class="fa fa-search"></span></button>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8 col-sm-6">
+          <div class="btn-toolbar">
+            <div class="btn-group">
+              <button class="btn btn-primary"><span class="fa fa-columns"></span></button>
+              <button class="btn btn-primary"><span class="fa fa-file-excel-o"></span></button>
+              <div class="btn-group" dropdown>
+                <button type="button" class="btn dropdown-toggle btn-primary" dropdownToggle>
+                  Actions
+                  <span class="caret"></span>
+                </button>
+                <div *dropdownMenu class="dropdown-menu" role="menu">
+                  <button class="dropdown-item">action 1</button>
+                  <button class="dropdown-item">action 2</button>
+                  <button class="dropdown-item">action 3</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<hr />
+
+<mat-progress-bar mode="query" *ngIf="isLoadingPatientList"></mat-progress-bar>
+<!--  Get patient list from API -->
+
+<div class="mat-elevation-z8">
+
+
+  <mat-table [dataSource]="bogusDataSource" #table>
+    <!-- First Name Column-->
+    <ng-container matColumnDef="nameColumn">
+      <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+      <mat-cell *matCellDef="let element"> asdfasdf</mat-cell>
+    </ng-container>
+
+    <!-- residentType Column-->
+    <ng-container matColumnDef="residentTypeColumn">
+      <mat-header-cell *matHeaderCellDef> Resident Type </mat-header-cell>
+      <mat-cell *matCellDef="let element"></mat-cell>
+    </ng-container>
+
+    <!-- county Column-->
+    <ng-container matColumnDef="countyColumn">
+      <mat-header-cell *matHeaderCellDef> County </mat-header-cell>
+      <mat-cell *matCellDef="let element"> </mat-cell>
+    </ng-container>
+    <!-- editCell Column-->
+    <ng-container matColumnDef="editColumn">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element"></mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="columnsToDisplay"></mat-header-row>
+    <mat-row *matRowDef="let element; columns: columnsToDisplay"></mat-row>
+
+  </mat-table>
+
+  <mat-table [dataSource]="patientList" #table>
+    <!-- First Name Column-->
+    <ng-container matColumnDef="nameColumn">
+      <mat-header-cell *matHeaderCellDef> </mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.fullName}} </mat-cell>
+    </ng-container>
+
+    <!-- residentType Column-->
+    <ng-container matColumnDef="residentTypeColumn">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element"> {{element.residentType}} </mat-cell>
+    </ng-container>
+
+    <!-- county Column-->
+    <ng-container matColumnDef="countyColumn">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element"> </mat-cell>
+    </ng-container>
+    <!-- editCell Column-->
+    <ng-container matColumnDef="editColumn">
+      <mat-header-cell *matHeaderCellDef></mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        <button mat-button class="mat-icon-button" [routerLink]="['../profile',element.chartId]">
+          <mat-icon>
+            edit
+          </mat-icon>
+        </button>
+      </mat-cell>
+    </ng-container>
+    <mat-header-row *matHeaderRowDef="columnsToDisplay" [style.min-height]="0"></mat-header-row>
+    <mat-row *matRowDef="let element; columns: columnsToDisplay"></mat-row>
+
+  </mat-table>
+
+</div>
+
+<mat-paginator [pageIndex]="pageIndex" [length]="totalInSearchResult" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+  (page)="onPaginateChange($event)">
+</mat-paginator>

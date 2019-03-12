@@ -1,0 +1,21 @@
+button {
+  height: 35px;
+  border-radius: 0;
+}
+
+.list-group > li {
+   cursor: pointer;
+}
+
+.list-group > li:not(:focus):hover {
+   background-color: #007bff;
+   color:white;
+}
+
+button > i {
+    vertical-align:  middle !important;
+}
+
+
+
+

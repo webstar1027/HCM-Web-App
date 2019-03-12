@@ -1,0 +1,272 @@
+<!--component html goes here -->
+<div class="modal-content">
+  <div class="modal-header">
+      <h4 class="modal-title pull-left">Edit Skill Compliance </h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+
+  <div class="modal-content">
+      <form id="skillinfoEditForm" #skillinfoEditForm="ngForm" (ngSubmit)="saveSkillInfo()" autocomplete="never-ever-hcm">
+          <div class="container">
+              <div class="form">
+                    <div class="form-group row">
+                        <label for="cpr" class="col-5 col-form-label">CPR: </label>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="offset-1 infoStatus">
+                                    <input
+                                        id="cpr"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="cpr"
+                                        [(ngModel)]="skill.cpr"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="cprExpiration" class="col-5 col-form-label">CPR Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="cprExpiration"
+                                placeholder="cprExpiration"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.cprExpiration" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="cprVerification" class="col-5 col-form-label">CPR VerifiCation: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="cprVerification"
+                                placeholder="CPR VerificationDate"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.cprVerification" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="professionalLicenseNumber" class="col-5 col-form-label">ProfessionalLicenseNumber: </label>
+                        <div class="col-7">
+                            <input
+                                id="professionalLicenseNumber"
+                                type="text"
+                                class="form-control"
+                                name="ProfessionalLicenseNumber"
+                                [(ngModel)]="skill.professionalLicenseNumber"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="professionalLicenseExpiration" class="col-5 col-form-label">ProfessionalLicenseNumber Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="professionalLicenseExpiration"
+                                placeholder="ProfessionalLicenseNumber Expiration"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.professionalLicenseExpiration" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="professionalLicenseVerification" class="col-5 col-form-label">ProfessionalLicenseNumber Verification: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="professionalLicenseVerification"
+                                placeholder="ProfessionalLicenseNumber Verification"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.professionalLicenseVerification" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="driversLicenseId" class="col-5 col-form-label">DriverLicenseNumber: </label>
+                        <div class="col-7">
+                            <input
+                                id="driversLicenseId"
+                                type="text"
+                                class="form-control"
+                                name="driversLicenseId"
+                                [(ngModel)]="skill.driversLicenseId"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="driversLicenseExpiration" class="col-5 col-form-label">DriverLicenseNumber Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="driversLicenseExpiration"
+                                placeholder="DriverLicenseNumber Expiration"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.driversLicenseExpiration" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="driversLicenseVerification" class="col-5 col-form-label">DriverLicenseNumber Verification: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="driversLicenseVerification"
+                                placeholder="driverLicenseNumber Verification"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.driversLicenseVerification" />
+                        </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="automobileInsurance" class="col-5 col-form-label">AutoInsurance: </label>
+                        <div class="col-7">
+                            <input
+                                id="automobileInsurance"
+                                type="text"
+                                class="form-control"
+                                name="automobileInsurance"
+                                [(ngModel)]="skill.automobileInsurance"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="automobileInsuranceExpiration" class="col-5 col-form-label">AutoInsurance Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="automobileInsuranceExpiration"
+                                placeholder="AutoInsurance Expiration"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.automobileInsuranceExpiration" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="automobileInsuranceVerification" class="col-5 col-form-label">AutoInsurance Verification: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="automobileInsuranceVerification"
+                                placeholder="AutoInsurance Verification"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.automobileInsuranceVerification" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="malpracticeInsurance" class="col-5 col-form-label">MalpracticeInsurance: </label>
+                        <div class="col-7">
+                            <input
+                                id="malpracticeInsurance"
+                                type="text"
+                                class="form-control"
+                                name="MalpracticeInsurance"
+                                [(ngModel)]="skill.malpracticeInsurance"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="malpracticeInsuranceExpiration" class="col-5 col-form-label">MalpracticeInsurance Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="malpracticeInsuranceExpiration"
+                                placeholder="MalpracticeInsurance Expiration"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.malpracticeInsuranceExpiration" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="malpracticeInsuranceVerification" class="col-5 col-form-label">MalpracticeInsurance Verification: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="malpracticeInsuranceVerification"
+                                placeholder="MalpracticeInsurance Verification"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="skill.malpracticeInsuranceVerification" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="npi" class="col-5 col-form-label">NPI: </label>
+                      <div class="col-7">
+                          <input
+                              id="npi"
+                              type="text"
+                              class="form-control"
+                              name="npi"
+                              [(ngModel)]="skill.npi"
+                          />
+                      </div>
+                  </div>
+
+                  <div class="form-group row">
+                      <label for="npiExpiration" class="col-5 col-form-label">NPI Expiration: </label>
+                      <div class="col-7">
+                          <input
+                              type="text"
+                              name="npiExpiration"
+                              placeholder="npi Expiration"
+                              class="form-control"
+                              bsDatepicker
+                              [(ngModel)]="skill.npiExpiration" />
+                      </div>
+                  </div>
+
+                  <div class="form-group row">
+                      <label for="npiVerification" class="col-5 col-form-label">NPI Verification: </label>
+                      <div class="col-7">
+                          <input
+                              type="text"
+                              name="npiVerification"
+                              placeholder="npi Verification"
+                              class="form-control"
+                              bsDatepicker
+                              [(ngModel)]="skill.npiVerification" />
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </form>
+  </div>
+
+  <div class="modal-footer">
+      <div class="container">
+          <div class="offset-md-4 col-md-4">
+              <button type="button" class="btn btn-primary" [disabled]="skillinfoEditForm.invalid" (click)="saveSkillInfo()">
+                <em class="fa fa-save"></em>
+                Save
+              </button>
+              <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+                <em class="fa fa-undo"></em>
+                Cancel
+              </button>
+          </div>
+      </div>
+  </div>
+</div>
+<!--component html goes here -->

@@ -1,0 +1,53 @@
+﻿<div class="content-heading">
+    <div>
+        Workflow Template Management
+        <small>View Create/Edit or Delete Workflow templates</small>
+    </div>
+    <div class="ml-auto">
+        <button class="mb-1 btn btn-primary" (click)="loadWorkflowTemplateList()" type="button">
+            <em class="fa fa-refresh"></em>
+            Refresh List
+        </button>
+        <button class="mb-1 btn btn-success" (click)="loadWorkflowTemplateList()" type="button">
+            <em class="fa fa-plus"></em>
+            Create Workflow
+        </button>
+    </div>
+</div>
+<div class="card card-default">
+    <div class="card-header">Workflow List</div>
+
+    <div class="card-body"> 
+        <div >
+            <i class="fa fa-spin fa-spinner fa-4x" *ngIf="loadingData"></i>
+            <table class="table table-bordered" *ngIf="!loadingData">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Workflow Name</th>
+                    <th>Workflow Type</th>
+                    <th>Status</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let template of workflowTemplates">
+                    <td>
+                        <button class="md-1 btn btn-primary" (click)="editWorkflowTemplate(template.workflowTemplateId)">
+                            <em class="fa fa-edit"></em>Edit
+                        </button>
+                    </td>
+                    <td>{{template.workflowName}}</td>
+                    <td>{{template.templateTypeId}}</td>
+                    <td>{{template.templateStatus}}</td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="d-flex">
+
+        </div>
+    </div>
+</div>

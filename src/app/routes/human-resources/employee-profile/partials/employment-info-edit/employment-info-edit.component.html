@@ -1,0 +1,234 @@
+<div class="modal-dailog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Edit Employment Information</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form #employmentInfoEditForm="ngForm" (ngSubmit)="saveEmploymentInfo()" autocomplete="never-ever-hcm">
+        <div class="container">
+          <div class="form">
+
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="row">
+                  <label for="employeeType" class="col-3 col-form-label">Type</label>
+                  <div class="col-9">
+                    <select id="employeeType"
+                      class="form-control"
+                      name="employeeType"
+                      required
+                      #employeeTypeControl="ngModel"
+                      [ngClass]="{
+                        'border-danger': employeeTypeControl.invalid && (employeeTypeControl.dirty || employeeTypeControl.touched),
+                        'border-success': employeeTypeControl.valid && (employeeTypeControl.dirty || employeeTypeControl.touched)
+                      }"
+                      [(ngModel)]="demographicsCopy.employeeTypeId"
+                    >
+                      <option *ngFor="let employeeType of employeeTypesList" [ngValue]="employeeType.key">
+                        {{employeeType.name}}
+                      </option>
+                    </select>
+                    <div *ngIf="employeeTypeControl.invalid && (employeeTypeControl.dirty || employeeTypeControl.touched)" class="text-danger">Type is required.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="row">
+                  <label for="employement-status" class="col-3 col-form-label">Status</label>
+                  <div class="col-9">
+                    <select id="employement-status" class="form-control" [(ngModel)]="demographicsCopy.employmentTypeId" name="employmentStatus">
+                      <option *ngFor="let status of employmentTypesList" [ngValue]="status.key">
+                        {{status.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <label for="status-last-update" class="col-3 col-form-label">Status Last Updated</label>
+                  <div class="col-9">
+                    {{demographicsCopy.employmentStatusLastUpdated | date: 'yyyy-MM-dd'}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="row">
+                  <label for="application-date" class="col-3 col-form-label">Application Date</label>
+                  <div class="col-9">
+                    <input
+                      type="text"
+                      name="applicationDate"
+                      placeholder="Application Date"
+                      required
+                      class="form-control"
+                      bsDatepicker
+                      #applicationDateControl="ngModel"
+                      [ngClass]="{
+                        'border-danger': applicationDateControl.invalid && (applicationDateControl.dirty || applicationDateControl.touched),
+                        'border-success': applicationDateControl.valid && (applicationDateControl.dirty || applicationDateControl.touched)
+                      }"
+                      [(ngModel)]="demographicsCopy.applicationDate" />
+                    <div *ngIf="applicationDateControl.invalid && (applicationDateControl.dirty || applicationDateControl.touched)" class="text-danger">
+                      Application Date is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <label for="hire-date" class="col-3 col-form-label">Hire Date</label>
+                  <div class="col-9">
+                    <input
+                      type="text"
+                      name="hireDate"
+                      placeholder="Hire Date"
+                      class="form-control"
+                      bsDatepicker
+                      [bsValue]="demographicsCopy.hireDate"
+                      #hireDateControl="ngModel"
+                      [ngClass]="{
+                        'border-danger': hireDateControl.invalid && (hireDateControl.dirty || hireDateControl.touched),
+                        'border-success': hireDateControl.valid && (hireDateControl.dirty || hireDateControl.touched)
+                      }"
+                      [required]="demographicsCopy.isActiveEmployeeType"
+                      [(ngModel)]="demographicsCopy.hireDate" />
+                    <div *ngIf="hireDateControl.invalid && (hireDateControl.dirty || hireDateControl.touched)" class="text-danger">
+                      Hire Date is required.
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="row">
+                  <label for="first-day" class="col-3 col-form-label">First Work Day</label>
+                  <div class="col-9">
+                    {{demographicsCopy.firstWorkDate | date: 'shortDate'}}
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <label for="last-day" class="col-3 col-form-label">Last Work Day</label>
+                  <div class="col-9">
+                    {{demographicsCopy.lastWorkDate | date: 'shortDate'}}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="row">
+                  <label for="primary-work-place" class="col-3 col-form-label">Primary Work Place</label>
+                  <div class="col-9">
+                    <!-- <select [(ngModel)]="demographicsCopy.primaryWorkPlaceId" class="form-control" name="primaryWorkPlace" disabled>
+                      <option *ngFor="let facility of facilitiesList" [ngValue]="facility.key">
+                        {{facility.name}}
+                      </option> -->
+                      <app-convert-lookup-from-server [lookupTypeArgs]="'FacilitiesLookup'" [fieldValue]="demographicsCopy.primaryWorkPlaceId"></app-convert-lookup-from-server>
+                    <!-- </select> -->
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <label for="agency-insurance-status" class="col-3 col-form-label">Status of Agency Insurance</label>
+                  <div class="col-9">
+                    <select [(ngModel)]="demographicsCopy.agencyInsuranceStatus" class="form-control" name="agencyInsuranceStatus">
+                      <option *ngFor="let status of agencyInsuranceStatusList" [ngValue]="status.key">
+                        {{status.name}}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-9 offset-3">
+                    <div class="form-check">
+                      <input id="live-in" type="checkbox" class="form-check-input" name="liveIn" [(ngModel)]="demographicsCopy.liveIn" />
+                      <label for="live-in" class="form-check-label">Live in</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6" *ngIf="demographicsCopy.liveIn">
+                <div class="row">
+                  <label for="live-in-days" class="col-3 col-form-label">Days</label>
+                  <div class="col-9">
+                    <input
+                      id="live-in-days"
+                      type="number"
+                      class="form-control"
+                      name="liveInNumDays"
+                      [(ngModel)]="demographicsCopy.liveInNumDays" />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-9 offset-3">
+                    <div class="form-check">
+                      <input id="driver" type="checkbox" class="form-check-input" name="driver" [(ngModel)]="demographicsCopy.isDriver" />
+                      <label for="driver" class="form-check-label">Driver</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6">
+                <div class="row">
+                  <div class="col-9 offset-3">
+                    <div class="form-check">
+                      <input id="pdn" type="checkbox" class="form-check-input" name="pdn" [(ngModel)]="demographicsCopy.isPDN" />
+                      <label for="pdn" class="form-check-label">PDN</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="modal-footer">
+      <div class="container">
+        <div class="offset-md-4 col-md-4">
+          <button type="button" class="btn btn-primary" [disabled]="employmentInfoEditForm.invalid" (click)="saveEmploymentInfo()">
+            <em class="fa fa-save"></em>
+            Save
+          </button>
+          <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+            <em class="fa fa-undo"></em>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

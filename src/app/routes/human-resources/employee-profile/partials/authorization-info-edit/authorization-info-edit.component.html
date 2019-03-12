@@ -1,0 +1,216 @@
+<!--component html goes here -->
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Employement Authorization</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-content">
+        <form id="authorizationInfoEditForm" #authorizationInfoEditForm="ngForm" (ngSubmit)="saveAuthorizationInfo()" autocomplete="never-ever-hcm">
+            <div class="container">
+                <div class="form">
+
+                    <div class="form-group row">
+                        <label for="i9Document1TypeId" class="col-5 col-form-label">I9 Document: </label>
+                        <div class="col-7">
+                            <select
+                                class="form-control"
+                                name="i9Document1TypeId"
+                                [(ngModel)]="authorizationCopy.i9Document1TypeId"
+                            >
+                                <option *ngFor="let i9Doc1 of i9Doc1NameList; let i = index" [ngValue]="i">{{i9Doc1.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="i9Document1Expiration" class="col-5 col-form-label">I9 Document Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="i9Document1Expiration"
+                                placeholder="I9 Document Expiration"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="authorizationCopy.i9Document1Expiration" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="i9Document1ReceiptReceived" class="col-5 col-form-label">Received Receipt: </label>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="offset-1 infoStatus">
+                                    <input
+                                      id="i9Document1ReceiptReceived"
+                                      type="checkbox"
+                                      class="form-check-input"
+                                      name="i9Document1ReceiptReceived"
+                                      [(ngModel)]="authorizationCopy.i9Document1ReceiptReceived"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="i9Document2TypeId" class="col-5 col-form-label">I9 Additional Document: </label>
+                        <div class="col-7">
+                            <select
+                                class="form-control"
+                                name="i9Document2TypeId"
+                                [(ngModel)]="authorizationCopy.i9Document2TypeId"
+                            >
+                                <option *ngFor="let i9Doc2 of i9Doc2NameList; let i = index" [ngValue]="i">{{i9Doc2.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="i9Document2Expiration" class="col-5 col-form-label">I9 Document Additioanl Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="i9Document2Expiration"
+                                placeholder="I9 Document Additional Expiration"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="authorizationCopy.i9Document2Expiration" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="i9Document2ReceiptReceived" class="col-5 col-form-label">Received Receipt: </label>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="offset-1 infoStatus">
+                                    <input
+                                      id="i9Document2ReceiptReceived"
+                                      type="checkbox"
+                                      class="form-check-input"
+                                      name="i9Document2ReceiptReceived"
+                                      [(ngModel)]="authorizationCopy.i9Document2ReceiptReceived"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="verified" class="col-5 col-form-label">Verified: </label>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="offset-1 infoStatus">
+                                    <input
+                                        id="verified"
+                                        type="checkbox"
+                                        class="form-check-input"
+                                        name="verified"
+                                        [(ngModel)]="authorizationCopy.verified"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="reference" class="col-5 col-form-label">Reference: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                id="reference"
+                                class="form-control"
+                                name="reference"
+                                [(ngModel)]="authorizationCopy.reference"
+                              />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="additionalReference" class="col-5 col-form-label">Reference2: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                id="additionalReference"
+                                class="form-control"
+                                name="additionalReference"
+                                [(ngModel)]="authorizationCopy.additionalReference"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="lastEmploymentAgency" class="col-5 col-form-label">Last Employment Agency: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                id="lastEmploymentAgency"
+                                class="form-control"
+                                name="lastEmploymentAgency"
+                                [(ngModel)]="authorizationCopy.lastEmploymentAgency"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="lastEmploymentFrom" class="col-5 col-form-label">Last Employment From: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="lastEmploymentFrom"
+                                placeholder="Last Emplooyment From"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="authorizationCopy.lastEmploymentFrom" />
+
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="lastEmploymentTo" class="col-5 col-form-label">Last Employment To: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="lastEmploymentTo"
+                                placeholder="Last Employment To"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="authorizationCopy.lastEmploymentTo" />
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="exclusionListCheckedOn" class="col-5 col-form-label">Exclusion List Checked On: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="exclusionListCheckedOn"
+                                placeholder="Exclusion List Checked On"
+                                class="form-control"
+                                bsDatepicker
+                                [(ngModel)]="authorizationCopy.exclusionListCheckedOn" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+      <div class="container">
+        <div class="offset-md-4 col-md-4">
+          <button type="button" class="btn btn-primary" [disabled]="authorizationInfoEditForm.invalid" (click)="saveAuthorizationInfo()">
+            <em class="fa fa-save"></em>
+            Save
+          </button>
+          <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+            <em class="fa fa-undo"></em>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+
+</div>

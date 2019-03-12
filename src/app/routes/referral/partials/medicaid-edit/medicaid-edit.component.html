@@ -1,0 +1,120 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title">
+      Medicaid & Medicare Details
+    </div><span class="muted small"><em>(All fields are optional)</em></span>
+  </div>
+  <div class="modal-body">
+    <form #medicaidEditForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm">
+      <div class="form-row">
+        <div class="form-group-sm col-lg-12">
+          <label>
+            Medicare Number
+          </label>
+          <input type="text" class="form-control" name="medicareMemberId" [(ngModel)]="referralDemographics.medicareMemberId" />
+        </div>
+      </div>
+      <fieldset>
+        <legend>
+          <small>
+            Medicaid Information
+          </small>
+        </legend>
+        <div class="form-row">
+          <div class="form-group-sm  col-lg-12">
+            <label class="control-label">
+              Medicaid Number
+            </label>
+            <input type="text" class="form-control" name="medicaidMemberId" [(ngModel)]="referralDemographics.medicaidMemberId" />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="col-lg-6">
+            <div class="form-group-sm">
+              <label class="control-label">
+                Covered For Medicaid
+              </label>
+              <label class="switch switch-lg m-0">
+                <input type="checkbox" checked="checked" name="coveredForMedicaid" [(ngModel)]="referralDemographics.coveredForMedicaid"
+                />
+                <span></span>
+              </label>
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group-sm">
+              <label class="control-label">
+                Entitlement Issue
+              </label>
+              <label class="switch danger switch-lg m-0" >
+                <input name="entitlementIssues" [disabled]="!referralDemographics.coveredForMedicaid" [(ngModel)]="referralDemographics.entitlementIssues" type="checkbox" checked="checked" />
+                <span></span>
+              </label>
+
+            </div>
+          </div>
+        </div>
+        <div class="form-row" *ngIf="referralDemographics.entitlementIssues">
+          <div class="form-group col-lg-12">
+            <label class="form-label">
+              Entitlement Issues Comment
+            </label>
+            <textarea class="form-control" name="entitlementIssuesComment" [(ngModel)]="referralDemographics.entitlementIssuesComment">
+            </textarea>
+          </div>
+        </div>
+
+        <div class="form-row" *ngIf="!patient" >
+            <div class="form-group col-lg-12">
+              <label class="form-label">
+                Medicaid Comment
+              </label>
+              <textarea class="form-control" name="medicaidComment" [(ngModel)]="referralDemographics.medicaidComment">
+              </textarea>
+            </div>
+          </div>
+      </fieldset>
+      <fieldset *ngIf="!patient">
+        <legend>
+          <small>
+            Maximus Info
+          </small>
+        </legend>
+        <div class="form-row">
+          <div class="col-lg-6">
+            <div class="form-group-sm">
+              <label class="control-label">
+                Last Date
+              </label>
+
+              <input type="text" class="form-control" placeholder="__/__/____" name="lastMaximusDate" [(ngModel)]="referralDemographics.lastMaximusDate"  [bsValue]="referralDemographics.lastMaximusDate"
+              placement="top" bsDatepicker [minDate]="aLongTimeAgo" [maxDate]="today"/>
+
+            </div>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-group-sm">
+              <label class="control-label">
+                Last Score
+              </label>
+              <input type="text" class="form-control" name="lastMaximusScore" [(ngModel)]="referralDemographics.lastMaximusScore" />
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+
+      <button class="btn btn-primary" (click)="save()" [disabled]="!medicaidEditForm.valid || savingInfo">
+          <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+          {{savingInfo ? 'Saving' : 'Save'}}
+      </button>
+      <button class="btn btn-outline-primary" (click)="cancel()">
+        <i class="fa fa-undo"></i> Cancel
+      </button>
+
+    </div>
+  </div>
+</div>

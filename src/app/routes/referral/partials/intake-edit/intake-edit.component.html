@@ -1,0 +1,84 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left"> Intake Info</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #intakeEditForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm" class="row">
+      <div class="col-lg-6">
+        <div class="form-group">
+          <label class="control-label">Nursing Home Discharge</label>
+          <label class="switch switch-lg m-0">
+            <input class="form-control" name="nursingHomeDischarge" type="checkbox" [(ngModel)]="referralDemographics.nursingHomeDischarge"/>
+            <span></span>
+          </label>
+        </div>
+        <div>
+          <label class="control-label">Transfer Case</label>
+          <label class="switch switch-lg m-0">
+            <input class="form-control" name="transferCase" type="checkbox" [(ngModel)]="referralDemographics.transferCase" />
+            <span></span>
+          </label>
+        </div>
+        <div>
+          <label class="control-label">Referral Status</label>
+          <select class="form-control" [(ngModel)]="referralDemographics.referralStatusId" name="referralStatus" (ngModelChange)="onStatusChanged($event)">
+            <option *ngFor="let status of referralStatuses" [ngValue]="status.key">{{status.name}}</option>
+          </select>
+
+        </div>
+
+        <div *ngIf="referralSubStatusList && referralSubStatusList.length >0">
+          <label class="control-label">Status Reason</label>
+          <select class="form-control" [(ngModel)]="referralDemographics.referralSubStatusId" name="referralStatusReason">
+            <option *ngFor="let status of referralSubStatusList" [ngValue]="status.key">{{status.name}}</option>
+          </select>
+
+        </div>
+        <div *ngIf="isReferralDeniedStatus()">
+          <label class="control-label">Denial Reason</label>
+          <textarea class="form-control" name="referralDenialReason" type="text" [(ngModel)]="referralDemographics.referralDenialReasonId">
+
+          </textarea>
+        </div>
+      </div>
+      <div class="col-lg-6 border-left">
+        <div class="form-group">
+          <label class="control-label">Referred Source</label>
+
+          <select name="referredSource" class="form-control" [(ngModel)]="referralDemographics.referralSourceId">
+            <option *ngFor="let sourceItem of referralSourceList" [ngValue]="sourceItem.key">{{sourceItem.name}}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="control-label">Referred By</label>
+          <select name="referredBy" class="form-control" [(ngModel)]="referralDemographics.referredById">
+            <option *ngFor="let referredBy of referredByList" [ngValue]="referredBy.key">{{referredBy.name}}</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="control-label">Referral Reason</label>
+          <textarea class="form-control" name="referralReason" type="text" [(ngModel)]="referralDemographics.referralReason">
+
+          </textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+
+      <button class="btn btn-primary" (click)="save()" [disabled]="!intakeEditForm.valid || savingInfo">
+          <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+          {{savingInfo ? 'Saving' : 'Save'}}
+      </button>
+      <button class="btn btn-outline-primary" (click)="cancel()">
+        <i class="fa fa-undo"></i> Cancel
+      </button>
+
+    </div>
+  </div>
+</div>

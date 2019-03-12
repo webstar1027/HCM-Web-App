@@ -1,0 +1,61 @@
+<ng-template #popoverTemplate>
+  <div class="form-row popover-row">
+    <div class="col-auto">
+      <input type="text" class="form-control input-sm" [(ngModel)]="editableValue" />
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-sm btn-primary" (click)="save()">
+        <i class="fa fa-check"></i>
+      </button>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-sm btn-default" (click)="cancel()">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+<span *ngIf="value != '' || value != null"
+  class="value"
+  tooltip="Click to edit value"
+  triggers=""
+  container="body"
+  [popover]="popoverTemplate"
+  [ngClass]="{'hide': isEditMode && isInlineMode}"
+  (click)="enableEditMode()"
+  #popover="bs-popover"
+>
+  {{value | dynamic: pipe:pipeArgs}}
+  <span class="fa fa-pulse fa-spinner" *ngIf="isSaving"></span>
+</span>
+
+<!-- For Empty Inputs -->
+<span *ngIf="value == '' || value == null"
+  class="value font-weight-light"
+  tooltip="Click to edit value"
+  triggers=""
+  container="body"
+  [popover]="popoverTemplate"
+  [ngClass]="{'hide': isEditMode && isInlineMode}"
+  (click)="enableEditMode()"
+  #popover="bs-popover"
+> Add Info
+  <span class="fa fa-pulse fa-spinner" *ngIf="isSaving"></span>
+</span>
+
+<div class="form-row" *ngIf="isEditMode && isInlineMode">
+  <div class="col-auto">
+    <input type="text" class="form-control input-sm" [(ngModel)]="editableValue" />
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-sm btn-primary" (click)="save()">
+      <i class="fa fa-check"></i>
+    </button>
+  </div>
+  <div class="col-auto">
+    <button class="btn btn-sm btn-default" (click)="cancel()">
+      <i class="fa fa-times"></i>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,188 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title">
+      Emergency Contact
+    </div>
+  </div>
+  <div class="modal-body">
+    <form #emergencyContactForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm">
+      <div class="d-flex">
+        <div class="col-lg-6">
+          <div class="form-row">
+            <h6>Contact</h6>
+          </div>
+          <div class="form-row">
+            <div class="d-inline-block mb-0  col-xs-6">
+              <div class="form-group  mb-0" [class.has-error]="firstName.invalid && (firstName.touched || firstName.dirty)">
+                <label class="control-label mb-0">First Name</label>
+                <input autocomplete="never-ever-hcm" required type="text" name="firstName" class="form-control form-control-sm" placeholder="First Name"
+                  [(ngModel)]="editingContact.firstName" #firstName="ngModel" />
+              </div>
+            </div>
+            <div class="d-sm-inline-block middle-initial  mb-0 col-xs-2">
+              <div class="form-group  mb-0">
+                <label class="control-label  mb-0">MI</label>
+                <input autocomplete="never-ever-hcm" type="text" name="middleInitial" class="form-control form-control-sm" placeholder="MI"
+                  [(ngModel)]="editingContact.middleInitial" #middleInitial="ngModel" />
+              </div>
+            </div>
+            <div class="d-sm-inline-block  mb-0 col-xs-4">
+              <div class="form-group  mb-0" [class.has-error]="lastName.invalid && (lastName.touched || lastName.dirty)">
+                <label class="control-label mb-0">Last Name</label>
+                <input autocomplete="never-ever-hcm" required type="text" name="lastName" class="form-control form-control-sm" [(ngModel)]="editingContact.lastName"
+                  placeholder="Last Name" #lastName="ngModel" />
+              </div>
+            </div>
+
+          </div>
+          <div class="form-row">
+            <div class="mb-0 col-lg-12">
+              <div class="form-group  mb-0">
+                <label class="control-label mb-0">Nick Name</label>
+                <input autocomplete="never-ever-hcm" name="nickName" type="text" class="form-control form-control-sm" [(ngModel)]="editingContact.nickName"
+                  placeholder="Nick Name" #nickName="ngModel" />
+
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="mb-0 col-lg-12">
+              <div class="form-group" [class.has-error]="relationship.invalid && (relationship.touched || relationship.dirty)">
+                <label class="control-label ">Relationship</label>
+                <select autocomplete="never-ever-hcm" required class="form-control form-control-sm" #relationship="ngModel" [(ngModel)]="editingContact.relationshipId"
+                  name="relationship">
+                  <option *ngFor = "let r of relationshipList"  [ngValue]="r.key">{{r.name}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+            <h6>Address</h6>
+            <div class="form-group col-md-12 m-0" [class.has-error]="addressLine1.invalid && (addressLine1.touched || addressLine1.dirty)">
+              <label class="control-label">
+                Address Line 1
+              </label>
+              <input autocomplete="never-ever-hcm" required class="form-control form-control-sm" name="addressLine1" type="text" placeholder="Address Line 1"
+                [(ngModel)]="editingContact.addresses[0].addressLine1" #addressLine1="ngModel" />
+            </div>
+            <div class="form-group col-md-12 m-0">
+              <label class="control-label">
+                Address Line 2
+              </label>
+              <input autocomplete="never-ever-hcm" name="addressLine2" class="form-control form-control-sm" type="text" placeholder="Address Line 2"
+                [(ngModel)]="editingContact.addresses[0].addressLine2" #addressLine2="ngModel" />
+            </div>
+          </div>
+          <div class="form-row mt-2">
+            <app-zip name="zip" [smallControl]="true" [(zipInfo)]="editingContact.addresses[0]" ngModel></app-zip>
+          </div>
+        </div>
+
+        <div class="col-lg-6 border-left">
+          <h6>Contact Method</h6>
+          <div class="d-flex">
+            <div class="col-lg-10">
+              <div class="form-group" [class.has-error]="homePhone.invalid && (homePhone.touched || homePhone.dirty)">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <span class="fa fa-home"></span>
+                    </span>
+                  </div>
+                  <input
+                    autocomplete="never-ever-hcm"
+                    name="homePhone"
+                    type="tel"
+                    class="form-control form-control-sm"
+                    appPhoneValidator
+                    [textMask]="{mask: phoneNumberMask}"
+                    [(ngModel)]="editingContact.homePhone.contactValue"
+                    placeholder="Home Phone Number"
+                    #homePhone="ngModel" />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 ">
+              <span class="badge badge-primary" *ngIf="editingContact.homePhone?.isDefault">Primary</span>
+              <button type="button" class="btn btn-success btn-xs" *ngIf="!editingContact.homePhone?.isDefault" (click)="setPrimary(editingContact.homePhone)"
+                title="Set Primary Contact">
+                <span class="fa fa-check-circle"></span>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="col-lg-10">
+              <div class="form-group" [class.has-error]="cellPhone.invalid && (cellPhone.touched || cellPhone.dirty)">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <span class="fa fa-mobile-phone"></span>
+                    </span>
+                  </div>
+                  <input
+                    autocomplete="never-ever-hcm"
+                    name="cellPhone"
+                    type="tel"
+                    class="form-control form-control-sm"
+                    appPhoneValidator
+                    [textMask]="{mask: phoneNumberMask}"
+                    [(ngModel)]="editingContact.cellPhone.contactValue"
+                    placeholder="Mobile Phone Number"
+                    #cellPhone="ngModel" />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 ">
+              <span class="badge badge-primary" *ngIf="editingContact.cellPhone?.isDefault">Primary</span>
+              <button type="button" class="btn btn-success btn-xs" *ngIf="!editingContact.cellPhone?.isDefault" (click)="setPrimary(editingContact.cellPhone)"
+                title="Set Primary Contact">
+                <span class="fa fa-check-circle"></span>
+              </button>
+            </div>
+          </div>
+          <div class="d-flex">
+            <div class="col-lg-10">
+              <div class="form-group" [class.has-error]="emailAddress.invalid && (emailAddress.touched || emailAddress.dirty)">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">
+                      <span class="fa fa-envelope"></span>
+                    </span>
+                  </div>
+                  <input
+                    autocomplete="never-ever-hcm"
+                    name="emailAddress"
+                    type="email"
+                    class="form-control form-control-sm"
+                    appEmailValidator
+                    [(ngModel)]="editingContact.email.contactValue"
+                    placeholder="Email Address"
+                    #emailAddress="ngModel" />
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-2 ">
+              <span class="badge badge-primary" *ngIf="editingContact.email?.isDefault">Primary</span>
+              <button type="button" class="btn btn-success btn-xs" *ngIf="!editingContact.email?.isDefault" (click)="setPrimary(editingContact.email)"
+                title="Set Primary Contact">
+                <span class="fa fa-check-circle"></span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="offset-lg-4 col-lg-4">
+        <button class="btn btn-primary" (click)="save()" [disabled]="emergencyContactForm.invalid">
+          <i class="fa fa-save"></i> Save
+        </button>
+        <button class="btn btn-outline-primary" (click)="cancel()">
+          <i class="fa fa-undo"></i> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

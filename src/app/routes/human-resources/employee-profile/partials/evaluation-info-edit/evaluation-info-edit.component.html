@@ -1,0 +1,96 @@
+<!--component html goes here -->
+<!--component html goes here -->
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Evaluation Info </h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-content px-1 py-1">
+        <form id="medicalInfoEditForm" #medicalInfoEditForm="ngForm" (ngSubmit)="createEvaluationInfo()" autocomplete="never-ever-hcm">
+          <div class="container">
+              <div class="form">
+                <div class="form-group row">
+                  <label for="list" class="col-5 col-form-label">Organization Evaluation: </label>
+                  <div class="col-7">
+                      <select autocomplete="never-ever-hcm" required class="form-control form-control-sm" #relationship="ngModel" [(ngModel)]="evaluation.orgEvaluationId"
+                        name="list">
+                            <option *ngFor = "let r of evaluationsList"  [ngValue]="r.key">{{r.name}}</option>
+                      </select>
+                  </div>
+              </div>
+
+                  <div class="form-group row">
+                      <label for="completedOn" class="col-5 col-form-label">Completed On: </label>
+                      <div class="col-7">
+                          <input
+                              type="text"
+                              name="completedOn"
+                              placeholder="Completed On"
+                              required
+                              class="form-control"
+                              bsDatepicker
+                              #completedOnControl="ngModel"
+                              [ngClass]="{
+                                  'border-danger': completedOnControl.invalid && (completedOnControl.dirty || completedOnControl.touched),
+                                  'border-success': completedOnControl.valid && (completedOnControl.dirty || completedOnControl.touched)
+                              }"
+                              [(ngModel)]="evaluation.completionDate" />
+                          <div *ngIf="completedOnControl.invalid && (completedOnControl.dirty || completedOnControl.touched)" class="text-danger">
+                              Completed On is required.
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group row">
+                      <label for="expirationOn" class="col-5 col-form-label">Expiration On: </label>
+                      <div class="col-7">
+                          <input
+                              type="text"
+                              name="expirationOn"
+                              placeholder="Expiration On"
+                              required
+                              class="form-control"
+                              bsDatepicker
+                              #expirationControl="ngModel"
+                              [ngClass]="{
+                                  'border-danger': expirationControl.invalid && (expirationControl.dirty || expirationControl.touched),
+                                  'border-success': expirationControl.valid && (expirationControl.dirty || expirationControl.touched)
+                              }"
+                              [(ngModel)]="evaluation.expirationDate"/>
+                          <div *ngIf="expirationControl.invalid && (expirationControl.dirty || expirationControl.touched)" class="text-danger">
+                              Expiration On is required.
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group row">
+                      <label for="name" class="col-5 col-form-label">Status: </label>
+                      <div class="col-7">
+                          <select autocomplete="never-ever-hcm" required class="form-control form-control-sm" #relationship="ngModel" [(ngModel)]="evaluation.status"
+                            name="status">
+                                <option *ngFor = "let r of statusList"  [ngValue]="r.name">{{r.name}}</option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="container">
+            <div class="offset-md-4 col-md-4">
+                <button type="button" class="btn btn-primary"  (click)="editEvaluationInfo()">
+                  <em class="fa fa-save"></em>
+                  Save
+                </button>
+                <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+                  <em class="fa fa-undo"></em>
+                  Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

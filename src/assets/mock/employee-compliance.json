@@ -1,0 +1,79 @@
+{
+  "authorization": {
+    "i9Document1Name": "Passport",
+    "i9Document1Expiration": "2/25/2027",
+    "i9Document1ReceiptReceived": true,
+    "i9Document2Name": "Employment Authorization",
+    "i9Document2Expiration": "1/1/2018",
+    "i9Document2ReceiptReceived": true,
+    "verified": true,
+    "reference": "Americare",
+    "additionalReference": "John Smith",
+    "lastEmploymentAgency": "America Homecare",
+    "lastEmploymentFrom": "2/26/2014",
+    "lastEmploymentTo": "11/21/2017",
+    "exclusionListCheckedOn": "6/26/2018",
+    "cpr": true,
+    "cprExpiration": "8/1/2018",
+    "malpracticeInsuranceExpiration": "7/8/2018",
+    "npi": 89238720937,
+    "professionalLicenseNumber": 32342390934,
+    "professionalLicenseExpiration": "12/1/2021",
+    "driversLicenseId": 32409878972384710,
+    "driversLicenseExpiration": "12/1/2027",
+    "automobileInsuranceExpiration": "2/1/2029"
+  },
+  "medicals": [{
+    "name": "Pre-Employment Exam",
+    "receivedOn": "2/5/2014",
+    "expiration": null,
+    "result": "Completed"
+  },
+  {
+    "name": "Rubella Immunization",
+    "receivedOn": "2/5/2014",
+    "expiration": null,
+    "result": "Completed"
+  },
+  {
+    "name": "40 days test",
+    "receivedOn": "7/25/2017",
+    "expiration": "7/25/2018",
+    "result": "Completed"
+  },
+  {
+    "name": "TB-Screen",
+    "receivedOn": "1/9/2017",
+    "expiration": "1/9/2018",
+    "result": "Negative"
+  },
+  {
+    "name": "Annual Health Assessment",
+    "receivedOn": "4/5/2018",
+    "expiration": "4/5/2019",
+    "result": "Completed"
+  }],
+  "backgroundChecks": [{
+    "sentOn": "12/1/2017",
+    "receivedOn": "1/1/2018",
+    "result": "OK"
+  }],
+  "schools": [{
+    "name": "Marquis Training School",
+    "certificationDate": "4/5/2018",
+    "careType": "Non-Skilled",
+    "verified": true
+  }],
+  "evaluations": [{
+    "name": "Annual Supervision",
+    "completedOn": "1/1/2017",
+    "expirationOn": "1/1/2018",
+    "status": "Expired"
+  },
+  {
+    "name": "Code of Conduct Review",
+    "completedOn": "5/1/2014",
+    "expirationOn": null,
+    "status": "Completed"
+  }]
+}

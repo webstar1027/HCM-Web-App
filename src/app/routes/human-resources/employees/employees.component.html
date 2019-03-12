@@ -1,0 +1,171 @@
+<div class="content-heading">
+  <div>
+      Employee List
+      <small>View Create/Edit employees</small>
+  </div>
+  <div class="ml-auto">
+      <button class="btn btn-primary" (click)="refreshList()">
+          <em class="fa fa-refresh"></em>
+          Refresh List
+      </button>
+      <button class="btn btn-success">
+          <em class="fa fa-plus"></em>
+          New Employee Wizard
+      </button>
+  </div>
+</div>
+
+<div class="col-lg-12 col-sm-12">
+  <div class="card">
+      <!-- <div class="card-header">
+          <div class="card-title ">
+
+              <div class="pull-right">
+                  <button class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed">
+                      <i class="icon-arrow-up" *ngIf="isCollapsed"></i>
+                      <i class="icon-arrow-down" *ngIf="!isCollapsed"></i>
+                  </button>
+              </div>
+              <p>
+                  <i class="fa fa-sliders"></i>
+                  Filters
+              </p>
+          </div>
+
+
+      </div> -->
+      <div class="card-body">
+          <!-- <div [hidden]="!isCollapsed">
+              <div class="form-horizontal row">
+                  <div class="col-lg-3 col-sm-12 col-md-6">
+                      <div class="form-group">
+                          <label class="control-label" for="facility">Home</label>
+                          <select class="form-control form-control-sm" name="facility" id="facility"></select>
+                      </div>
+                  </div>
+                  <div class="col-lg-3  col-sm-12 col-md-6 ">
+                      <div class="form-group">
+                          <label class="control-label">Intake Coordinator</label>
+                          <select class="form-control form-control-sm" name="intakeCoordinator"></select>
+                      </div>
+                  </div>
+                  <div class=" col-lg-3  col-sm-12 col-md-6 ">
+                      <div class="form-group">
+                          <label class="control-label" for="workflowStatus">Workflow</label>
+                          <select class="form-control form-control-sm" name="workflowStatus" id="workflowStatus"></select>
+                      </div>
+                  </div>
+                  <div class=" col-lg-3  col-sm-12 col-md-6 ">
+                      <div class="form-group">
+                          <label class="control-label" for="patientStatus">Patient Status</label>
+                          <select class="form-control form-control-sm" name="patientStatus" id="patientStatus"></select>
+                      </div>
+                  </div>
+                  <div class=" col-lg-3  col-sm-12 col-md-6 ">
+                      <div class="form-group">
+                          <label class="control-label" for="referralStatus">Referral Status</label>
+                          <select class="form-control form-control-sm" name="referralStatus" id="referralStatus"></select>
+                      </div>
+                  </div>
+              </div>
+
+          </div>
+          <div class="row">
+              <div class="col-lg-4 col-sm-6">
+                  <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search" />
+                      <div class="input-group-append">
+                          <button class="btn btn-outline-primary"><span class="fa fa-search"></span></button>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-8 col-sm-6">
+                  <div class="btn-toolbar">
+                      <div class="btn-group">
+                          <button class="btn btn-primary"><span class="fa fa-columns"></span></button>
+                          <button class="btn btn-primary"><span class="fa fa-file-excel-o"></span></button>
+                          <div class="btn-group" dropdown>
+                              <button type="button" class="btn dropdown-toggle btn-primary" dropdownToggle>
+                                  Actions
+                                  <span class="caret"></span>
+                              </button>
+                              <div *dropdownMenu class="dropdown-menu" role="menu">
+                                  <button class="dropdown-item">Mass Change</button>
+                                  <button class="dropdown-item">Send To MLTC</button>
+                                  <button class="dropdown-item">Admit Patient</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+           -->
+           <div class="row">
+              <div class="col-lg-4 col-sm-6">
+                  <div class="input-group">
+                      <input type="text" class="form-control" placeholder="Search" />
+                      <div class="input-group-append">
+                          <button class="btn btn-outline-primary"><span class="fa fa-search"></span></button>
+                      </div>
+                  </div>
+              </div>
+              <div class="col-lg-8 col-sm-6">
+                  <div class="btn-toolbar">
+                      <div class="btn-group">
+                          <button class="btn btn-primary"><span class="fa fa-columns"></span></button>
+                          <div class="btn-group" dropdown>
+                            <button type="button" class="btn dropdown-toggle btn-primary" dropdownToggle>
+                                Export
+                                <span class="caret"></span>
+                            </button>
+                            <div *dropdownMenu class="dropdown-menu" role="menu">
+                                <button class="dropdown-item" (click)="exportPDF()">PDF</button>
+                                <button class="dropdown-item" (click)="exportCSV()">CSV
+                                </button>
+                                <button class="dropdown-item" (click)="exportXLS()">XLS</button>
+                            </div>
+                          </div>
+                          <div class="btn-group" dropdown>
+                              <button type="button" class="btn dropdown-toggle btn-primary" dropdownToggle>
+                                  Actions
+                                  <span class="caret"></span>
+                              </button>
+                              <div *dropdownMenu class="dropdown-menu" role="menu">
+                                  <button class="dropdown-item">Mass Change</button>
+                                  <button class="dropdown-item">Send To MLTC</button>
+                                  <button class="dropdown-item">Admit Patient</button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <hr />
+          <table class="table table-bordered table-striped table-responsive-sm">
+              <thead>
+                  <tr>
+                      <th>Name</th>
+                      <th>Date of Birth</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr *ngFor="let employee of employees">
+                      <td>
+                          <div class="d-flex">
+                              <div class="col-sm-3 col-3">
+                                  <span class="fa fa-pulse fa-spinner" [hidden]="(isLoadingEmployee && employee.employeeId === loadingEmployeeId)==false"></span>
+                              </div>
+                              <div class="col-sm-10 col-8">
+                                  <a [routerLink]="['../profile', employee.employeeId]" (click)="loadEmployee(employee.employeeId)">
+                                    {{employee.fullName}}
+                                  </a>
+                              </div>
+                          </div>
+                      </td>
+                      <td>{{employee.dob | date: 'shortDate'}}</td>
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+</div>

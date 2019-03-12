@@ -1,0 +1,187 @@
+
+  <h3 mat-dialog-title>
+    Authorizations
+  </h3>
+    <mat-divider></mat-divider>
+<div class="container">
+  <mat-dialog-content >
+      <form #authorizationForm="ngForm" autocomplete="off">
+        <div class="form-row d-flex justify-content-center mt-2" *ngIf="!referral">
+            <mat-form-field>
+              <mat-select required [compareWith]="contractCompare" [(ngModel)]="patientAuthorization.chartContractId" placeholder="Contract" name="contractId">
+                  <mat-option *ngFor="let item of contractList" [value]="item.chartContractId" >{{item.insurance.insuranceName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="form-row d-flex justify-content-center mt-2" *ngIf="referral">
+            <mat-form-field>
+              <mat-select required [compareWith]="contractCompare" [(ngModel)]="patientAuthorization.enrollmentId" placeholder="Enrollment" name="enrollmentId">
+                  <mat-option *ngFor="let item of enrollmentList" [value]="item.enrollmentId" >{{item.insurance.insuranceName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+        </div>
+          <div class="form-row d-flex justify-content-center">
+            <div class="pt-3">
+              <mat-slide-toggle [requiredIf]="!patientAuthorization.authorizationNumber" name="authVerbal" [(ngModel)]="patientAuthorization.verbalAuthorization">Verbal Auth</mat-slide-toggle>
+            </div>
+            <div class="col-1"></div>
+              <mat-form-field >
+                <input matInput [requiredIf]="!patientAuthorization.verbalAuthorization" placeholder="Authorization #" name="auth#"  [(ngModel)]="patientAuthorization.authorizationNumber">
+              </mat-form-field>
+          </div>
+      </form>
+      <mat-divider></mat-divider>
+      <div class="d-flex justify-content-center mt-4">
+          <h4>Auth Details</h4>
+      </div>
+      <div class="container mb-2" *ngIf="patientAuthorization.authorizationDetails.length > 0">
+        <mat-divider class="mt-2 mb-2"></mat-divider>
+          <mat-card class="mt-1 mb-1" *ngFor="let authDet of patientAuthorization.authorizationDetails; index as i">
+            <div class="row">
+              <div class="col-10">
+                {{i+1}}. Auth Frequency Sentence
+              </div>
+              <div class="col-2">
+                  <button class="btn btn-xs-outline-primary" (click)="editAuthDetail(authDet, i)">
+                      <span class="fa fa-edit"></span>
+                  </button>
+              </div>
+            </div>
+          </mat-card>
+      </div>
+            <mat-tab-group>
+              <mat-tab label="Frequency">
+                <form #authDetailsForm="ngForm" autocomplete="off">
+                  <div class="row m-0 d-flex mt-2 mb-2">
+                      <mat-form-field>
+                        <input matInput required [matDatepicker]="authDate" name="authDate" placeholder="Authorization Date" [(ngModel)]="authorizationDetails.authorizationDate">
+                        <mat-datepicker-toggle matSuffix [for]="authDate"></mat-datepicker-toggle>
+                        <mat-datepicker #authDate></mat-datepicker>
+                      </mat-form-field>
+                  </div>
+                  <div class="row m-0 d-flex mb-2">
+                    <mat-form-field class="mr-1">
+                      <input matInput required [matDatepicker]="authStartDate" name="authStartDate" placeholder="Start Date" [(ngModel)]="authorizationDetails.startDate">
+                      <mat-datepicker-toggle matSuffix [for]="authStartDate"></mat-datepicker-toggle>
+                      <mat-datepicker #authStartDate></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <input matInput required [min]="authorizationDetails.startDate" [matDatepicker]="authEndDate" name="authEndDate" placeholder="End Date" [(ngModel)]="authorizationDetails.endDate">
+                      <mat-datepicker-toggle matSuffix [for]="authEndDate"></mat-datepicker-toggle>
+                      <mat-datepicker #authEndDate></mat-datepicker>
+                    </mat-form-field>
+                    <mat-checkbox class="pl-2 pt-3" style="font-size:small" name="terminated" [(ngModel)]="authorizationDetails.terminatedforHospitalization">Terminated for Hospitalization</mat-checkbox>
+                  </div>
+                  <div class="row m-0 d-flex mb-2">
+                    <mat-form-field class="mr-1">
+                      <mat-select required [(ngModel)]="authorizationDetails.insuranceServiceCodeId" placeholder="Service Code" name="serviceCodeId">
+                        <mat-option *ngFor="let service of serviceCodeList" [value]="service.key">{{service.name}}</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <!-- <mat-form-field class="">
+                      <input matInput [(ngModel)]="authorizationDetails.insuranceServiceCode.procedureCode" placeholder="Procedure Code" type="text" name="procedureCode" id="">
+                    </mat-form-field> -->
+                  </div>
+                  <div class="row m-0 mb-1">
+                    <div class="col-3 col-lg-2 pl-0">
+                      <mat-form-field style="width:100%" [ngClass]="{'mat-input-invalid mat-form-field-invalid': unitMaxError}">
+                        <input matInput [max]="maxUnits" #units='ngModel' required placeholder="Units" step=".25" name="units" type="number" (ngModelChange)="updateTotalUnits($event)" [(ngModel)]="authorizationDetails.units">
+                        <mat-error class="mb-1" *ngIf="units.invalid && units.touched">
+                          Please enter an amount
+                        </mat-error>
+                        <!-- <mat-error class="mb-1" *ngIf="units.dirty || unitMaxError">Too High</mat-error> -->
+                      </mat-form-field>
+                    </div>
+                    <mat-chip-list #unitTypeChips class="" selectable='true'>
+                      <mat-chip value="H" [selected]="hours"  (selectionChange)="unitTypeChange($event)" (click)='hours=true;visits=false' >Hour(s)</mat-chip>
+                      <mat-chip value="V" [selected]="visits" (selectionChange)="unitTypeChange($event)"  (click)='visits=true;hours=false'>Visit(s)</mat-chip>
+                    </mat-chip-list>
+                    &nbsp;<span class="col d-flex align-self-center justify-content-center" >Per</span>&nbsp;
+                    <mat-chip-list #periodChips class="">
+                        <mat-chip value="D" [selected]="day" (selectionChange)="periodChange($event)" (click)="changeState('day')">Day</mat-chip>
+                        <mat-chip value="W" [selected]="week" (selectionChange)="periodChange($event)" (click)="changeState('week')">Week</mat-chip>
+                        <mat-chip value="M" [selected]="month" (selectionChange)="periodChange($event)" (click)="changeState('month')">Month</mat-chip>
+                        <mat-chip value="P" [selected]="period" (selectionChange)="periodChange($event)" (click)="changeState('period')">Period</mat-chip>
+                      </mat-chip-list>
+                  </div>
+                  <div class="row m-0 mb-1 justify-content-center" *ngIf="dailyOptions">
+                      <mat-form-field>
+                        <mat-select (selectionChange)="dayOptionsChange($event)" [requiredIf]="dailyOptions" [(ngModel)]="authorizationDetails.weekdaysUOM" placeholder="Options" name="dayOptions">
+                            <mat-option value="D" >Specific Days</mat-option>
+                            <mat-option value="N" >Number of Days</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                  </div>
+                  <div class="row m-0 mb-1 justify-content-center" *ngIf="dailyOptions && authorizationDetails.period == 'W' && authorizationDetails.weekdaysUOM == 'D' && authorizationDetails.units >= 0.25 ">
+                      <mat-form-field class="mr-1" style="width:4.5rem" [ngClass]="{'mat-input-invalid mat-form-field-invalid': overUnitsError }">
+                            <input matInput placeholder="Sun" #sun="ngModel" name="sun" type="number" min='0' step=".25" [max]="authorizationDetails.units" (change)="updateTotalUnitsLeft($event)" [(ngModel)]="authorizationDetails.sunUnits">
+                          </mat-form-field>
+                      <mat-form-field class="mr-1" style="width:4.5rem" [ngClass]="{'mat-input-invalid mat-form-field-invalid': overUnitsError }">
+                        <input matInput placeholder="Mon" #mon="ngModel" name="mon" type="number" min='0' step=".25" [max]="authorizationDetails.units" (change)="updateTotalUnitsLeft($event)" [(ngModel)]="authorizationDetails.monUnits">
+                      </mat-form-field>
+                      <mat-form-field class="mr-1" style="width:4.5rem" [ngClass]="{'mat-input-invalid mat-form-field-invalid': overUnitsError }">
+                            <input matInput placeholder="Tues" #tues="ngModel" name="tues" type="number" min='0' step=".25" [max]="authorizationDetails.units" (change)="updateTotalUnitsLeft($event)" [(ngModel)]="authorizationDetails.tueUnits">
+                          </mat-form-field>
+                      <mat-form-field class="mr-1" style="width:4.5rem" [ngClass]="{'mat-input-invalid mat-form-field-invalid': overUnitsError }">
+                            <input matInput placeholder="Wed" #wed="ngModel" name="wed" type="number" min='0' step=".25" [max]="authorizationDetails.units" (change)="updateTotalUnitsLeft($event)" [(ngModel)]="authorizationDetails.wedUnits">
+                          </mat-form-field>
+                      <mat-form-field class="mr-1" style="width:4.5rem" [ngClass]="{'mat-input-invalid mat-form-field-invalid': overUnitsError }">
+                            <input matInput placeholder="Thurs" #thurs="ngModel" name="thurs" type="number" min='0' step=".25" [max]="authorizationDetails.units" (change)="updateTotalUnitsLeft($event)" [(ngModel)]="authorizationDetails.thuUnits">
+                          </mat-form-field>
+                      <mat-form-field class="mr-1" style="width:4.5rem" [ngClass]="{'mat-input-invalid mat-form-field-invalid': overUnitsError }">
+                            <input matInput placeholder="Fri" #fri="ngModel" name="fri" type="number" min='0' step=".25" [max]="authorizationDetails.units" (change)="updateTotalUnitsLeft($event)" [(ngModel)]="authorizationDetails.friUnits">
+                          </mat-form-field>
+                      <mat-form-field class="mr-1" style="width:4.5rem" [ngClass]="{'mat-input-invalid mat-form-field-invalid': overUnitsError }">
+                            <input matInput placeholder="Sat" #sat="ngModel" name="sat" type="number" min='0' step=".25" [max]="authorizationDetails.units" (change)="updateTotalUnitsLeft($event)" [(ngModel)]="authorizationDetails.satUnits">
+                          </mat-form-field>
+                      <div class="row m-0 mb-1">
+                          <mat-checkbox name="varyDays" >Allow Days to Vary</mat-checkbox>
+                      </div>
+                  </div>
+                  <div class="row m-0 mb-1 justify-content-center" *ngIf="overUnitsError">
+                    <div class="text-danger">Over Alloted Units</div>
+                  </div>
+                  <div class="row m-0 mb-1 justify-content-center" *ngIf="authorizationDetails.period == 'D' && authorizationDetails.weekdaysUOM == 'D'">
+                    <mat-checkbox class="mr-2" value='1' (change)="specificDaysCheck($event)" name="sun" >Sun</mat-checkbox>
+                    <mat-checkbox class="mr-2" value='2' (change)="specificDaysCheck($event)" name="mon" >Mon</mat-checkbox>
+                    <mat-checkbox class="mr-2" value='4' (change)="specificDaysCheck($event)" name="tues" >Tues</mat-checkbox>
+                    <mat-checkbox class="mr-2" value='8' (change)="specificDaysCheck($event)" name="wed" >Weds</mat-checkbox>
+                    <mat-checkbox class="mr-2" value='16' (change)="specificDaysCheck($event)" name="thurs" >Thurs</mat-checkbox>
+                    <mat-checkbox class="mr-2" value='32' (change)="specificDaysCheck($event)" name="fri" >Fri</mat-checkbox>
+                    <mat-checkbox class="mr-3" value='64' (change)="specificDaysCheck($event)" name="sat" >Sat</mat-checkbox>
+                    <div class="row m-0 mb-1">
+                      <mat-checkbox name="varyDays" >Allow Days to Vary</mat-checkbox>
+                    </div>
+                  </div>
+                  <div class="row m-0 mb-1 justify-content-center" *ngIf="authorizationDetails.weekdaysUOM == 'N' && dailyOptions">
+                    <mat-form-field>
+                      <mat-select [requiredIf]="authorizationDetails.weekdaysUOM == 'N' && dailyOptions" [(ngModel)]="authorizationDetails.weekdaysValue" placeholder="Days a Week" name="weekdaysValue">
+                        <mat-option value="1" >1</mat-option>
+                        <mat-option value="2" >2</mat-option>
+                        <mat-option value="3" >3</mat-option>
+                        <mat-option value="4" >4</mat-option>
+                        <mat-option value="5" >5</mat-option>
+                        <mat-option value="6" >6</mat-option>
+                        <mat-option value="7" >7</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class="row m-0 mb-1">
+                    <mat-form-field class="mr-1" style="width:4.5rem">
+                      <input matInput placeholder="Max Units" name="max" type="number" step=".25" (ngModelChange)="maxUnitsChange($event)" [(ngModel)]="authorizationDetails.maxUnitsForAuthorization">
+                    </mat-form-field>
+                  </div>
+                  
+                </form>
+              </mat-tab>
+              <mat-tab label="Linked Visits">Linked Visits Works!</mat-tab>
+              <mat-tab label="Notes">Notes Works!</mat-tab>
+              <mat-tab label="Documents">The Doc Works!</mat-tab>
+            </mat-tab-group>
+
+  </mat-dialog-content>
+  <mat-dialog-actions class="d-flex justify-content-between">
+    <button mat-raised-button (click)="save()" >Finish</button>
+    <button mat-raised-button (click)="saveAuthDetails()" color="primary"  type="submit" class="">Add Auth Details</button>
+  </mat-dialog-actions>
+</div>

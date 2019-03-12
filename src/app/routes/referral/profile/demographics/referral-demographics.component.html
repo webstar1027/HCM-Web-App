@@ -1,0 +1,435 @@
+﻿<div class="row">
+  <div class="col-lg-6 col-xl-3">
+    <div class="b card h-100">
+      <div class="card-header">
+        <div class="card-title">
+          <p>About</p>
+        </div>
+      </div>
+      <hr/>
+      <div class="card-body">
+        <div class="d-flex">
+          <ul class="list-unstyled px-4">
+            <li>
+                <app-editable-field [(value)]="referralDemographics.lastName" [saveCallback]="" [pipe]=""></app-editable-field>,&nbsp;<app-editable-field [(value)]="referralDemographics.firstName" [saveCallback]="" [pipe]=""></app-editable-field>&nbsp;<app-editable-field [(value)]="referralDemographics.middleInitial" [saveCallback]="" [pipe]=""></app-editable-field>
+              <!-- {{referralDemographics.lastName}},&nbsp;{{referralDemographics.firstName}}&nbsp;{{referralDemographics.middleInitial}} -->
+            </li>
+            <li>
+              <p>
+                <small>Gender</small>&nbsp;<app-editable-field [(value)]="referralDemographics.gender" [saveCallback]="" [pipe]="genderPipe"></app-editable-field>
+                <!-- {{referralDemographics.gender | genderConvert}} -->
+              </p>
+            </li>
+            <li>
+              <p>
+                <small>DOB</small>
+                &nbsp;
+                <b><app-editable-field [(value)]="referralDemographics.dateOfBirth"  [saveCallback]="" [pipe]="datePipe"></app-editable-field></b>
+                  <!-- {{referralDemographics.dateOfBirth | date}} -->
+              </p>
+
+            </li>
+            <li>
+              <app-editable-field [(value)]="referralDemographics.socialSecurity" [saveCallback]="" [pipe]="ssnPipe"></app-editable-field>
+              <!-- {{referralDemographics.socialSecurity |ssn}} -->
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-12 col-xl-9">
+    <div class="b card h-100">
+      <div class="card-header">
+        <div class="card-title">
+          <!-- <div class="pull-right">
+            <div class="btn-group">
+              <button type="button" class="btn btn-outline-primary btn-sm" (click)="openContactModal(editContactModal)">
+                <span class="fa fa-edit"></span>
+              </button>
+            </div>
+          </div> -->
+          <p>Contact</p>
+        </div>
+      </div>
+      <hr/>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-5 col-lg-6">
+            <div class="media align-items-center">
+              <em class="fa fa-lg fa-fw mr-2 fa-home"></em>
+              <div class="media-body pt-1">
+                <div class="text-bold" *ngIf="referralDemographics.serviceAddress">
+                  <small>Service Address</small>
+                  <p>
+                      <app-editable-field [(value)]="referralDemographics.serviceAddress.addressLine1"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>
+                    <!-- {{referralDemographics.serviceAddress.addressLine1}} (valueChange)="saveCallback($event)"-->
+                    <br />
+                    <span *ngIf="referralDemographics.serviceAddress.addressLine2">
+                        <app-editable-field [(value)]="referralDemographics.serviceAddress.addressLine2"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>
+                      <!-- {{referralDemographics.serviceAddress.addressLine2}} -->
+                      <br />
+                    </span>
+                    <app-editable-field [(value)]="referralDemographics.serviceAddress.city"  [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>, <app-editable-field [(value)]="referralDemographics.serviceAddress.state"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field> <app-editable-field [(value)]="referralDemographics.serviceAddress.zip"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>
+                    <!-- {{referralDemographics.serviceAddress.city}}, {{referralDemographics.serviceAddress.state}} {{referralDemographics.serviceAddress.zip}} -->
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="media align-items-center">
+              <em class="fa fa-envelope  fa-lg fa-fw mr-2"></em>
+              <div class="media-body pt-1">
+                <div class="text-bold" *ngIf="referralDemographics.mailingAddress != null">
+                  <small>Mailing Address</small>
+                  <p>
+                      <app-editable-field [(value)]="referralDemographics.mailingAddress.addressLine1"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>
+                    <!-- {{referralDemographics.mailingAddress.addressLine1}} -->
+                    <br />
+                    <span *ngIf="referralDemographics.mailingAddress.addressLine2 != null ">
+                        <app-editable-field [(value)]="referralDemographics.mailingAddress.addressLine2"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>
+                      <!-- {{referralDemographics.mailingAddress.addressLine2}} -->
+                      <br />
+                    </span>
+                    <app-editable-field [(value)]="referralDemographics.mailingAddress.city"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>, <app-editable-field [(value)]="referralDemographics.mailingAddress.state"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field> <app-editable-field [(value)]="referralDemographics.mailingAddress.zip"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field>
+                    <!-- {{referralDemographics.mailingAddress.city}}, {{referralDemographics.mailingAddress.state}} {{referralDemographics.mailingAddress.zip}} -->
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-6">
+              <table class="table borderless">
+                <tbody>
+                  <tr class="borderless">
+                    <td class="fit">
+                      <em class="fa fa-phone mr-3 fa-fw fa-lg"></em>
+                    </td>
+                    <td *ngIf="referralDemographics.homePhone != null">
+                        <app-editable-field [(value)]="referralDemographics.homePhone.contactValue"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field></td>
+                      <!-- {{referralDemographics.homePhone.contactValue}} -->
+                  </tr>
+                  <tr>
+                    <td>
+                      <em class="fa fa-mobile-phone mr-3 fa-fw fa-lg"></em>
+                    </td>
+                    <td *ngIf="referralDemographics.cellPhone != null"><app-editable-field [(value)]="referralDemographics.cellPhone.contactValue"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field></td>
+                    <!-- {{referralDemographics.cellPhone.contactValue}}</td> -->
+                  </tr>
+                  <tr>
+                    <td>
+                      <em class="fa fa-fax fa-fw fa-lg mr-3"></em>
+                    </td>
+                        <td><app-editable-field [(value)]="referralDemographics.fax.contactValue"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field></td>
+                        <!-- {{referralDemographics.fax.contactValue}}</td> -->
+                  </tr>
+                  <tr class="mail">
+                    <td>
+                      <em class="fa fa-at mr-3 fa-fw fa-lg"></em>
+                    </td>
+                    <td><app-editable-field [(value)]="referralDemographics.email.contactValue"   [saveCallback]="saveReferralContactInfo.bind(this)" [pipe]=""></app-editable-field></td>
+                    <!-- {{referralDemographics.email?.contactValue}}</td> -->
+                  </tr>
+                </tbody>
+              </table>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<hr />
+<div class="row">
+  <div class="col-xl-8 mb-1 mb-xl-0">
+    <div class="card h-100">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="float-right">
+            <button type="button" class="btn btn-sm btn-outline-primary" title="Add new Emergency Contact" (click)="openEmergencyContactModal()">
+              <em class="fa fa-plus"></em>
+            </button>
+          </div>
+          <p>Emergency Contact</p>
+        </div>
+      </div>
+      <hr />
+      <div class="card-body">
+        <div class="col-lg-12" *ngIf="loadingEmergencyContacts">
+          <i class="fa fa-spinner fa-spin fa-4x"></i>
+        </div>
+        <div class="table-responsive">
+            <table class="table table-bordered" *ngIf="!loadingEmergencyContacts">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Phone</th>
+                  <th>Cell</th>
+                  <th>Relationship</th>
+                  <th class="text text-center">
+                    <span class="fa fa-gear text-center"></span>
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody *ngIf="referralDemographics?.emergencyContact?.length > 0">
+
+                <tr *ngFor="let emergencyContact of referralDemographics.emergencyContact">
+                  <td>
+                    {{emergencyContact.lastName}}, {{emergencyContact.firstName}} {{emergencyContact.middleInitial}}
+                    <span *ngIf="emergencyContact.nickName">({{emergencyContact.nickName}})</span>
+                  </td>
+                  <td>{{emergencyContact?.homePhone?.contactValue}}</td>
+                  <td>{{emergencyContact?.cellPhone?.contactValue}}</td>
+                  <td>
+                      <app-convert-lookup-from-server [lookupTypeArgs]="'RelationshipLookupService'" [fieldValue]='emergencyContact.relationshipId'></app-convert-lookup-from-server>
+                    </td>
+                  <td>
+                    <div class="btn-toolbar">
+                      <div class="btn-group btn-group-xs">
+                        <button class="btn btn-xs btn-outline-primary" (click)="openEmergencyContactModal(emergencyContact)">
+                          <i class="fa fa-edit"></i>
+                        </button>
+                        <button class="btn btn-xs btn-outline-danger" (click)="deleteEmergencyContact(emergencyContact.emergencyContactId)" *ngIf="(deletingEmergencyContact && deletingEmergencyContactContactId ===emergencyContact.emergencyContactId) === false">
+                          <i class="fa fa-trash"></i>
+                        </button>
+                        <span class="btn btn-xs btn-outline-info" *ngIf="(deletingEmergencyContact && deletingEmergencyContactContactId ===emergencyContact.emergencyContactId)">
+                          <i class="fa fa-spinner fa-spin"></i>
+                        </span>
+                      </div>
+                    </div>
+
+                  </td>
+
+                </tr>
+
+              </tbody>
+
+            </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-4">
+    <div class="card h-100">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="float-right">
+            <button type="button" class="btn btn-sm btn-outline-primary" title="Edit Medicaid & Medicare" (click)="editMedicaidAndMedicare()">
+              <em class="fa fa-edit"></em>
+            </button>
+          </div>
+          Medicaid & Medicare
+        </div>
+      </div>
+      <hr />
+      <div class="card-body">
+        <table class="table borderless">
+          <tbody>
+            <tr class="borderless">
+              <td>
+                Medicare Number
+              </td>
+              <td>{{referralDemographics.medicareMemberId}}</td>
+            </tr>
+            <tr>
+              <td>
+                Medicaid Number
+              </td>
+              <td>{{referralDemographics.medicaidMemberId}}</td>
+            </tr>
+            <tr>
+              <td>
+                Covered For Medicaid
+              </td>
+              <td>{{referralDemographics.coveredForMedicaid | yesNo}}<span *ngIf="referralDemographics.medicaidComment"> -&emsp;{{referralDemographics.medicaidComment}}</span></td>
+            </tr>
+            <tr>
+              <td>
+                Entitlement Issue
+              </td>
+              <td>{{referralDemographics.entitlementIssues| yesNo}}<span *ngIf="referralDemographics.entitlementIssuesComment"> -&emsp;{{referralDemographics.entitlementIssuesComment}}</span></td>
+            </tr>
+            <tr>
+              <td>
+                Maximus Date
+              </td>
+              <td>{{referralDemographics.maximusDate | date}}</td>
+            </tr>
+            <tr>
+              <td>
+                Maximus Score
+              </td>
+              <td>{{referralDemographics.maximusScore}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<ng-template #editContactModal>
+
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Edit Contact</h4>
+      <button type="button" class="close pull-right" aria-label="Close" (click)="closeContactModal()">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="d-flex" *ngIf="editChartContact">
+        <div class="col-lg-8">
+          <tabset class="bg-white p-0">
+            <tab>
+              <ng-template tabHeading>
+                <em class="fa fa-home"></em>&nbsp;Service Address
+              </ng-template>
+              <div class="container">
+                <div class="form">
+                  <div class="form-group">
+                    <label>Address Line 1</label>
+                    <input required type="text" name="addressLine1" class="form-control" [(ngModel)]="editChartContact.serviceAddress.addressLine1" />
+                  </div>
+                  <div class="form-group">
+                    <label>Address Line 2</label>
+                    <input type="text" name="addressLine2" class="form-control" [(ngModel)]="editChartContact.serviceAddress.addressLine2" />
+                  </div>
+                  <div class="d-flex">
+                    <div class="col-lg-4 no-padding-left">
+                      <div class="form-group">
+                        <label>Zip Code</label>
+                        <input type="text" required  name="zipCode" [(ngModel)]="serviceAddressEditZipCode" (ngModelChange)="getCityState($event)" class="form-control"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-8">
+                      <table class="table borderless">
+                        <tbody>
+                          <tr>
+                            <td class="no-padding">City</td>
+                            <td class="no-padding">State</td>
+                          </tr>
+                          <tr>
+                            <td *ngIf="!serviceAddressEditCityState && !sreviceCityStateIsLoading">
+                              <span class="text text-danger">Enter Zip Code</span>
+                            </td>
+                            <td *ngIf="sreviceCityStateIsLoading">
+                              <span class="fa fa-spin fa-spinner"></span>
+                            </td>
+                            <td *ngIf="serviceAddressEditCityState && !sreviceCityStateIsLoading && serviceAddressEditCityState.isValid ===false">
+                              <span class="text text=danger">Enter a valid Zip Code</span>
+                            </td>
+                          </tr>
+                          <tr *ngIf="serviceAddressEditCityState && !sreviceCityStateIsLoading">
+                            <td class="no-padding-left">{{serviceAddressEditCityState.city}}</td>
+                            <td class="no-padding-left">{{serviceAddressEditCityState.state}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </tab>
+            <tab>
+              <ng-template tabHeading>
+                <em class="fa fa-envelope-o"></em>&nbsp;Mailing Address
+              </ng-template>
+              <div class="container">
+                <div class="form">
+                  <div class="form-group">
+                    <label>Address Line 1</label>
+                    <input type="text" name="mailLine1" class="form-control" [(ngModel)]="editChartContact.mailingAddress.addressLine1" />
+                  </div>
+                  <div class="form-group">
+                    <label>Address Line 2</label>
+                    <input type="text" name="mailLine2" class="form-control" [(ngModel)]="editChartContact.mailingAddress.addressLine2" />
+                  </div>
+                  <div class="d-flex">
+                    <div class="col-lg-4 no-padding-left">
+                      <div class="form-group">
+                        <label>Zip Code</label>
+                        <input name="zipCode" [ngModel]="mailingAddressEditZipCode" (ngModelChange)="getMailingCityState($event)" class="form-control"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-lg-8">
+                      <table class="table borderless">
+                        <tbody>
+                          <tr>
+                            <td class="no-padding">City</td>
+                            <td class="no-padding">State</td>
+                          </tr>
+                          <tr>
+                            <td *ngIf="!mailingAddressEditCityState && !mailingAddressCityStateIsLoading">
+                              <span class="text text-danger">Enter Zip Code</span>
+                            </td>
+                            <td *ngIf="sreviceCityStateIsLoading">
+                              <span class="fa fa-spin fa-spinner"></span>
+                            </td>
+                            <td *ngIf="mailingAddressEditCityState && !mailingAddressCityStateIsLoading && mailingAddressEditCityState.isValid === false">
+                              <span class="text text=danger">Enter a valid Zip Code</span>
+                            </td>
+                          </tr>
+                          <tr *ngIf="mailingAddressEditCityState && !mailingAddressCityStateIsLoading">
+                            <td class="no-padding-left">{{mailingAddressEditCityState.city}}</td>
+                            <td class="no-padding-left">{{mailingAddressEditCityState.state}}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </tab>
+          </tabset>
+
+        </div>
+        <div class="col-lg-4">
+          <div class="form-group" [class.has-error]="homePhone.invalid &&(homePhone.touched || homePhone.dirty)">
+            <label>Home Phone</label>
+            <input type="tel" name="homePhone" #homePhone="ngModel" appPhoneValidator [textMask]="{mask: phoneNumberMask}" class="form-control" [(ngModel)]="editChartContact.homePhone.contactValue" />
+          </div>
+          <div class="form-group" [class.has-error]="cellPhone.invalid &&(cellPhone.touched || cellPhone.dirty)">
+            <label>Cell Phone</label>
+            <input type="tel" name="cellPhone" #cellPhone="ngModel" appPhoneValidator [textMask]="{mask: phoneNumberMask}" class="form-control" [(ngModel)]="editChartContact.cellPhone.contactValue" />
+          </div>
+          <div class="form-group">
+            <label>Fax</label>
+            <input type="tel" name="fax" appPhoneValidator [textMask]="{mask: phoneNumberMask}" class="form-control" [(ngModel)]="editChartContact.fax.contactValue" />
+          </div>
+          <div class="form-group" [class.has-error]="email.invalid &&(email.touched || email.dirty)">
+            <label>Email</label>
+            <input type="email" name="email" #email="ngModel" class="form-control" [(ngModel)]="editChartContact.email.contactValue" />
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+    <div class="modal-footer">
+      <div class="container">
+        <div class="offset-md-4 col-md-4">
+          <button type="button" class="btn btn-primary" (click)="saveChartContactInfo()" [disabled]="isCurrentlySavingChartContacts">
+            <em class="fa fa-save" *ngIf="isCurrentlySavingChartContacts ===false"></em>
+            <em class="fa fa-spinner fa-spin" *ngIf="isCurrentlySavingChartContacts"></em>
+            <span *ngIf="isCurrentlySavingChartContacts ===false">Save</span>
+            <span *ngIf="isCurrentlySavingChartContacts">Saving</span>
+          </button>
+          <button type="button" class="btn btn-outline-primary" (click)="closeContactModal()">
+            <em class="fa fa-undo"></em>
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</ng-template>

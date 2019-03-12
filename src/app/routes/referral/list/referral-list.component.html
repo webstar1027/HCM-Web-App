@@ -1,0 +1,220 @@
+﻿<div class="content-heading">
+  <div>
+    Referral List
+    <small>View Create/Edit referrals</small>
+  </div>
+  <div class="ml-auto">
+    <button class="btn btn-primary" (click)="refreshReferralList()">
+      <em class="fa fa-refresh"></em>
+    </button>
+    <a class="link-unstyled" href="javascript://" [routerLink]="['../newReferralWizard']">
+      <button class="btn btn-success">
+        <em class="fa fa-plus"></em>
+        New Referral
+      </button>
+    </a>
+  </div>
+</div>
+
+<div class="col-lg-12 col-sm-12">
+  <div class="card">
+    <div class="card-header">
+      <div class="card-title ">
+
+        <div class="pull-right">
+          <button class="btn btn-outline-primary" (click)="isCollapsed = !isCollapsed">
+            <i class="icon-arrow-up" *ngIf="isCollapsed"></i>
+            <i class="icon-arrow-down" *ngIf="!isCollapsed"></i>
+          </button>
+        </div>
+        <p>
+          <i class="fa fa-sliders"></i>
+          Filters
+        </p>
+      </div>
+
+
+    </div>
+    <div class="card-body">
+      <div [hidden]="!isCollapsed">
+        <div class="form-horizontal row">
+          <div class="col-lg-3 col-sm-12 col-md-6">
+            <div class="form-group">
+              <label class="control-label" for="facility">Home</label>
+              <select class="form-control form-control-sm" name="facility" id="facility"></select>
+            </div>
+          </div>
+          <div class="col-lg-3  col-sm-12 col-md-6 ">
+            <div class="form-group">
+              <label class="control-label">Intake Coordinator</label>
+              <select class="form-control form-control-sm" name="intakeCoordinator"></select>
+            </div>
+          </div>
+          <div class=" col-lg-3  col-sm-12 col-md-6 ">
+            <div class="form-group">
+              <label class="control-label" for="workflowStatus">Workflow</label>
+              <select class="form-control form-control-sm" name="workflowStatus" id="workflowStatus"></select>
+            </div>
+          </div>
+          <div class=" col-lg-3  col-sm-12 col-md-6 ">
+            <div class="form-group">
+              <label class="control-label" for="patientStatus">Patient Status</label>
+              <select class="form-control form-control-sm" name="patientStatus" id="patientStatus"></select>
+            </div>
+          </div>
+          <div class=" col-lg-3  col-sm-12 col-md-6 ">
+            <div class="form-group">
+              <label class="control-label" for="referralStatus">Referral Status</label>
+              <select class="form-control form-control-sm" name="referralStatus" id="referralStatus"></select>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="row">
+        <div class="col-lg-8 col-sm-12">
+          <div class="row">
+            <div class="col-lg-6 col-sm-12">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchModel.searchTerm" />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-primary" (click)="refreshReferralList()">
+                    <span class="fa fa-search"></span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-12">
+                <div class="form-group row">
+                  <label class='col-3 col-form-label' for="last4OfSocial">
+                    Last 4 of social
+                  </label>
+                  <div class="input-group col-lg-9 col-sm-9">
+                    <input name="last4OfSocial" type="text" class="form-control" placeholder="Last 4 of social"
+                      [(ngModel)]="searchModel.last4DigitsOfSocial" />
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-primary" (click)="refreshReferralList()">
+                        <span class="fa fa-search"></span>
+                      </button>
+                    </div>
+                  </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-sm-12">
+          <div class="btn-toolbar">
+            <div class="btn-group">
+              <button class="btn btn-primary" (click)="showColumnChoose()"><span class="fa fa-columns"></span></button>
+              <div class="btn-group" dropdown>
+                <button type="button" class="btn dropdown-toggle btn-primary" dropdownToggle>
+                  Export
+                  <span class="caret"></span>
+                </button>
+                <div *dropdownMenu class="dropdown-menu" role="menu">
+                  <button class="dropdown-item" (click)="exportPDF()">PDF</button>
+                  <button class="dropdown-item" (click)="exportCSV()">CSV
+                  </button>
+                  <button class="dropdown-item" (click)="exportXLS()">XLS</button>
+                </div>
+              </div>
+
+              <div class="btn-group" dropdown>
+                <button type="button" class="btn dropdown-toggle btn-primary" dropdownToggle>
+                  Actions
+                  <span class="caret"></span>
+                </button>
+                <div *dropdownMenu class="dropdown-menu" role="menu">
+                  <button class="dropdown-item">Mass Change</button>
+                  <button class="dropdown-item">Send To MLTC</button>
+                  <button class="dropdown-item">Admit Patient</button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <table class="table table-bordered table-striped table-responsive-sm" dnd-droppable (onDropSuccess)="transferDataSuccess($event)">
+        <thead>
+          <tr>
+            <th *ngFor="let header of tableHeadList">{{header.name}}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr [hidden]="!isLoadingReferralList">
+            <div class="container col-sm-6 col-6">
+              <span class="fa fa-pulse fa-spinner fa-3x"></span>
+            </div>
+          </tr>
+          <tr *ngFor="let referral of referralList" dnd-sortable-container [sortableData]="tableHeadList">
+            <td *ngFor="let item of tableHeadList; let i = index" [ngSwitch]="item.key" dnd-sortable [sortableIndex]="i">
+
+              <div class="d-flex" *ngSwitchCase="'name'">
+                <div class="col-sm-3 col-3">
+                  <span class="fa fa-pulse fa-spinner" [hidden]="(isLoadingReferral && referral.referralId === loadingReferralId)==false"></span>
+                </div>
+                <div class="col-sm-10 col-8">
+                  <a href="javascript://" [routerLink]="['../profile',referral.referralId]" (click)="loadReferral(referral.referralId)">
+                    {{referral.fullName}}</a>
+                </div>
+              </div>
+
+              <div *ngSwitchCase="'home'">{{referral.facilityName}}</div>
+
+              <div *ngSwitchCase="'coordinatorId'"> {{referral.coordinatorId}}
+              </div>
+
+              <div *ngSwitchCase="'status'">Status</div>
+
+              <div *ngSwitchCase="'coveredForMedicaid'">{{referral.coveredForMedicaid | yesNo}}</div>
+
+              <app-convert-lookup-from-server [lookupTypeArgs]="'ReferredByLookup'" [fieldValue]="referral.referredById"
+                *ngSwitchCase="'referredById'">
+              </app-convert-lookup-from-server>
+
+              <div *ngSwitchCase="'statusName'">
+
+                {{referral.statusName}}</div>
+
+              <div *ngSwitchCase="'cdpas'">{{referral.cdpas}}</div>
+
+              <div *ngSwitchCase="'pdn'">{{referral.pdn}}</div>
+
+              <div *ngSwitchCase="'medicaid_status'">{{referral.medicaidComments}}</div>
+
+              <div *ngSwitchCase="'medicaid_number'">{{referral.medicaidMemberId}}</div>
+
+              <div *ngSwitchCase="'referredOrg'">Reffered By Organization</div>
+
+              <div *ngSwitchCase="'start_date'">{{referral.dateCreated | date: 'MM/dd/yyyy'}}</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <pagination [totalItems]="totalItems" (pageChanged)="pageChanged($event)" [(ngModel)]="currentPage" [maxSize]="maxSize"
+        [itemsPerPage]="8"></pagination>
+    </div>
+  </div>
+</div>
+
+<ng-template [ngIf]="isLoadingColumnChooser">
+  <div class="card bg-primary text-white resizable" id="column_chooser">
+    <div class="card-header">
+      <div class="d-flex">
+        <h4 class="card-title text-center"> Customization</h4>
+        <button type="button" class="close text-white" aria-label="close" (click)="onClose()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <ul class="list-group">
+        <li *ngFor="let item of dragData" class="list-group-item" dnd-draggable [dragEnabled]="true" [dragData]="item">
+          {{item.name}}</li>
+      </ul>
+    </div>
+  </div>
+</ng-template>

@@ -1,0 +1,75 @@
+<ng-template #customCellTemplate tooltipPlacement="tooltipPlacement" tooltipAppendToBody="tooltipAppendToBody" let-day="day"
+  let-locale="locale" let-class="cal-day">
+  <div class="cal-cell-top">
+    <span class="cal-day-number">{{ day.date | calendarDate:'monthViewDayNumber':locale }}</span>
+  </div>
+
+
+  <div class="cal-cell-row" *ngFor="let evnt of day.events" (click)="eventClicked(evnt)" style="color:white;">
+    <div class="cal-event3" style="padding:4px" [style.background-color]="evnt.color">
+      {{evnt.title}}, {{evnt.meta.employeeName}}<br />
+      Start: {{evnt.start|date:'shortTime' }}<br />
+      End: {{evnt.end|date:'shortTime' }}
+    </div>
+
+  </div>
+</ng-template>
+<ng-template #customDayEventTemplate let-dayEvent="dayEvent" let-locale="locale">
+  <div class="cal-event" [style.background-color]="dayEvent.event.color" style="color:white" (click)="eventClicked(dayEvent.event)">
+    {{dayEvent.event.title}},<br />
+    {{dayEvent.event.meta.employeeName}}<br />
+    Start: {{dayEvent.event.start|date:'shortTime' }}<br />
+    End: {{dayEvent.event.end|date:'shortTime' }}<br />
+    Duration: {{dayEvent.event.meta.duration}}<br />
+    Status: {{dayEvent.event.meta.status.name}}
+  </div>
+</ng-template>
+<div class="container-fluid">
+  <div class="row justify-content-start">
+    <div class="col-5 align-self-start">
+      <div class="btn-group">
+        <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate" (click)="periodClicked()">
+          Previous
+        </div>
+        <div class="btn btn-outline-secondary" mwlCalendarToday (click)="periodClicked()" [(viewDate)]="viewDate">
+          Today
+        </div>
+        <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate" (click)="periodClicked()">
+          Next
+        </div>
+      </div>
+    </div>
+    <div class="col align-self-middle">
+      <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'en' }}</h3>
+    </div>
+    <div class="col-auto align-self-end">
+      <div class="btn-group">
+        <div class="btn btn-primary" (click)="view = 'month'" [class.active]="view === 'month'">Month</div>
+        <div class="btn btn-primary" (click)="view = 'day'" [class.active]="view === 'day'">Day</div>
+      </div>
+      <div class="btn-group dropdown">
+        <button class="btn btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false">
+          Create visit
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a class="dropdown-item" href="#" (click)="newEvent('Skilled')">Skilled</a>
+          <a class="dropdown-item" href="#" (click)="newEvent('Unskilled')">Unskilled</a>
+        </div>
+      </div>
+      <div class="btn btn-primary" (click)="openMasterDialog()">Master Schedule</div>
+    </div>
+  </div>
+  <div class="container-fluid" style="padding-top:1%">
+    <div class="row justify-content-start">
+      <div class="col align-self-middle" [ngSwitch]="view">
+        <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+          [cellTemplate]="customCellTemplate" (eventTimesChanged)="eventTimesChanged($event)">
+        </mwl-calendar-month-view>
+        <mwl-calendar-day-view *ngSwitchCase="'day'" [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+          [eventTemplate]="customDayEventTemplate" (eventTimesChanged)="eventTimesChanged($event)">
+        </mwl-calendar-day-view>
+      </div>
+    </div>
+  </div>
+</div>

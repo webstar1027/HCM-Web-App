@@ -1,0 +1,81 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Physician Information</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <!-- <form #clinicalInfoEditForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm" class=""> -->
+    <div class="form-group">
+      <label class="control-label">
+        Physician
+      </label>
+      <input class="form-control" autocomplete="off" name="physicianName" [(ngModel)]="asyncSelected" (keyup)="onSearchTextChanged($event)" />
+      <div *ngIf="physicians">
+        <b>Physician List</b>
+        <hr class="mb-3" />
+        <div style="height:225px; overflow-y: auto;" infinite-scroll [infiniteScrollDistance]="2" [scrollWindow]="false" (scrolled)="loadPhysicians(asyncSelected)">
+          <div class="d-flex justify-content-center" *ngIf="typeaheadLoading"><span class="fa fa-spinner fa-pulse fa-3x fa-fw"></span></div>
+          <div *ngIf="typeaheadNoResults">No Results</div>
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-action" *ngFor="let physician of physicians">
+
+              <div class="d-flex">
+                <div class="col-lg-1 col-sm-1 p-0 m-0 mt-4">
+                  <div class="c-radio">
+                    <label>
+                      <input name="a" type="radio" [value]="physician.physicianId" [(ngModel)]="selectedPhysicianId">
+                      <span class="fa fa-circle"></span>
+                    </label>
+                  </div>
+                </div>
+                <div class="col-lg-10 col-sm-10">
+                  <div class="d-flex">
+                    <div class="col-sm-6 col-lg-6">
+                      <h5 class="mb-1 text font-weight-bold">{{physician.lastName}}, {{physician.firstName}}</h5>
+                      <div class="alert bg-gray-lighter text text-center" *ngIf="!physician.addresses ||  physician.addresses.length <=0">
+                        <small>No Addresses</small>
+                      </div>
+                      <address *ngFor="let physicianAddress of physician.addresses">
+                        {{physicianAddress.addressLine1}}
+                        <small *ngIf="physicianAddress.addressLine2">
+                          <br> {{physicianAddress.addressLine2}}
+                        </small>
+                        <br> {{physicianAddress.city}}, {{physicianAddress.state}} {{physicianAddress.zip}}
+                      </address>
+                    </div>
+                    <div class="col-sm-6 col-lg-6">
+                      <p *ngFor="let physicianContact of physician.contacts">
+                        <span>{{physicianContact.contactValue}}</span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-lg-1 col-sm-1">
+                  <small class="badge badge-success pull-right" *ngIf="physician.isActive">Active</small>
+                  <small class="badge badge-danger pull-right" *ngIf="physician.isActive===false">Inactive</small>
+                </div>
+              </div>
+
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- </form> -->
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <!-- [disabled]="!clinicalInfoEditForm.valid" -->
+      <button class="btn btn-primary" [disabled]="savingInfo" (click)="save()">
+          <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+          {{savingInfo ? 'Saving' : 'Save'}}
+      </button>
+      <button class="btn btn-outline-primary" (click)="cancel()">
+        <i class="fa fa-undo"></i> Cancel
+      </button>
+
+    </div>
+  </div>
+</div>

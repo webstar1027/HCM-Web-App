@@ -1,0 +1,40 @@
+<h3 mat-dialog-title>
+  Contract
+</h3>
+  <mat-divider></mat-divider>
+<div class="container mt-2">
+  <mat-dialog-content>
+    <form #chartContractForm="ngForm" action="">
+      <div class="row m-0 mb-1">
+        <mat-form-field class="col-12" style="width:100%">
+          <mat-select required (selectionChange)="checkInsurance($event)" name="insurance"  placeholder="Insurance"  [(ngModel)]="patientContract.insuranceId">
+            <mat-option *ngFor="let insurance of insuranceList" [value]="insurance.key" >{{insurance.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class="row m-0 mb-1">
+        <mat-form-field class="col" [ngClass]="{'mat-input-invalid mat-form-field-invalid': memberId.invalid}">
+          <input matInput #memberId='ngModel' [requiredIf]="insuranceIndex > 0 && insuranceList[insuranceIndex-1]?.additionalData.requiresMemberId" name="memberId" placeholder="Member ID"  type="text" [(ngModel)]="patientContract.memberId">
+        </mat-form-field>
+        <mat-form-field class="col">
+          <input matInput [requiredIf]="false" name="episodeId" placeholder="Episode ID"  type="text" [(ngModel)]="patientContract.episodeId">
+        </mat-form-field>
+      </div>
+      <div class="row m-0 mb-1">
+        <mat-form-field class="col">
+          <input matInput required [matDatepicker]="effectiveDate" name="effectiveDate" placeholder="Effective Date" [(ngModel)]="patientContract.effectiveDate">
+          <mat-datepicker-toggle matSuffix [for]="effectiveDate"></mat-datepicker-toggle>
+          <mat-datepicker #effectiveDate></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field class="col">
+          <input matInput [min]="patientContract.effectiveDate" [matDatepicker]="dischargeDate" name="dischargeDate" placeholder="Discharge Date" [(ngModel)]="patientContract.endDate">
+          <mat-datepicker-toggle matSuffix [for]="dischargeDate"></mat-datepicker-toggle>
+          <mat-datepicker #dischargeDate></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+      <button mat-raised-button (click)="save()" >Save</button>
+    </mat-dialog-actions>
+</div>

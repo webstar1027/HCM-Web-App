@@ -1,0 +1,65 @@
+﻿<div class="wrapper" *ngIf="isAuthentication">
+    <mat-sidenav-container>
+        <mat-sidenav #sidenav mode="side"
+                     opened [class.opened]="menuOpened"
+                     id="sidenav"
+                     (clickOutside)="outerClick($event)">
+            <mat-toolbar color="default">
+                <button mat-icon-button id="menu" (click)="toggleChange()" class="d-none d-md-block d-lg-block">
+                    <mat-icon mat-list-icon id="toggleButton">menu</mat-icon>
+                </button>
+
+                <mat-accordion class="d-block d-md-none d-lg-none" >
+                    <mat-expansion-panel>
+                        <mat-expansion-panel-header [collapsedHeight]="'55px'" [expandedHeight]="'55px'">
+                            <mat-panel-title>
+                                <button mat-icon-button >
+                                    <img src="/assets/images/user.png" class="rounded" style="height: 35px" />
+                                    <span id="user_name">{{getUserName()}}</span>
+                                </button>
+                            </mat-panel-title>
+                        </mat-expansion-panel-header>
+
+                        <mat-nav-list>
+                            <a mat-list-item *ngFor="let linkedCompany of linkedCompanies">
+                              <i class="material-icons">person</i>&nbsp;&nbsp;&nbsp;
+                              <span id="company_name">{{linkedCompany.companyName}}</span>
+                            </a>
+                            <a mat-list-item (click)="logout()">
+                              <i class="material-icons">lock</i> &nbsp;&nbsp;&nbsp;
+                              <span>Log Off</span>
+                            </a>
+                            <hr/>
+                            <a mat-list-item>
+                              <i class="material-icons">search</i>  &nbsp;&nbsp;&nbsp;<span> Search</span>
+                            </a>
+                            <a mat-list-item>
+                              <i class="material-icons">notifications_none</i>&nbsp;&nbsp;&nbsp; <span>Notifications</span>
+                            </a>
+                            <a mat-list-item>
+                              <i class="material-icons">help_outline</i> &nbsp;&nbsp;&nbsp; <span>Help</span>
+                            </a>
+                        </mat-nav-list>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </mat-toolbar>
+            <mat-nav-list>
+                <app-sidebar *ngFor="let item of menuItems" [item]="item" ></app-sidebar>
+            </mat-nav-list>
+        </mat-sidenav>
+        <!-- Body -->
+        <mat-sidenav-content>
+            <app-header-menu (toggleMenu)="onToggleMenu($event)"   class="topnavbar-wrapper"></app-header-menu>
+            <section id="side_content" class="section-container">
+                <!-- Page content-->
+                <div class="content-wrapper">
+                    <router-outlet></router-outlet>
+                </div>
+            </section>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>
+
+<div class="wrapper" *ngIf="!isAuthentication">
+    <h1> Loading HCM App...</h1>
+</div>

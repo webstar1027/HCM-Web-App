@@ -1,0 +1,40 @@
+﻿#column_chooser {
+      width:200px;
+      height:auto;
+      position: absolute;
+      top: 300px;
+      left:700px;
+      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.16), 0 4px 16px 0 rgba(0,0,0,0.12) !important;
+
+      button {
+          margin-top:-5px;
+
+          span {
+              margin-left:65px;
+          }
+      }
+
+      .card-body {
+          padding:0;
+
+          ul > li {
+             height: 30px;
+          }
+      }
+}
+
+@media screen and (max-width: 1125px) {
+    #column_chooser {
+        position: absolute;
+        top:300px;
+        left: 300px;
+    }
+}
+
+@media screen and (max-width: 520px) {
+   #column_chooser {
+      position: absolute;
+      top:300px;
+      left:100px;
+   }
+}

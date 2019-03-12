@@ -1,0 +1,35 @@
+﻿
+<div class="card">
+    <div class="card-header">
+        <div class="card-title">
+            Note Details
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="input-group mb-2" *ngIf="noteDetails">
+            <div class="input-group-prepend text-sm">
+                <span class="input-group-text">Subject:</span>
+            </div>
+            <input class="form-control" type="text" [(ngModel)]="noteDetails.subject"/>
+          
+        </div>
+        <label class="control-label">
+            Note
+        </label>
+        <div id="summernote" class="summernote">
+
+        </div>
+    </div>
+    <div class="card-footer">
+        <div class="pull-right">
+            <button class="btn btn-primary" (click)="save()">
+            <span class="fa fa-save"></span> Save</button>
+            <button class="btn btn-danger" (click)="cancel()">
+                <span class="fa fa-undo"></span> Cancel</button>
+           
+        </div>
+    </div>
+</div>
+
+<span>{{noteDetails | json}}</span>
+ 

@@ -1,0 +1,143 @@
+<div class="d-flex justify-content-center mt-3 mb-5">
+  <h3>
+    <u><em class="fa fa-medkit"></em>&nbsp;Medicaid - Intake</u>
+  </h3>
+</div>
+<div class="row">
+  <div class="col-3"></div>
+  <div class="col align-self-center">
+    <form #medicaidEditForm="ngForm" autocomplete="never-ever-hcm">
+      <h4 class="inline text-bold">
+        Medicaid & Medicare Details
+      </h4>&nbsp;<span class="muted small"><em>(All fields are optional)</em></span>
+      <div class="form-row mb-2">
+        <div class="form-group-sm col-xs-6 col-md-3">
+          <label class="mb-0">
+            Medicare Number
+          </label>
+          <input type="text" class="form-control form-control-sm" name="medicareMemberId" [(ngModel)]="newReferral.medicareMemberId" />
+        </div>
+        <div class="col-3">
+          <div class="form-group-sm">
+            <label class="mb-0 control-label">
+              Medicaid Coverage
+            </label>
+            <label class="switch switch-lg m-0">
+              <input type="checkbox" checked="checked" name="coveredForMedicaid" [(ngModel)]="newReferral.coveredForMedicaid" />
+              <span></span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group-sm  col-xs-6" *ngIf="newReferral.coveredForMedicaid">
+          <label class="mb-0 control-label">
+            Medicaid Number
+          </label>
+          <input type="text" class="form-control form-control-sm" name="medicaidMemberId" [(ngModel)]="newReferral.medicaidMemberId" />
+        </div>
+      </div>
+      <div class="form-row mb-2">
+        <div class="col-xs-6">
+          <div class="form-group-sm mb-1">
+            <label class="mb-0 control-label">
+              Entitlement Issue
+            </label>
+            <label class="switch danger switch-lg m-0">
+              <input name="entitlementIssues" [disabled]="newReferral.coveredForMedicaid" [(ngModel)]="newReferral.entitlementIssues"
+                type="checkbox" checked="checked" />
+              <span></span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group col-md-8" *ngIf="newReferral.entitlementIssues">
+          <label class="mb-0 form-label">
+            Entitlement Issues Comment
+          </label>
+          <textarea class="form-control no-resize" name="entitlementIssuesComment" [(ngModel)]="newReferral.entitlementIssuesComment">
+              </textarea>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-10">
+          <label class="mb-0 form-label">
+            Medicaid Comment
+          </label>
+          <textarea class="form-control" name="medicaidComment" [(ngModel)]="newReferral.medicaidComment"></textarea>
+        </div>
+      </div>
+      <h4 class="text-bold">Maximus Info</h4>
+      <div class="form-row mb-3">
+        <div class="col-xs-6">
+          <div class="form-group-sm">
+            <label class="mb-0 control-label">
+              Last Date
+            </label>
+            <input type="text" placeholder="__/__/____" class="form-control form-control-sm" name="maximusDate"
+              [(ngModel)]="newReferral.maximusDate" [minDate]="aLongTimeAgo" [maxDate]="today" bsDatepicker
+              placement="top" />
+          </div>
+        </div>
+        <div class="col-xs-6 mb-2">
+          <div class="form-group-sm">
+            <label class="mb-0 control-label">
+              Last Score
+            </label>
+            <input type="text" class="form-control form-control-sm" name="maximusScore" [(ngModel)]="newReferral.maximusScore" />
+          </div>
+        </div>
+      </div>
+      <h4 class="text-bold">Intake</h4>
+      <!-- <form #intakeEditForm="ngForm" autocomplete="never-ever-hcm"> -->
+      <div class="form-row">
+        <div class="form-group-sm col-xs-6 col-3">
+          <label class="control-label">Nursing Home Discharge</label>
+          <label class="switch switch-lg m-0">
+            <input class="form-control" name="nursingHomeDischarge" type="checkbox" [(ngModel)]="newReferral.nursingHomeDischarge" />
+            <span></span>
+          </label>
+        </div>
+        <div class="form-group-sm col-xs-5 col-2">
+          <label class="control-label">Transfer Case</label>
+          <label class="switch switch-lg m-0">
+            <input class="form-control" name="transferCase" type="checkbox" [(ngModel)]="newReferral.transferCase" />
+            <span></span>
+          </label>
+        </div>
+        <div class="form-group col-xs-6 col-2">
+          <label class="control-label mb-0">Referral Status</label>
+          <select class="form-control" [(ngModel)]="newReferral.referralStatusId" name="referralStatus" (ngModelChange)="onStatusChanged($event)">
+            <option *ngFor="let status of referralStatuses" [ngValue]="status.key">{{status.name}}</option>
+          </select>
+        </div>
+        <div class="form-group col-xs-6 col-3">
+          <!-- *ngIf="referralSubStatusList && referralSubStatusList.length >0" -->
+          <label class="control-label mb-0">Status Reason</label>
+          <select class="form-control" [(ngModel)]="newReferral.referralSubStatusId" name="referralStatusReason">
+            <option *ngFor="let status of referralSubStatusList" [ngValue]="status.key">{{status.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-5">
+          <label class="control-label mb-0">Referred Source</label>
+          <select name="referredSource" class="form-control form-control-sm" [(ngModel)]="newReferral.referralSourceId">
+            <option *ngFor="let sourceItem of referralSourceList" [ngValue]="sourceItem.key">{{sourceItem.name}}</option>
+          </select>
+        </div>
+        <div class="form-group col-5">
+          <label class="control-label mb-0">Referred By</label>
+          <select name="referredBy" class="form-control form-control-sm" [(ngModel)]="newReferral.referredById">
+            <option *ngFor="let referredBy of referredByList" [ngValue]="referredBy.key">{{referredBy.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-10">
+          <label class="control-label mb-0">Referral Reason</label>
+          <textarea class="form-control" name="referralReason" type="text" [(ngModel)]="newReferral.referralReason"></textarea>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="col-1"></div>
+</div>

@@ -1,0 +1,144 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Coordination</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="cancel()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form #coordinationEditForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm" class="">
+      <div class="row">
+        <div class="col-6">
+          <div class="form-group ">
+            <label class="control-label">
+              Intake Coordinator
+            </label>
+            <select required name="intakeCoordinator" class="form-control" [(ngModel)]="referralDemographics.intakeCoordinatorId">
+              <option *ngFor="let coordinator of coordinatorsList" [ngValue]="ConvertString(coordinator.key)">{{coordinator.name}}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="control-label">
+              Primary Language
+            </label>
+            <select name="primaryLanguage" class="form-control" [(ngModel)]="referralDemographics.primaryLanguageId">
+              <option *ngFor="let language of languagesList" [ngValue]="ConvertString(language.key)">{{language.name}}</option>
+            </select>
+          </div>
+          <div class="row">
+            <div class="col-lg-6 col-sm-6">
+              <div class="form-group ">
+                <label class="control-label">
+                  Sabbath Observant
+                </label>
+                <label class="switch switch-lg m-0">
+                  <input class="form-control" name="sabbathObservent" type="checkbox" [(ngModel)]="referralDemographics.sabbathObservant" />
+                  <span></span>
+                </label>
+              </div>
+            </div>
+            <div class="col-lg-6 col-sm-6 border-left">
+              <div class="form-group ">
+                <label class="control-label">
+                  CDPAS
+                </label>
+                <label class="switch switch-lg m-0">
+                  <input class="form-control" name="CDPAS" type="checkbox" [(ngModel)]="referralDemographics.isCDPAS" />
+                  <span></span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6 border-left">
+          <div class="form-group ">
+            <label class="control-label">
+              Caregive Preferred Gender
+            </label>
+            <select name="PreferredGender" [(ngModel)]="referralDemographics.genderPreferenceId" class="form-control">
+              <option *ngFor="let preference of genderPreference" [ngValue]="ConvertString(preference.key)">{{preference.name}}</option>
+            </select>
+          </div>
+
+          <div class="form-group ">
+            <label class="control-label">
+              Accepts Other Gender
+            </label>
+            <select name="otherGenderAcceptance" [(ngModel)]="referralDemographics.otherGenderAcceptanceId" class="form-control">
+              <option *ngFor="let preference of otherGenderPreferenceAcceptance" [ngValue]="ConvertString(preference.key)">{{preference.name}}</option>
+            </select>
+          </div>
+
+          <div class="form-group ">
+            <label class="control-label">
+              Social Day Care
+            </label>
+            <select name="dayCare" [(ngModel)]="referralDemographics.dayCareId" class="form-control">
+              <option *ngFor="let preference of dayCareList" [ngValue]="ConvertString(preference.key)">{{preference.name}}</option>
+            </select>
+          </div>
+
+          <div class="form-group ">
+            <label class="control-label">
+              Comments
+            </label>
+            <input class="form-control" name="comments" type="text" [(ngModel)]="referralDemographics.coordinationComments"
+              #comments="ngModel" />
+          </div>
+        </div>
+      </div>
+      <div class="row" *ngIf="referralDemographics.isCDPAS">
+        <div class="col">
+          <h5>CDPAS Aide Info</h5>
+          <div class="form-group ">
+            <label class="control-label">
+              Name
+            </label>
+            <input class="form-control" name="aideName" type="text" [(ngModel)]="referralDemographics.cdpasAideName" />
+          </div>
+          <div class="form-group ">
+            <label class="control-label">
+              Phone Number
+            </label>
+            <input required autocomplete="never-ever-hcm" name="phoneNumber" type="tel" class="form-control form-control-sm"
+              appPhoneValidator [textMask]="{mask: phoneNumberMask}" [(ngModel)]="referralDemographics.cdpasAidePhoneNumber" />
+          </div>
+          <div class="form-group ">
+            <label class="control-label">
+              Relationship
+            </label>
+            <select autocomplete="never-ever-hcm" required class="form-control form-control-sm" required #relationship="ngModel"
+              [(ngModel)]="referralDemographics.cdpasAideRelationship" name="relationship">
+              <option *ngFor="let r of relationshipList" [ngValue]="r.key">{{r.name}}</option>
+            </select>
+          </div>
+          <div class="form-group ">
+            <label class="control-label">
+              Rate Request
+            </label>
+            <input class="form-control" name="rate" type="number" placeholder="$0.00" [(ngModel)]="referralDemographics.cdpasAideRateRequest" />
+          </div>
+          <div class="form-group ">
+            <label class="control-label">
+              Link to Employee
+            </label>
+            <input class="form-control" name="linkToEmployee" type="text" [(ngModel)]="referralDemographics.cdpasAideName" />
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <button class="btn btn-primary" (click)="save()" [disabled]="!coordinationEditForm.valid || savingInfo">
+        <i *ngIf="!savingInfo" class="fa fa-save"></i>
+        <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+        {{savingInfo ? 'Saving' : 'Save'}}
+      </button>
+      <button class="btn btn-outline-primary" (click)="cancel()">
+        <i class="fa fa-undo"></i> Cancel
+      </button>
+
+    </div>
+  </div>
+</div>

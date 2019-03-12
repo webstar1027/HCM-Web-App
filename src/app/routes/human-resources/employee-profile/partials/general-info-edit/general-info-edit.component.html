@@ -1,0 +1,204 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit General Information</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <form #generalInfoEditForm="ngForm" (ngSubmit)="saveGeneralInfo()" autocomplete="never-ever-hcm">
+            <div class="container">
+                <div class="form">
+                    <div class="form-group row">
+                        <div class="col-4">
+                            <div class="row">
+                                <label for="first-name" class="col-5 col-form-label">First Name</label>
+                                <div class="col-7 p-0">
+                                    <input id="first-name"
+                                      type="text"
+                                      name="firstName"
+                                      class="form-control"
+                                      required
+                                      #firstNameControl="ngModel"
+                                      [ngClass]="{
+                                        'border-danger': firstNameControl.invalid && (firstNameControl.dirty || firstNameControl.touched),
+                                        'border-success': firstNameControl.valid && (firstNameControl.dirty || firstNameControl.touched)
+                                      }"
+                                      [(ngModel)]="demographicsCopy.firstName" />
+                                    <div *ngIf="firstNameControl.invalid && (firstNameControl.dirty || firstNameControl.touched)" class="text-danger">
+                                      First Name is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="row">
+                                <label for="last-name" class="col-5 col-form-label">Last Name</label>
+                                <div class="col-7 p-0">
+                                    <input id="last-name"
+                                      type="text"
+                                      name="lastName"
+                                      class="form-control"
+                                      required
+                                      #lastNameControl="ngModel"
+                                      [ngClass]="{
+                                        'border-danger': lastNameControl.invalid && (lastNameControl.dirty || lastNameControl.touched),
+                                        'border-success': lastNameControl.valid && (lastNameControl.dirty || lastNameControl.touched)
+                                      }"
+                                      [(ngModel)]="demographicsCopy.lastName" />
+                                </div>
+                                <div *ngIf="lastNameControl.invalid && (lastNameControl.dirty || lastNameControl.touched)" class="text-danger">Last Name is required.</div>
+                            </div>
+                        </div>
+
+                        <div class="col-4">
+                            <div class="row">
+                                <label for="middle-name" class="col-6 col-form-label">Middle Name</label>
+                                <div class="col-6">
+                                    <input id="middle-name" type="text" name="middleName" class="form-control" [(ngModel)]="demographicsCopy.middleName" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="dob" class="col-3 col-form-label">Date of Birth</label>
+                        <div class="col-9">
+                            <input type="text"
+                              name="dob"
+                              placeholder="Date of Birth"
+                              class="form-control"
+                              #dobControl="ngModel"
+                              bsDatepicker
+                              [bsValue]="demographicsCopy.dob"
+                              [ngClass]="{
+                                'border-danger': dobControl.invalid && (dobControl.dirty || dobControl.touched),
+                                'border-success': dobControl.valid && (dobControl.dirty || dobControl.touched)
+                              }"
+                              [required]="demographicsCopy.isActiveEmployeeType"
+                              [(ngModel)]="demographicsCopy.dob" />
+                            <div *ngIf="dobControl.invalid && (dobControl.dirty || dobControl.touched)" class="text-danger">Date of Birth is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="gender" class="col-3 col-form-label">Gender</label>
+                        <div class="col-9">
+                            <select class="form-control" name="gender" required [(ngModel)]="demographicsCopy.gender">
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="marital-status" class="col-3 col-form-label">Marital Status</label>
+                        <div class="col-9">
+                            <select class="form-control"
+                              name="maritalStatus"
+                              #maritalStatusControl="ngModel"
+                              [ngClass]="{
+                                'border-danger': maritalStatusControl.invalid && (maritalStatusControl.dirty || maritalStatusControl.touched),
+                                'border-success': maritalStatusControl.valid && (maritalStatusControl.dirty || maritalStatusControl.touched)
+                              }"
+                              [required]="demographicsCopy.isActiveEmployeeType"
+                              [(ngModel)]="demographicsCopy.maritalStatus"
+                            >
+                                <option *ngFor="let status of maritalStatusList" [ngValue]="status.key">
+                                    {{status.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="maritalStatusControl.invalid && (maritalStatusControl.dirty || maritalStatusControl.touched)" class="text-danger">
+                              Marital status is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="primary-language" class="col-3 col-form-label">Primary Language</label>
+                        <div class="col-9">
+                            <select class="form-control"
+                              name="primaryLanguage"
+                              #primaryLanguageControl="ngModel"
+                              [ngClass]="{
+                                'border-danger': primaryLanguageControl.invalid && (primaryLanguageControl.dirty || primaryLanguageControl.touched),
+                                'border-success': primaryLanguageControl.valid && (primaryLanguageControl.dirty || primaryLanguageControl.touched)
+                              }"
+                              [required]="demographicsCopy.isActiveEmployeeType"
+                              [(ngModel)]="demographicsCopy.primaryLanguageId"
+                            >
+                                <option *ngFor="let language of languagesList" [ngValue]="language.key">
+                                    {{language.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="primaryLanguageControl.invalid && (primaryLanguageControl.dirty || primaryLanguageControl.touched)" class="text-danger">
+                              Primary language is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="ethnicity" class="col-3 col-form-label">Ethnicity</label>
+                        <div class="col-9">
+                            <select class="form-control"
+                              name="ethnicity"
+                              #ethnicityControl="ngModel"
+                              [ngClass]="{
+                                'border-danger': ethnicityControl.invalid && (ethnicityControl.dirty || ethnicityControl.touched),
+                                'border-success': ethnicityControl.valid && (ethnicityControl.dirty || ethnicityControl.touched)
+                              }"
+                              [required]="demographicsCopy.isActiveEmployeeType"
+                              [(ngModel)]="demographicsCopy.ethnicityId"
+                            >
+                                <option *ngFor="let ethnicity of ethnicitiesList" [ngValue]="ethnicity.key">
+                                    {{ethnicity.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="ethnicityControl.invalid && (ethnicityControl.dirty || ethnicityControl.touched)" class="text-danger">Ethnicity is required.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="birth-country" class="col-3 col-form-label">Country of Birth</label>
+                        <div class="col-9">
+                            <select class="form-control"
+                              name="birthCountry"
+                              #birthCountryControl="ngModel"
+                              [ngClass]="{
+                                'border-danger': birthCountryControl.invalid && (birthCountryControl.dirty || birthCountryControl.touched),
+                                'border-success': birthCountryControl.valid && (birthCountryControl.dirty || birthCountryControl.touched)
+                              }"
+                              [required]="demographicsCopy.isActiveEmployeeType"
+                              [(ngModel)]="demographicsCopy.countryOfBirthId"
+                            >
+                                <option *ngFor="let country of countriesList" [ngValue]="country.key">
+                                    {{country.name}}
+                                </option>
+                            </select>
+                            <div *ngIf="birthCountryControl.invalid && (birthCountryControl.dirty || birthCountryControl.touched)" class="text-danger">
+                              Country of Birth is required.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="modal-footer">
+        <div class="container">
+            <div class="offset-md-4 col-md-4">
+                <button type="button" class="btn btn-primary" [disabled]="generalInfoEditForm.invalid" (click)="saveGeneralInfo()">
+                    <em class="fa fa-save"></em>
+                    Save
+                </button>
+                <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+                    <em class="fa fa-undo"></em>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

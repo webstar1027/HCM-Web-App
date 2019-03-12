@@ -1,0 +1,106 @@
+{
+  "employeeId": 1,
+  "isActiveEmployeeType": false,
+  "firstName": "Illia",
+  "middleName": "Ihar",
+  "lastName": "Mikhalkou",
+  "dob": "2/19/1992",
+  "employeeType": "PCA",
+  "employementStatus": "Active",
+  "employmentType": "Employee",
+  "applicationDate": "3/28/2018",
+  "hireDate": "4/17/2018",
+  "agencyInsuranceStatus": "Declined",
+  "primaryWorkPlace": "Community",
+  "liveIn": true,
+  "liveInDays": "3",
+  "isDriver": true,
+  "pdn": false,
+  "statusLastUpdate": "6/24/2018",
+  "firstWorkDay": "4/19/2018",
+  "lastWorkDay": null,
+  "gender": "M",
+  "ssn": "1485873",
+  "address": {
+    "addressId": 1,
+    "addressType": "home address",
+    "addressLine1": "14 Vitebskaya street",
+    "addressLine2": "",
+    "city": "Mogilev",
+    "state": "MG",
+    "zip": "21208",
+    "county": "Mogilev"
+  },
+  "homePhone": {
+    "contactId": 1,
+    "contactType": "home phone",
+    "contactValue": "5222477116"
+  },
+  "cellPhone": {
+    "contactId": 1,
+    "contactType": "cell phone",
+    "contactValue": "5447921728"
+  },
+  "maritalStatus": "",
+  "ethnicity": "Belarusian",
+  "birthCountry": "Republic of Belarus",
+  "emailAddress": {
+    "contactId": 1,
+    "contactType": "email address",
+    "contactValue": "illia.mikhalkou@gmail.com"
+  },
+  "workEmail": {
+    "contactId": 1,
+    "contactType": "work email",
+    "contactValue": "illia.mikhalkou@company.com"
+  },
+  "preferredCommunicationMethod": "Cell phone",
+  "primaryLanguage": "Russian",
+  "pictureUrl": "https://odesk-prod-portraits.s3.amazonaws.com/Users:illia_mikhalkou:PortraitUrl_100?AWSAccessKeyId=AKIAIKIUKM3HBSWUGCNQ&Expires=2147483647&Signature=JAeOoEIcks3icqsUsRcKc450i%2BM%3D&xPUNj",
+  "emergencyContacts": [{
+    "emergencyContactId": 1,
+    "firstName": "Contact",
+    "lastName": "Name",
+    "homePhone": {},
+    "cellPhone": {
+      "contactValue": "5555555555",
+      "contactType": 2,
+      "contactId": 42
+    },
+    "relationship": "Friend"
+  },
+  {
+    "emergencyContactId": 2,
+    "firstName": "Contact",
+    "lastName": "Name",
+    "homePhone": {},
+    "cellPhone": {
+      "contactValue": "5555555555",
+      "contactType": 2,
+      "contactId": 42
+    },
+    "relationship": "Friend"
+  },
+  {
+    "emergencyContactId": 3,
+    "firstName": "Contact",
+    "lastName": "Name",
+    "homePhone": {},
+    "cellPhone": {
+      "contactValue": "5555555555",
+      "contactType": 2,
+      "contactId": 42
+    },
+    "relationship": "Friend",
+    "addresses": [{
+      "addressId": 1,
+      "addressType": "home address",
+      "addressLine1": "12 Vitebskaya street",
+      "addressLine2": "",
+      "city": "Mogilev",
+      "state": "MG",
+      "zip": "21201",
+      "county": "Mogilev"
+    }]
+  }]
+}

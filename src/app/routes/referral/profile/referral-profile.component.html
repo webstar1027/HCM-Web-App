@@ -1,0 +1,63 @@
+﻿<div class="home-container" *ngIf="!referralModel">
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-lg-4 col-xl-3">
+        <span class="fa fa-frown-o fa-4x"></span>
+      </div>
+      <div class="col-xl-9 col-lg-8 text text-danger">
+        <h1 class="home-text-big">Profile not loaded</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="referralModel">
+  <div class="content-heading">
+    <div class="media-body">
+      <div class="d-flex">
+        <div class="col-lg-3">
+          <strong>
+            {{referralModel.fullName}}
+          </strong>
+        </div>
+        <div class="col-lg-2">
+          <p *ngIf="referralModel.facilityName">
+            <small>Facility:</small>
+            <b class="upper">{{referralModel.facilityName}}</b>
+          </p>
+          <p *ngIf="!referralModel.facilityName">
+            <small>Residence Type:</small>
+            <b class="upper">Community Base</b>
+          </p>
+        </div>
+
+        <div class="col-lg-3 col-lg-push-2">
+          <small>Intake Coordinator:</small>
+          <b>Sam Jane</b>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="body-content">
+    <div class="row">
+      <div class="col-lg-3 col-xl-2 col-sm-12">
+        <div class="card b">
+          <div class="card-body">
+            <div class="list-group">
+              <a href="#" class="list-group-item" [routerLink]="['demographics']" routerLinkActive="active">Demographics</a>
+              <a href="#" class="list-group-item" [routerLink]="['intake']" routerLinkActive="active">Intake</a>
+              <a href="#" class="list-group-item" [routerLink]="['coordination']" routerLinkActive="active">Coordination</a>
+              <a href="#" class="list-group-item" [routerLink]="['clinical']" routerLinkActive="active">Clinical</a>
+              <a href="#" class="list-group-item" [routerLink]="['workflow']" routerLinkActive="active">Workflow</a>
+              <a href="#" class="list-group-item" [routerLink]="['notes']" routerLinkActive="active">Notes</a>
+              <a href="#" class="list-group-item" [routerLink]="['documents']" routerLinkActive="active">Documents</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-9 col-xl-10 col-sm-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

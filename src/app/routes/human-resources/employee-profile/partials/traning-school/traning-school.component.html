@@ -1,0 +1,133 @@
+<!--component html goes here -->
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Traning School Info </h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-content px-1 py-1">
+        <form id="trainingSchoolEditForm" #trainingSchoolEditForm="ngForm" (ngSubmit)="createTrainingSchoolInfo()" autocomplete="never-ever-hcm">
+            <div class="container">
+                <div class="form">
+                    <div class="form-group row">
+                        <label for="trainingSchoolId" class="col-5 col-form-label">Traning School: </label>
+                        <div class="col-7">
+                            <select
+                                name="trainingSchoolId"
+                                placeholder="Traning School"
+                                class="form-control"
+                                [(ngModel)]="school.trainingSchoolId">
+                                <option *ngFor="let school of TraningSchoolList" [ngValue]="school.key">{{school.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="certificationDate" class="col-5 col-form-label">Certification Date: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="certificationDate"
+                                placeholder="Received On"
+                                required
+                                class="form-control"
+                                bsDatepicker
+                                #certificationDateControl="ngModel"
+                                [ngClass]="{
+                                    'border-danger': certificationDateControl.invalid && (certificationDateControl.dirty || certificationDateControl.touched),
+                                    'border-success': certificationDateControl.valid && (certificationDateControl.dirty || certificationDateControl.touched)
+                                }"
+                                [(ngModel)]="school.certificationDate" />
+                            <div *ngIf="certificationDateControl.invalid && (certificationDateControl.dirty || certificationDateControl.touched)" class="text-danger">
+                                Certification Date On is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="instructor" class="col-5 col-form-label"> Instructor:</label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="instructor"
+                                placeholder="Instructor"
+                                class="form-control"
+                                [(ngModel)]="school.instructor"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="verified" class="col-5 col-form-label">Verified: </label>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="offset-1 infoStatus">
+                                    <input
+                                      id="verified"
+                                      type="checkbox"
+                                      class="form-check-input"
+                                      name="verified"
+                                      [(ngModel)]="school.verified"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                      <label for="verifiedOn" class="col-5 col-form-label">Verified On: </label>
+                      <div class="col-7">
+                          <input
+                              type="text"
+                              name="verifiedOn"
+                              placeholder="Verified On"
+                              required
+                              class="form-control"
+                              bsDatepicker
+                              #verifiedOnControl="ngModel"
+                              [ngClass]="{
+                                  'border-danger': verifiedOnControl.invalid && (verifiedOnControl.dirty || verifiedOnControl.touched),
+                                  'border-success': verifiedOnControl.valid && (verifiedOnControl.dirty || verifiedOnControl.touched)
+                              }"
+                              [(ngModel)]="school.verifiedOn" />
+                          <div *ngIf="verifiedOnControl.invalid && (verifiedOnControl.dirty || verifiedOnControl.touched)" class="text-danger">
+                              Verified On is required.
+                          </div>
+                      </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="onFile" class="col-5 col-form-label">File: </label>
+                        <div class="col-7">
+                            <div class="row">
+                                <div class="offset-1 infoStatus">
+                                    <input
+                                      id="onFile"
+                                      type="checkbox"
+                                      class="form-check-input"
+                                      name="onFile"
+                                      [(ngModel)]="school.onFile"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="container">
+            <div class="offset-md-4 col-md-4">
+                <button type="button" class="btn btn-primary"  (click)="editTrainingSchoolInfo()">
+                  <em class="fa fa-save"></em>
+                  Save
+                </button>
+                <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+                  <em class="fa fa-undo"></em>
+                  Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+  </div>

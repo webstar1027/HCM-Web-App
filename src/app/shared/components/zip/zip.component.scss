@@ -1,0 +1,16 @@
+:host {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 0 0 100%;
+
+  .zip-container {
+    display: flex;
+  }
+}
+
+.centered-text {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: flex-end;
+}

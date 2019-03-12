@@ -1,0 +1,16 @@
+// aw-wizard{
+//   // height: 75vh;
+// }
+// aw-wizard-step{
+//   // height: 67vh;
+// }
+aw-wizard-step :first-child{
+  height: 100%;
+}
+
+.vbottom{
+  position: absolute;
+  top: 92%;
+  right: 0;
+  margin-right: 1rem;
+}

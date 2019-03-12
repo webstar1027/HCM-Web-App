@@ -1,0 +1,97 @@
+<!--component html goes here -->
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left">Edit Medical Info </h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="closeModal()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-content px-1 py-1">
+        <form id="medicalInfoEditForm" #medicalInfoEditForm="ngForm" (ngSubmit)="createMedicalInfo()" autocomplete="never-ever-hcm">
+
+
+            <div class="container">
+                <div class="form">
+                    <div class="form-group row">
+                      <label for="medicalId" class="col-5 col-form-label">Medical: </label>
+                      <div class="col-7">
+                          <select autocomplete="never-ever-hcm" required class="form-control form-control-sm" #relationship="ngModel" [(ngModel)]="medical.orgMedicalId"
+                            name="medicalId" (ngModelChange)="onChange($event)">
+                              <option *ngFor = "let r of complianceMedicals"  [ngValue]="r.orgMedicalId">{{r.medicalName}}</option>
+                          </select>
+                      </div>
+                    </div>
+
+
+                    <div class="form-group row">
+                        <label for="receivedOn" class="col-5 col-form-label">Received On: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="receivedOn"
+                                placeholder="Received On"
+                                required
+                                class="form-control"
+                                bsDatepicker
+                                #receivedOnControl="ngModel"
+                                [ngClass]="{
+                                    'border-danger': receivedOnControl.invalid && (receivedOnControl.dirty || receivedOnControl.touched),
+                                    'border-success': receivedOnControl.valid && (receivedOnControl.dirty || receivedOnControl.touched)
+                                }"
+                                [(ngModel)]="medical.dateReceived" />
+                            <div *ngIf="receivedOnControl.invalid && (receivedOnControl.dirty || receivedOnControl.touched)" class="text-danger">
+                                Received On is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="expiration" class="col-5 col-form-label">Expiration: </label>
+                        <div class="col-7">
+                            <input
+                                type="text"
+                                name="expiration"
+                                placeholder="Expiration"
+                                required
+                                class="form-control"
+                                bsDatepicker
+                                #expirationControl="ngModel"
+                                [ngClass]="{
+                                    'border-danger': expirationControl.invalid && (expirationControl.dirty || expirationControl.touched),
+                                    'border-success': expirationControl.valid && (expirationControl.dirty || expirationControl.touched)
+                                }"
+                                [(ngModel)]="medical.expirationDate"/>
+                            <div *ngIf="expirationControl.invalid && (expirationControl.dirty || expirationControl.touched)" class="text-danger">
+                                Expiration On is required.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label for="medicalResultId" class="col-5 col-form-label">Result: </label>
+                        <div class="col-7">
+                            <select autocomplete="never-ever-hcm" required class="form-control form-control-sm" #relationship="ngModel" [(ngModel)]="medical.medicalResultId"
+                              name="medicalResultId">
+                                <option *ngFor = "let r of MedicalResult"  [ngValue]="r.key">{{r.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <div class="container">
+            <div class="offset-md-4 col-md-4">
+                <button type="button" class="btn btn-primary"  (click)="editMedicalInfo(medical)">
+                  <em class="fa fa-save"></em>
+                  Save
+                </button>
+                <button type="button" class="btn btn-outline-primary" (click)="closeModal()">
+                  <em class="fa fa-undo"></em>
+                  Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

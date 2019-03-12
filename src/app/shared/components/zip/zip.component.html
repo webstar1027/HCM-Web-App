@@ -1,0 +1,38 @@
+<div class="zip-container" [ngClass]="{'has-error': !isDataValid}">
+  <div class="col-4">
+    <div class="row">
+      <label for="zip" class="col-3 col-form-label control-label">Zip</label>
+      <div class="col-9">
+        <input id="zip"
+          type="text"
+          class="form-control"
+          name="zip-code"
+          minlength="0"
+          maxlength="5"
+          #zipControl="ngModel"
+          [ngClass]="{'form-control-sm': smallControl}"
+          [disabled]="disabled"
+          [required]="required"
+          [(ngModel)]="zipData.zip"
+          (keyup)="zipChanged($event)"
+          (change)="zipChanged($event)" />
+      </div>
+    </div>
+  </div>
+  <div class="col-5">
+    <div class="row">
+      <label class="col-3 col-form-label control-label">City</label>
+      <div class="col-9">
+        <span class="centered-text" *ngIf="isDataValid && zipControl?.value?.length === 5">{{zipData.city}}</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-3">
+    <div class="row">
+      <label class="col-8 col-form-label control-label">State</label>
+      <div class="col-3">
+        <span class="centered-text" *ngIf="isDataValid && zipControl?.value?.length === 5">{{zipData.state}}</span>
+      </div>
+    </div>
+  </div>
+</div>

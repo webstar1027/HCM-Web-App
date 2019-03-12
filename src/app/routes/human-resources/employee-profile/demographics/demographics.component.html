@@ -1,0 +1,288 @@
+<div class="home-container" *ngIf="!demographics">
+  <div class="jumbotron">
+    <div class="row">
+      <div class="col-lg-4 col-xl-3">
+        <span class="fa fa-frown-o fa-4x"></span>
+      </div>
+      <div class="col-xl-9 col-lg-8 text text-danger">
+        <h1 class="home-text-big">Demographics not loaded</h1>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row" *ngIf="demographics">
+  <div class="col-lg-3">
+    <div class="b card h-100">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="float-right">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="editGeneralInfo()">
+              <em class="fa fa-edit text-muted"></em>
+            </button>
+          </div>
+          <p>General</p>
+        </div>
+      </div>
+      <hr />
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Name:</b>
+          </div>
+          <div class="col-lg-6">
+            {{demographics.fullName}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>DOB:</b>
+          </div>
+          <div class="col-lg-6">
+            {{demographics.dob | date: 'shortDate'}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Gender:</b>
+          </div>
+          <div class="col-lg-6">
+            {{demographics.gender | genderConvert}}
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Marital Status:</b>
+          </div>
+          <div class="col-lg-6">
+            <app-convert-lookup-from-server [lookupTypeArgs]="'MaritalStatus'" [fieldValue]='demographics.maritalStatus'></app-convert-lookup-from-server>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Office:</b>
+          </div>
+          <div class="col-lg-6">
+            ???
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Primary Language:</b>
+          </div>
+          <div class="col-lg-6">
+            <app-convert-lookup-from-server [lookupTypeArgs]="'LanguageLookupService'" [fieldValue]='demographics.primaryLanguageId'></app-convert-lookup-from-server>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Ethnicity:</b>
+          </div>
+          <div class="col-lg-6">
+            <app-convert-lookup-from-server [lookupTypeArgs]="'EthnicitiesLookupService'" [fieldValue]='demographics.ethnicityId'></app-convert-lookup-from-server>
+
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Country of Birth:</b>
+          </div>
+          <div class="col-lg-6">
+
+            <app-convert-lookup-from-server [lookupTypeArgs]="'CountriesLookupService'" [fieldValue]='demographics.countryOfBirthId'></app-convert-lookup-from-server>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-6">
+            <b>Social Security:</b>
+          </div>
+          <div class="col-lg-6" *ngIf='demographics.ssn'>
+            {{demographics.ssn | ssn}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-9">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="b card p-2 profile-picture-card">
+          <img class="profile-picture" [src]="demographics.picture" [alt]="demographics.fullName" />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 col-sm-12">
+        <div class="b card h-100">
+          <div class="card-header">
+            <div class="card-title">
+              <div class="float-right">
+                <button type="button" class="btn btn-sm btn-secondary" (click)="editContactInfo()">
+                  <em class="fa fa-edit text-muted"></em>
+                </button>
+              </div>
+              <p>Contact Information</p>
+            </div>
+          </div>
+          <hr />
+          <div class="card-body">
+            <div class="row">
+              <div class="col-lg-3">
+                <b>Phone:</b>
+              </div>
+              <div class="col-lg-3">{{demographics.homePhone?.contactValue | phone}}</div>
+              <div class="col-lg-3">
+                <b>Address:</b>
+              </div>
+              <div class="col-lg-3">{{demographics.address?.addressLine1}}</div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <b>Cell:</b>
+              </div>
+              <div class="col-lg-3">{{demographics.cellPhone?.contactValue | phone}}</div>
+              <div class="col-lg-3">
+                <b>Address 2:</b>
+              </div>
+              <div class="col-lg-3">{{demographics.address?.addressLine2}}</div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <b>Email:</b>
+              </div>
+              <div class="col-lg-3">{{demographics.emailAddress?.contactValue}}</div>
+              <div class="col-lg-3">
+                <b>City, State, Zip:</b>
+              </div>
+              <div class="col-lg-3">
+                {{demographics.address?.city}}, {{demographics.address?.state}} {{demographics.address?.zip}}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <b>Work Email:</b>
+              </div>
+              <div class="col-lg-3">{{demographics.workEmail?.contactValue}}</div>
+              <div class="col-lg-3">
+                <b>County:</b>
+              </div>
+              <div class="col-lg-3">{{demographics.address?.county}}</div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3">
+                <b>Preferred Contact Method:</b>
+              </div>
+              <div class="col-lg-3">
+                <app-convert-lookup-from-server [lookupTypeArgs]="'ContactTypeEnum'" [fieldValue]='demographicsCopy.defaultCommunicationType'></app-convert-lookup-from-server>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12 mt-2">
+    <div class="b card h-100">
+      <div class="card-header">
+        <div class="card-title">
+          <div class="float-right">
+            <button type="button" class="btn btn-sm btn-secondary" (click)="editEmploymentInfo()">
+              <em class="fa fa-edit text-muted"></em>
+            </button>
+          </div>
+          <p>Employment Information</p>
+        </div>
+      </div>
+      <hr />
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-2">
+            <b>Type:</b>
+          </div>
+          <div class="col-lg-2">
+            <app-convert-lookup-from-server [lookupTypeArgs]="'EmployeeTypesLookupService'" [fieldValue]='demographics.employeeTypeId'></app-convert-lookup-from-server>
+          </div>
+          <div class="col-lg-2">
+            <b>Hire Date:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.hireDate | date: 'shortDate'}}</div>
+          <div class="col-lg-2">
+            <b>Status of Agency Insurance:</b>
+          </div>
+          <div class="col-lg-2">
+            <app-convert-lookup-from-server [lookupTypeArgs]="'AgencyInsuranceStatus'" [fieldValue]='demographics.agencyInsuranceStatus'></app-convert-lookup-from-server>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2">
+            <b>Status:</b>
+          </div>
+          <div class="col-lg-2">
+            <app-convert-lookup-from-server [lookupTypeArgs]="'EmploymentTypesLookupService'" [fieldValue]='demographics.employmentTypeId'></app-convert-lookup-from-server>
+          </div>
+          <div class="col-lg-2">
+            <b>First Work Date:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.firstWorkDate | date: 'shortDate'}}</div>
+          <div class="col-lg-2">
+            <b>Live In:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.liveInString}}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2">
+            <b>Status Last Updated:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.employmentStatusLastUpdated | date: 'shortDate'}}</div>
+          <div class="col-lg-2">
+            <b>Last Work Date:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.lastWorkDate | date: 'shortDate'}}</div>
+          <div class="col-lg-2">
+            <b>Driver:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.isDriver | yesNo}}</div>
+        </div>
+
+        <div class="row">
+          <div class="col-lg-2">
+            <b>Application Date:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.applicationDate | date: 'shortDate'}}</div>
+          <div class="col-lg-2">
+            <b>Primary Work Place:</b>
+          </div>
+          <div class="col-lg-2">
+            <app-convert-lookup-from-server [lookupTypeArgs]="'FacilitiesLookupService'" [fieldValue]='demographics.primaryWorkPlaceId'></app-convert-lookup-from-server>
+          </div>
+          <div class="col-lg-2">
+            <b>PDN:</b>
+          </div>
+          <div class="col-lg-2">{{demographics.isPDN | yesNo}}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-12 mt-2">
+    <app-emergency-contact-list
+      [contacts]="demographics.emergencyContacts"
+      [saveCallback]="saveEmergencyContactCallback"
+      [deleteCallback]="deleteEmergencyContactCallback"
+      (contactSaved)="onEmergencyContactSaved($event)"
+      (contactDeleted)="onEmergencyContactDeleted($event)"
+    >
+    </app-emergency-contact-list>
+  </div>
+</div>

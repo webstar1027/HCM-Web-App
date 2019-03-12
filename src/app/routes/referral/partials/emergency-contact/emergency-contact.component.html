@@ -1,0 +1,178 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <div class="modal-title">
+      Emergency Contact
+    </div>
+  </div>
+  <div class="modal-body">
+    <form #emergencyContactForm="ngForm" (ngSubmit)="save()" autocomplete="never-ever-hcm">
+      <div class="container">
+        <div class="row">
+          <div class=" col-12 col-lg-6">
+            <div class="form-row">
+              <h6>Contact</h6>
+            </div>
+            <div class="form-row">
+              <div class="d-inline-block mb-0  col-xs-6">
+                <div class="form-group  mb-0" [class.has-error]="firstName.invalid &&(firstName.touched || firstName.dirty)">
+                  <label class="control-label mb-0">First Name</label>
+                  <input autocomplete="never-ever-hcm" required type="text" name="firstName" class="form-control form-control-sm" placeholder="First Name" [(ngModel)]="emergencyContact.firstName"
+                    #firstName="ngModel" />
+                </div>
+              </div>
+              <div class="d-sm-inline-block middle-initial  mb-0 col-lg-4 col-3">
+                <div class="form-group  mb-0">
+                  <label class="control-label  mb-0 optional">MI</label>
+                  <input autocomplete="never-ever-hcm" type="text" name="middleInitial" class="form-control form-control-sm" placeholder="MI" [(ngModel)]="emergencyContact.middleInitial"
+                    #middleInitial="ngModel" />
+                </div>
+              </div>
+              
+  
+            </div>
+            <div class="form-row">
+              <div class="d-sm-inline-block  mb-0 col-xs-4">
+                <div class="form-group  mb-0" [class.has-error]="lastName.invalid &&(lastName.touched || lastName.dirty)">
+                  <label class="control-label mb-0">Last Name</label>
+                  <input autocomplete="never-ever-hcm" required type="text" name="lastName" class="form-control form-control-sm" [(ngModel)]="emergencyContact.lastName" placeholder="Last Name"
+                    #lastName="ngModel" />
+                </div>
+              </div>
+              <div class="mb-0 col-5">
+                <div class="form-group  mb-0">
+                  <label class="control-label mb-0 optional">Nick Name</label>
+                  <input autocomplete="never-ever-hcm" name="nickName" type="text" class="form-control form-control-sm" [(ngModel)]="emergencyContact.nickName" placeholder="Nick Name"
+                  #nickName="ngModel"
+                  />
+  
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="mb-0 col-lg-12">
+                <div class="form-group" [class.has-error]="relationship.invalid &&(relationship.touched || relationship.dirty)">
+                  <label class="control-label ">Relationship</label>
+                  <select autocomplete="never-ever-hcm" required class="form-control form-control-sm" required #relationship="ngModel" [(ngModel)]="emergencyContact.relationshipId" name="relationship">
+                      <option *ngFor = "let r of relationshipList"  [ngValue]="r.key">{{r.name}}</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <h6>Address</h6>
+              <div class="form-group col-md-12 m-0" [class.has-error]="addressLine1.invalid &&(addressLine1.touched || addressLine1.dirty)">
+                <label class="control-label">
+                  Address Line 1
+                </label>
+                <input autocomplete="never-ever-hcm" required class="form-control form-control-sm" name="addressLine1" type="text" placeholder="Address Line 1" [(ngModel)]="emergencyContact.addresses[0].addressLine1"
+                #addressLine1="ngModel"  />
+              </div>
+              <div class="form-group col-md-12 m-0">
+                <label class="control-label optional">
+                  Address Line 2
+                </label>
+                <input autocomplete="never-ever-hcm"  name="addressLine2" class="form-control form-control-sm" type="text" placeholder="Address Line 2" [(ngModel)]="emergencyContact.addresses[0].addressLine2"
+                #addressLine2="ngModel"/>
+              </div>
+            </div>
+            <div class="form-row">
+  
+              <div class="form-group col-md-4" [class.has-error]="zipCode.invalid &&(zipCode.touched || zipCode.dirty)">
+                <label class="control-label">
+                  Zip Code
+                </label>
+                <input autocomplete="never-ever-hcm" required name="ec-zip" class="form-control form-control-sm" type="text" placeholder="Zip Code" [(ngModel)]="emergencyContact.addresses[0].zip"
+                  (keypress)="restrictNumeric($event)" (ngModelChange)="lookupZipCode($event)"  #zipCode="ngModel" />
+              </div>
+              <div class="form-group col-6 col-md-4">
+                <label class="control-label">
+                  City
+                </label>
+                <span *ngIf="!invalidZipCode" class="form-control-plaintext">{{emergencyContact.addresses[0].city}}</span>
+                <span *ngIf="invalidZipCode" class="text text-danger form-control-plaintext">{{invalidZipCode}}</span>
+              </div>
+              <div class="form-group col-6 col-md-4">
+                <label class="control-label">
+                  State
+                </label>
+                <span class="form-control-plaintext">{{emergencyContact.addresses[0].state}}</span>
+              </div>
+  
+            </div>
+          </div>
+  
+          <div class="col-lg-6 border-left">
+            <h6>Contact Method</h6><span class="muted small"><em>One phone number required</em></span>
+            <div class="row">
+              <div class="col-10">
+                <div class="form-group"  [class.has-error]="homePhone.invalid &&(homePhone.touched || homePhone.dirty)">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <span class="fa fa-home"></span>
+                      </span>
+                    </div>
+                    <input [requiredIf]="!cellPhone.value" autocomplete="never-ever-hcm"  name="homePhone" type="tel" class="form-control form-control-sm" [(ngModel)]="emergencyContact.homePhone.contactValue"
+                      appPhoneValidator [textMask]="{mask: phoneNumberMask}" placeholder="Home Phone Number"  #homePhone="ngModel" (focus)="showSetHomePrimary=true" (blur)="showSetHomePrimary=false"/>
+                  <span class="btn btn-primary btn-xs" *ngIf="emergencyContact.homePhone?.isDefault"><span class="fa fa-check-circle"></span></span>
+                <button type="button" class="btn btn-outline-success btn-xs" *ngIf="!emergencyContact.homePhone?.isDefault && showSetHomePrimary" (mousedown)="setPrimary(emergencyContact.homePhone)"
+                  title="Set Primary Contact">Set as Primary</button>
+              </div>
+                </div>  
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <div class="form-group"  [class.has-error]="cellPhone.invalid &&(cellPhone.touched || cellPhone.dirty)">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <span class="fa fa-mobile-phone"></span>
+                      </span>
+                    </div>
+                    <input [requiredIf]="!homePhone.value" autocomplete="never-ever-hcm" name="cellPhone" type="tel" class="form-control form-control-sm" [(ngModel)]="emergencyContact.cellPhone.contactValue"
+                    appPhoneValidator [textMask]="{mask: phoneNumberMask}" placeholder="Mobile Phone Number" #cellPhone="ngModel" (focus)="showSetCellPrimary=true" (blur)="showSetCellPrimary=false"/>
+                  <span class="btn btn-primary btn-xs" *ngIf="emergencyContact.cellPhone?.isDefault"><span class="fa fa-check-circle"></span></span>
+                <button  type="button"  class="btn btn-outline-success btn-xs" *ngIf="!emergencyContact.cellPhone?.isDefault && showSetCellPrimary" (mousedown)="setPrimary(emergencyContact.cellPhone)"
+                  title="Set Primary Contact">Set as Primary</button>
+                </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-10">
+                <div class="form-group"  [class.has-error]="emailAddress.invalid &&(emailAddress.touched || emailAddress.dirty)">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">
+                        <span class="fa fa-envelope"></span>
+                      </span>
+                    </div>
+                    <input appEmailValidator autocomplete="never-ever-hcm" name="emailAddress" type="email" class="form-control form-control-sm" [(ngModel)]="emergencyContact.email.contactValue"
+                      placeholder="Email Address" #emailAddress="ngModel" (focus)="showSetEmailPrimary=true" (blur)="showSetEmailPrimary=false"/>
+                      <span class="btn btn-primary btn-xs" *ngIf="emergencyContact.email?.isDefault"><span class="fa fa-check-circle"></span></span>
+                      <button  type="button"  class="btn btn-outline-success btn-xs" *ngIf="!emergencyContact.email?.isDefault && showSetEmailPrimary" (mousedown)="setPrimary(emergencyContact.email)"
+                        title="Set Primary Contact">Set as Primary</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <div class="container">
+      <div class="offset-lg-4 col-lg-4">
+        <button class="btn btn-primary" (click)="save()" [disabled]="!emergencyContactForm.valid || savingInfo">
+            <i *ngIf="savingInfo" class="fa fa-spinner fa-spin"></i>
+            {{savingInfo ? 'Saving' : 'Save'}}
+        </button>
+        <button class="btn btn-outline-primary" (click)="cancel()">
+          <i class="fa fa-undo"></i> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
